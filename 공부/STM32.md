@@ -124,9 +124,10 @@ https://ndb796.tistory.com/360 여기 굿
 
 - 나는 NUCLEO-L412RB-P 보드를 쓰고 LD4가 연결된 PB13 핀을 제어하려면 MCU 내부에 있는 GPIO 레지스터를 제어해야함
 
-  - GPIO 레지스터 (configuration, data, set/reset/locking, alternate selection)
+  - GPIO 레지스터 (configuration, data, set/reset, locking, alternate selection)
   - GPIO 관련 레지스터 어드레스로 레지스터에 접근하기 위해 "Memory map"을 알아야함
     - 근데 이거 어찌 아는지 잘모르겠음
+  - 레지스터 종류가 엄청 많은데 뭐 그 때마다 알아서 잘 찾으면 되는 듯해....
 
 - HAL_GPIO_WritePin(GPIO_TypeDef* GPIOx, uint16_t GPIO_Pin, GPIO_PinState PinState)
 
@@ -139,7 +140,9 @@ https://ndb796.tistory.com/360 여기 굿
 
     어디 포트의 어느 핀인지를 찾아줘야해
 
-    보면 Label 로 설정한 이름을 쓰기도 하고 아예 포트나 핀 번호를 입력해주기도 함!!
+    이거는 컨트롤 누르고 클릭해가면서 LD4가 어느 핀인지 확인 가능해 이름을 넣거나, 핀 번호를 넣거나 하면 돼
+    
+    
 
 - HAL_GPIO_TogglePin(GPIO_TypeDef* GPIOx, uint16_t GPIO_Pin)
 
@@ -154,22 +157,31 @@ https://ndb796.tistory.com/360 여기 굿
 
 - HAL_GPIO_ReadPin(GPIO_TypeDef* GPIOx, uint16_t GPIO_Pin)
 
+  - 버튼으로 제어하기
+  
   - ```c
-    //HAL_Init(); 다음에 변수 선언
-    uint8_t Button_1;
+    // 이게 어떤 식으로 쓰는건지 확실하지는 않은데 참고한 함수 가서 이것도 이렇게 가져옴
+      GPIO_PinState bitstatus;
     
     // loop안에다가
-     Button_1 = HAL_GPIO_ReadPin(GPIOC, GPIO_PIN_13);
-    if (Button_1)
-    {
-        HAL_GPIO_WritePin(GPIOB, GPIO_PIN_13, GPIO_PIN_SET);
-    } else
+     bitstatus = HAL_GPIO_ReadPin(GPIOC, GPIO_PIN_13);
+    if (bitstatus == GPIO_PIN_RESET)
     {
         HAL_GPIO_WritePin(GPIOB, GPIO_PIN_13, GPIO_PIN_RESET);
-    }
+    } else
+    {
+        HAL_GPIO_WritePin(GPIOB, GPIO_PIN_13, GPIO_PIN_SET);
+  }
     ```
 
-  - 
+##### 디버그 방법
+
+- 멈춰 놓고 레지스터 직접 제어 가능하다
+  - C 코드 클 때, 유용하겠지?
+- 디버그 모드에서 
+  - 1) SFRs 여기에서 제어 가능
+  - 2) window - show view -memory 들어가면 메모리로 접근 가능
+- 
 
 
 
