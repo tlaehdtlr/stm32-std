@@ -65,7 +65,7 @@ void SystemClock_Config(void);
 int main(void)
 {
   /* USER CODE BEGIN 1 */
-
+  GPIO_PinState bitstatus;
   /* USER CODE END 1 */
 
   /* MCU Configuration--------------------------------------------------------*/
@@ -73,7 +73,6 @@ int main(void)
   /* Reset of all peripherals, Initializes the Flash interface and the Systick. */
   HAL_Init();
 
-  uint8_t Button_1;
 
   /* USER CODE BEGIN Init */
 
@@ -97,13 +96,13 @@ int main(void)
   /* USER CODE BEGIN WHILE */
   while (1)
   {
-	  Button_1 = HAL_GPIO_ReadPin(GPIOC, GPIO_PIN_13);
-	  if (Button_1)
-	  {
-		  HAL_GPIO_WritePin(GPIOB, GPIO_PIN_13, GPIO_PIN_SET);
-	  } else
+	  bitstatus = HAL_GPIO_ReadPin(GPIOC, GPIO_PIN_13);
+	  if (bitstatus == GPIO_PIN_RESET)
 	  {
 		  HAL_GPIO_WritePin(GPIOB, GPIO_PIN_13, GPIO_PIN_RESET);
+	  } else
+	  {
+		  HAL_GPIO_WritePin(GPIOB, GPIO_PIN_13, GPIO_PIN_SET);
 	  }
 
 	  // ?���??�� �?
