@@ -98,6 +98,46 @@ https://ndb796.tistory.com/360 여기 굿
 
 
 
+- RCC (Reset Clock Controller)
+  - stm32의 리셋과 클럭을 관장
+  - 
+
+
+
+### Clock
+
+- 구성 요소?
+  - HCLK : Core Clock 으로 실제 소스 코드 동작시키는 clock
+  - SYSCLK : System Clock 으로 Power on reset 직후 무조건 내부 clock으로 먼저 동작
+  - HSE (High Speed External) : 외부 고속 Clock, stm32 외부에 Crystal/Ceramic resonator 필요, Duty가 50% 이하인 외부 구형파, 삼각파 신호로도 사용 가능
+  - HSI (High ... internal) : 내장된 RC 발진 회로에 의해 동작 clock, 자체 calibration 기능 있지만, RC 발진회로의 특성 문제로 온도 상승에 따른 오차 발생
+  - LSE (Low ... ) : 32.768kHz의 Cryst.... 사용, 용도는 저전력 구현 및 정확한 시간 (RTC)을 맞추기 위함
+  - LSI () : independent watchdog와 AWU(Auto Wakeup) 기능 및 RTC clock에 사용 (정확성 확보 어려움)
+  - MSI (Multi Speed internal) : 저전력이라는데 음?
+  - CSS (Clock Security System) : HSE clock 에 문제 발생시, NMI interrupt 발생 및 clock source 를 HSI clock으로 변경해주는 기능
+
+- 고려 사항?
+  - HSI/HSE는 시스템 clock 소스로 사용
+    - 바로 사용되지 않고 clock tree를 통해 PLL이나 Prescaler 를 통해 필요한 주파수로 변경 후 사용
+  - LSI/LSE 는 RTC 와 Independent Watchdog 용으로 사용
+  - External 은 Bypass Clock source 또는 Crystal/ceramic resonator 로 설정 가능
+    - bypass 는 다른 장치에서 clock 을 전달 받아 사용할 때 선택
+    - crystal 은 외부에 clock 회로를 구성한 경우 선택
+  - master clock output 을 설정하면 특정 clock source 를 다시 특정 pin으로 출력하여 다른 주변 IC Clock Source로 사용 가능
+
+#### HAL API
+
+- clock 초기화 시, RCC_OsclnitTypeDef, RCC_ClklnitTypeDef 구조체 변수 사용
+- HAL_RCC_OscConfig 함수는 Main PLL 설정하여 PLLCLK 설정
+- HAL_RCC_ClockConfig 함수는 PLLCLK 가 SYSCLK 으로 사용되도록 설정
+- HAL_SYSTICK_Config 함수는 SysTick 타이머가 1ms 마다 구동하도록 설정
+- HAL_RCC_EnableCSS 함수는 HSE 에 오류 발생 시, 이를 검출하여 NMI Exception 을 발생시킴
+- HAL_RCC_MCOConfig 함수는 PLLCLK 클럭이 MCO 핀으로 출력되도록함
+
+
+
+
+
 ## Peripheral
 
 #### main.c
@@ -115,6 +155,15 @@ https://ndb796.tistory.com/360 여기 굿
     ```
 
     
+
+
+
+#### 참고
+
+- C:\Users\유저\STM32Cube\Repository\STM32Cube_FW_L4_V1.16.0\Projects\NUCLEO-L412RB-P\Examples
+  - 여기 참고 하면됨
+
+
 
 
 
@@ -181,7 +230,49 @@ https://ndb796.tistory.com/360 여기 굿
 - 디버그 모드에서 
   - 1) SFRs 여기에서 제어 가능
   - 2) window - show view -memory 들어가면 메모리로 접근 가능
-- 
+
+
+
+#### Timer
+
+- clock 설정
+  - HSE(high speed external), HSI(high speed internal),  LSE(low ...), LSI
+  - high와 low는 메가와 킬로인 듯?
+- 과정
+  - system core - RCC - LSE(뭐 위에거 설정)
+  - 핀 바뀜 (이걸 pin out 이라 하는걸까)
+  - Timers - RTC 에 Activate clock source 활성화
+  - Clock Configuration 에서 RTC Clock Mux 를 LSE(다른 것도)로 선택
+- 종류가 여럿...
+  - SysTick timer(항상 동작) 이런게 HAL_Delay() 함수 등에 사용됨
+  - WatchDog timer(IWDG, WWDG) : CPU의 오동작을 탐지하여 문제가 발생하면 재부팅 시켜주는 타이머
+  - Basic timer : 입출력 기능없이 시간만 재는 놈 TIMx (x:6,7)
+  - General Purpose timer : 범용 타이머, 출려 비교, 원펄스, 입력 캡쳐 등 TIMx (x: 2~5, 9~14)
+  - Advanced-control timer : 모터 제어나 디지털 변환 TIMx (x:1,8)
+  - 뭐를 고를지 고려해봐
+    - 카운터 해상도(크기), DMA 사용 여부, 최대 인터페이스 속도
+    - 카운터 타입, 캡쳐/비교 채널수
+    - Prescaler 범위, 보상 출력 유무, 최대 타이머 클럭
+- 주요 타이머 레지스터
+  - counter register (Timx_CNT) : 카운터 값 자체를 저장
+  - Precaler reguster (TIMx_PSC) : 분주비 레지스터 (분주할 비를 설정)
+  - Auto-reload register (TIMx_ARR) : 카운터 주기 레지스터
+  - Capture/Compare register (TTIMx_CCR) : 캡쳐/비교기 레지스터, 원하는 주기에 인터럽트를 설정할 수 있음
+- 예시로 범용타이머로 주기 설정하려면
+  - **Timer에 공급되는 버스 clock 속도, prescaler 값, Period 값 3가지는 설정해**
+  - clock 은 clock configuration에서 설정
+  - prescaler와 period는  parameter settings 에서 설정
+- **원하는 주기 구하는 공식**
+  - `Period * (1/APB1 버스 속도) * Prescaler`
+    - ex) 0.01ms = 900 x(1/90MHz) x 1000
+- 타이머 설정 순서?
+  - 최대 clock 설정
+  - NVIC 설정에 Systick 타이머 설정 확인
+  - 코드 생성
+  - 1초단위로 UART 메시지를 출력하는 코드 설계
+  - UART 메시지 확인
+
+
 
 
 
