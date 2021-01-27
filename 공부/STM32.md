@@ -34,98 +34,86 @@
 
 
 
-## STM32 실행
+## STM32
 
-#### 목표
+### 목표
 
 - 사용자가 작성한 코드를 (.c 파일) 이진코드 (.bin)으로 바꿔서 STM32 (flash? 레지스터? 찾아봐 여튼 보드 메모리 공간에 보낸다)
-- .c 파일을 빌드하여 object (.o) 파일로 바꾸고 link 작업을 통해 binary code로 바꾼다
 
 
 
-#### 순서 (회로도 - pinmap - 코드생성 - 코드작성 - 다운로드 - 모니터링)
+### 순서 (회로도 - PinMap - 코드생성 - 코드작성 - 다운로드 - 모니터링)
 
 https://ndb796.tistory.com/360 여기 굿
 
 - STM32 cube(IDX, MX, Prog, Mon) 전부 설치 (java eclipse 기반으로 만들어졌기 때문에 java 설치 선행 필요)
-- STM32를 컴퓨터와 연결
+- STM32를 컴퓨터와 연결 (나중에 IDE에서 run 할 때 연결해도 뭐...)
   - 장치관리자 - 범용 직렬 버스 장치에 ST_link debug 생성됨
-- CubeMX 실행 (회로도를 보고 핀 들을 제어하는 기본적인 코드를 만들어준다?)
-  - new project
-    - 3가지 선택
-    - 첫 번째는 새로 만든 하드웨어라면 선택
-    - 두 번째는 건들지 않은거
-    - 세 번째는 뭔가 템플릿 있는거 같음
-  - board selector
-    - 내 보드 검색해서 찾아줘
-    - 프젝 시작 (뭐 초기화 시켜줄까 하는데) 일단 나는 오케이
-  - 프로젝트 설정
+
+### CubeMX (회로도를 보고 핀 들을 제어하는 기본적인 코드를 만들어준다)
+
+- new project
+  - 3가지 선택
+  - 첫 번째는 새로 만든 하드웨어라면 선택
+  - 두 번째는 건들지 않은거
+  - 세 번째는 뭔가 템플릿 있는거 같음
+- board selector
+  - 내 보드 검색해서 찾아줘 (즐추하면 편함)
+  - 프젝 시작 (초기화 시켜줄까 하면 ㄳ ㅇㅋ)
+- 프로젝트 설정
+  - 핀 배치
+  - 클럭 설정
+  - 프로젝트 매니저
     - 이름, 경로
     - IDE 선택, generate under root 체크 해제 (이유는 다음에 알려주신다했음)
-    - MCU 패키지 필요한 것만 카피
+    - MCU 패키지 라이브러리 필요한 것만 카피
     - peripheral 마다  .c/.h 로 초기화 생성 체크
-  - 코드 생성
-  - IDE 찾아주고 
-- IDE 에서 코드 작성 및 실행
-  - 프젝 생성
-  - 어플 - 유저 - 코어 - main.c 작성
-  - 프로젝트 빌드
-  - 실행
+- 코드 생성
+
+### CubeIDE (코드 작성 및 실행)
+
+- 프젝 생성
+- main.c ( 여기서 private user code 밑에 code begin 과 end 사이에 코드 적어줘야 MX 수정해도 살아있음)
+- 프로젝트 빌드
+- 실행
+
+
+
+---
+
+### 기타
 
 #### 용어
 
 - HAL library (Hardware Abstraction Layer)
   - 하드웨어 추상화 계층 (MCU가 핀을 제어하는 함수들을 만듦
-- 
 
 
 
-#### IDE
+#### Clock
 
-- 함수 블럭 후, F3 누르면 함수의 정의로 감
-- 
+##### 구성 요소?
 
+- HCLK : Core Clock 으로 실제 소스 코드 동작시키는 clock
+- SYSCLK : System Clock 으로 Power on reset 직후 무조건 내부 clock으로 먼저 동작
+- HSE (High Speed External) : 외부 고속 Clock, stm32 외부에 Crystal/Ceramic resonator 필요, Duty가 50% 이하인 외부 구형파, 삼각파 신호로도 사용 가능
+- HSI (High ... internal) : 내장된 RC 발진 회로에 의해 동작 clock, 자체 calibration 기능 있지만, RC 발진회로의 특성 문제로 온도 상승에 따른 오차 발생
+- LSE (Low ... ) : 32.768kHz의 Cryst.... 사용, 용도는 저전력 구현 및 정확한 시간 (RTC)을 맞추기 위함
+- LSI () : independent watchdog와 AWU(Auto Wakeup) 기능 및 RTC clock에 사용 (정확성 확보 어려움)
+- MSI (Multi Speed internal) : 저전력이라는데 음?
+- CSS (Clock Security System) : HSE clock 에 문제 발생시, NMI interrupt 발생 및 clock source 를 HSI clock으로 변경해주는 기능
 
+##### 고려 사항?
 
+- HSI/HSE는 시스템 clock 소스로 사용
+  - 바로 사용되지 않고 clock tree를 통해 PLL이나 Prescaler 를 통해 필요한 주파수로 변경 후 사용
+- LSI/LSE 는 RTC 와 Independent Watchdog 용으로 사용
+- External 은 Bypass Clock source 또는 Crystal/ceramic resonator 로 설정 가능
+  - bypass 는 다른 장치에서 clock 을 전달 받아 사용할 때 선택
+  - crystal 은 외부에 clock 회로를 구성한 경우 선택
+- master clock output 을 설정하면 특정 clock source 를 다시 특정 pin으로 출력하여 다른 주변 IC Clock Source로 사용 가능
 
-
-## CubeMX 
-
-- 회로도를 보고 Pinout Configuration
-- 핀들 설정해주라고... 그리고 추가 옵션들이나 이름 달아주기
-- 클럭 설정
-- 코드 생성
-
-
-
-- RCC (Reset Clock Controller)
-  - stm32의 리셋과 클럭을 관장
-  - 
-
-
-
-### Clock
-
-- 구성 요소?
-  - HCLK : Core Clock 으로 실제 소스 코드 동작시키는 clock
-  - SYSCLK : System Clock 으로 Power on reset 직후 무조건 내부 clock으로 먼저 동작
-  - HSE (High Speed External) : 외부 고속 Clock, stm32 외부에 Crystal/Ceramic resonator 필요, Duty가 50% 이하인 외부 구형파, 삼각파 신호로도 사용 가능
-  - HSI (High ... internal) : 내장된 RC 발진 회로에 의해 동작 clock, 자체 calibration 기능 있지만, RC 발진회로의 특성 문제로 온도 상승에 따른 오차 발생
-  - LSE (Low ... ) : 32.768kHz의 Cryst.... 사용, 용도는 저전력 구현 및 정확한 시간 (RTC)을 맞추기 위함
-  - LSI () : independent watchdog와 AWU(Auto Wakeup) 기능 및 RTC clock에 사용 (정확성 확보 어려움)
-  - MSI (Multi Speed internal) : 저전력이라는데 음?
-  - CSS (Clock Security System) : HSE clock 에 문제 발생시, NMI interrupt 발생 및 clock source 를 HSI clock으로 변경해주는 기능
-
-- 고려 사항?
-  - HSI/HSE는 시스템 clock 소스로 사용
-    - 바로 사용되지 않고 clock tree를 통해 PLL이나 Prescaler 를 통해 필요한 주파수로 변경 후 사용
-  - LSI/LSE 는 RTC 와 Independent Watchdog 용으로 사용
-  - External 은 Bypass Clock source 또는 Crystal/ceramic resonator 로 설정 가능
-    - bypass 는 다른 장치에서 clock 을 전달 받아 사용할 때 선택
-    - crystal 은 외부에 clock 회로를 구성한 경우 선택
-  - master clock output 을 설정하면 특정 clock source 를 다시 특정 pin으로 출력하여 다른 주변 IC Clock Source로 사용 가능
-
-#### HAL API
+##### HAL API
 
 - clock 초기화 시, RCC_OsclnitTypeDef, RCC_ClklnitTypeDef 구조체 변수 사용
 - HAL_RCC_OscConfig 함수는 Main PLL 설정하여 PLLCLK 설정
@@ -140,30 +128,10 @@ https://ndb796.tistory.com/360 여기 굿
 
 ## Peripheral
 
-#### main.c
-
-- 자동 생성된 메인 함수의
-
-  - ```c
-    // HAL 라이브러리 초기화
-    HAL_Init();
-    // 시스템 클럭 설정
-    SystemClock_Config();
-    // 설정한 GPIO 부분 함수
-    MX_GPIO_Init();
-    
-    ```
-
-    
-
-
-
-#### 참고
+#### 코드 참고
 
 - C:\Users\유저\STM32Cube\Repository\STM32Cube_FW_L4_V1.16.0\Projects\NUCLEO-L412RB-P\Examples
   - 여기 참고 하면됨
-
-
 
 
 

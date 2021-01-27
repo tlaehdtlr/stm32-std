@@ -1,0 +1,10 @@
+{
+  "ExpandedNodes": [
+    "",
+    "\\USART_printf",
+    "\\USART_printf\\Core",
+    "\\USART_printf\\Core\\Src"
+  ],
+  "SelectedNode": "\\USART_printf\\Core\\Src\\main.c",
+  "PreviewInSolutionExplorer": false
+}
