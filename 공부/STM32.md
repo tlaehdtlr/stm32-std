@@ -231,6 +231,103 @@ https://ndb796.tistory.com/360 여기 굿
   - 1) SFRs 여기에서 제어 가능
   - 2) window - show view -memory 들어가면 메모리로 접근 가능
 
+#### UART (Universal Asynchronous Receiver/Transmitter)
+
+- USART 는 Synchronous 즉 등기인데 UART와의 차이는 Clock 소스 유무임
+
+  - USART 통신은 동기화 Clock에 따라 데이터 전송
+
+- Uart 통신은 협의된 baud rate (보드 속도, 비트/초의 단위인 데이터 전송 속도를 뜻함) 에 따라서 T1bit 간격으로 샘플링된 값을 데이터로 수신하며 start 비트와 stop 비트는 1.5bit 길이를 가짐
+
+- 시리얼 디버깅을 위한 시리얼 통신 프로그램 설치 필요!! Tera  term 통신 프로그램 설치
+
+  - 연결을 시리얼, 포트는 STM STLink vir... 이걸로 맞추고
+  - 설정 - 시리얼포트 에서 속도를 나중에 통신할 것의 Baud rate 와 맞춘다
+  - 설정을 저장해놓는다
+
+- 소스 코드
+
+  - https://velog.io/@madebygenji/IAR%EC%97%90%EC%84%9C-UART-%ED%86%B5%EC%8B%A0%EC%9C%BC%EB%A1%9C-printf-%EC%B6%9C%EB%A0%A5
+
+  - 한 줄 띄우고 싶으면 `\r\n` 을 붙여야함 
+
+    - ```c
+      if (ch == '\n')
+      	  HAL_UART_Transmit(&huart2, (uint8_t *) "\r", 1, 0xFFFF);
+      ```
+
+    - 이걸 적어서 \r 안 적게할 수 있긴함
+
+  - 여튼 내꺼는
+
+    ```c
+    /* USER CODE BEGIN 0 */
+    #ifdef __GNUC__
+        #define PUTCHAR_PROTOTYPE int __io_putchar(int ch)
+    #else
+        #define PUTCHAR_PROTOTYPE int fputc(int ch, FILE *f)
+    #endif
+    
+    PUTCHAR_PROTOTYPE
+    {
+      if (ch == '\n')
+    	  HAL_UART_Transmit(&huart2, (uint8_t *) "\r", 1, 0xFFFF);
+    	HAL_UART_Transmit(&huart2, (uint8_t *)&ch, 1, 0xFFFF);
+      return ch;
+    }
+    
+     while (1)
+      {
+    	  printf("Hello dongsik!\n");
+    	  HAL_Delay(1000);
+        /* USER CODE END WHILE */
+    
+        /* USER CODE BEGIN 3 */
+      }
+    ```
+
+    
+
+
+
+#### EXTI (External Interrupt)
+
+- 버튼 눌러 LED 토글하는 예제
+
+  - 버튼의 회로도를 보고 눌렀을 때 신호가 (high -> low) 이면 GPIO 모드를 falling edge 로 바꿔줘야함
+
+  - NVIC 활성화
+
+    - NVIC 개념 https://m.blog.naver.com/PostView.nhn?blogId=eziya76&logNo=221428695204&categoryNo=38&proxyReferer=https:%2F%2Fwww.google.com%2F
+    - NVIC 탭에서 인터넙트 관련 테이블 볼 수 있음
+    - 인터럽트 코드에 대한 초기화 순서, 인터럽트 서비스 루틴 (IRQ) 생성 유무 설정
+
+  - 인터럽트 발생 시, EXTI15_10_IRQHandler() -> HAL_GPIO_EXTI_IRQHandler() -> HAL_GPIO_EXTI_Callback()
+    순으로 발생, 여기서 이 콜백 함수를 사용자가 이용해야하지
+
+  - 내 코드
+
+    ```c
+    /* USER CODE BEGIN 4 */
+    void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin)
+    {
+    	switch (GPIO_Pin)
+    	{
+    	case B1_Pin: //GPIO_PIN_13
+    		HAL_GPIO_TogglePin(LD4_GPIO_Port, LD4_Pin);
+    		break;
+    	default:
+    		;
+    	}
+    }
+    ```
+
+    main.h 에 정의된 포트와 핀 번호 확인 잘하기 바람
+
+
+
+
+
 
 
 #### Timer
@@ -276,10 +373,4 @@ https://ndb796.tistory.com/360 여기 굿
 
 
 
-#### UART (Universal Asynchronous Receiver/Transmitter)
-
-- USART 는 Synchronous 즉 등기인데 UART와의 차이는 Clock 소스 유무임
-  - USART 통신은 동기화 Clock에 따라 데이터 전송
-- Uart 통신은 협의된 baud rate (보드 속도, 비트/초의 단위인 데이터 전송 속도를 뜻함) 에 따라서 T1bit 간격으로 샘플링된 값을 데이터로 수신하며 start 비트와 stop 비트는 1.5bit 길이를 가짐
-- 
-
+#### I2C (Inter-Integrated Circuit)
