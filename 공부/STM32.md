@@ -320,7 +320,7 @@ https://ndb796.tistory.com/360 여기 굿
     - Prescaler 범위, 보상 출력 유무, 최대 타이머 클럭
 - 주요 타이머 레지스터
   - counter register (Timx_CNT) : 카운터 값 자체를 저장
-  - Precaler reguster (TIMx_PSC) : 분주비 레지스터 (분주할 비를 설정)
+  - Precaler register (TIMx_PSC) : 분주비 레지스터 (분주할 비를 설정)
   - Auto-reload register (TIMx_ARR) : 카운터 주기 레지스터
   - Capture/Compare register (TTIMx_CCR) : 캡쳐/비교기 레지스터, 원하는 주기에 인터럽트를 설정할 수 있음
 - 예시로 범용타이머로 주기 설정하려면
@@ -331,11 +331,36 @@ https://ndb796.tistory.com/360 여기 굿
   - `Period * (1/APB1 버스 속도) * Prescaler`
     - ex) 0.01ms = 900 x(1/90MHz) x 1000
 - 타이머 설정 순서?
-  - 최대 clock 설정
-  - NVIC 설정에 Systick 타이머 설정 확인
+  - clock 세팅
+
+    - datasheet 의 clock tree를 확인
+      - TIMx 의 클럭은 어떤 APBx 프리스케일러를 통과한 클럭을 소스로 활용하는지
+      - TIM1 은 APB2, TIM2 는 APB1
+        - TIM2 가 General purpose timer 이므로 이걸로 해본다
+      - 주기 설정 공식
+        - 1/80MHz * 80 * 1000
+        - 근데 prescaler와 counter period를 공식이랑 달리 1작은 값을 넣어주라는데 (데이터 시트 timing schematic? 을 봐야 설명 가능이라는데 잘 모르겠다)
+          - 여튼 그러면 79, 999
+      - 반복 인터럽트 발생하게하려면 auto-reload preload를 enable
+
+  - NVIC 세팅
+
+    - TIMx 인터럽트 enable -> 타이머 카운터와 counter period 의 값이 일치하면 인터럽트 발생
+    - 우선순위 변경 원하면 System core의 NVIC에서 세팅
+
   - 코드 생성
-  - 1초단위로 UART 메시지를 출력하는 코드 설계
-  - UART 메시지 확인
+
+  - 코드 작성
+
+    - IRQ (Interrupt ReQuest) 가 인터럽트 처리인가벼
+    - TIMx_IRQHandler() -> HAL_TIM_IRQHandler() -> HAL_TIM_PeriodElapsedCallback() 호출
+    - (1) 타이머 시작 , (2) 주기적인 인터럽트 루틴 만들기
+    - (1)
+      - init
+
+  - 
+
+    
 
 
 
