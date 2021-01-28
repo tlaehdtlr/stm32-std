@@ -303,11 +303,13 @@ https://ndb796.tistory.com/360 여기 굿
 - clock 설정
   - HSE(high speed external), HSI(high speed internal),  LSE(low ...), LSI
   - high와 low는 메가와 킬로인 듯?
+  
 - 과정
   - system core - RCC - LSE(뭐 위에거 설정)
   - 핀 바뀜 (이걸 pin out 이라 하는걸까)
   - Timers - RTC 에 Activate clock source 활성화
   - Clock Configuration 에서 RTC Clock Mux 를 LSE(다른 것도)로 선택
+  
 - 종류가 여럿...
   - SysTick timer(항상 동작) 이런게 HAL_Delay() 함수 등에 사용됨
   - WatchDog timer(IWDG, WWDG) : CPU의 오동작을 탐지하여 문제가 발생하면 재부팅 시켜주는 타이머
@@ -318,18 +320,22 @@ https://ndb796.tistory.com/360 여기 굿
     - 카운터 해상도(크기), DMA 사용 여부, 최대 인터페이스 속도
     - 카운터 타입, 캡쳐/비교 채널수
     - Prescaler 범위, 보상 출력 유무, 최대 타이머 클럭
+  
 - 주요 타이머 레지스터
   - counter register (Timx_CNT) : 카운터 값 자체를 저장
   - Precaler register (TIMx_PSC) : 분주비 레지스터 (분주할 비를 설정)
   - Auto-reload register (TIMx_ARR) : 카운터 주기 레지스터
   - Capture/Compare register (TTIMx_CCR) : 캡쳐/비교기 레지스터, 원하는 주기에 인터럽트를 설정할 수 있음
+  
 - 예시로 범용타이머로 주기 설정하려면
   - **Timer에 공급되는 버스 clock 속도, prescaler 값, Period 값 3가지는 설정해**
   - clock 은 clock configuration에서 설정
   - prescaler와 period는  parameter settings 에서 설정
+  
 - **원하는 주기 구하는 공식**
   - `Period * (1/APB1 버스 속도) * Prescaler`
     - ex) 0.01ms = 900 x(1/90MHz) x 1000
+  
 - 타이머 설정 순서?
   - clock 세팅
 
@@ -353,14 +359,136 @@ https://ndb796.tistory.com/360 여기 굿
   - 코드 작성
 
     - IRQ (Interrupt ReQuest) 가 인터럽트 처리인가벼
+
     - TIMx_IRQHandler() -> HAL_TIM_IRQHandler() -> HAL_TIM_PeriodElapsedCallback() 호출
+
     - (1) 타이머 시작 , (2) 주기적인 인터럽트 루틴 만들기
+
     - (1)
-      - init
 
-  - 
+      - ```c
+          /* USER CODE BEGIN 2 */
+          if (HAL_TIM_Base_Start_IT (&htim2) != HAL_OK)
+          {
+        	  Error_Handler();
+          }
+        ```
 
-    
+    - (2)
+
+      - ```c
+        /* USER CODE BEGIN PV */
+        volatile int gTimerCnt;
+        
+        /* USER CODE BEGIN 4 */
+        void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
+        {
+        	gTimerCnt++;
+        	if (gTimerCnt == 1000)
+        	{
+        		gTimerCnt = 0;
+        		HAL_GPIO_TogglePin(LD4_GPIO_Port, LD4_Pin);
+        	}
+        }
+        ```
+
+  
+
+#### ADC (Analog to Digital Converter)
+
+- 온도센싱 값 프린트 찍기
+
+- 코드 생성
+
+  - RCC 설정
+  - ADC 설정
+    - temperature sensor channel
+    - 연속으로 AD 변환위해 continuous conversion  mode 를 enable
+    - ADC_Regular_ConversionMode - Rank - Sampling Time 을 12.5 Cycles로 (이거는 왜함?)
+  - clock
+    - HCLK 값 최대로 주자
+
+- 코드 작성
+
+  - 시리얼 디버깅 구현 해놔
+
+  - ADC Calibration 및 시작 / ADC 결과 값 출력
+
+    - ```c
+      /* Infinite loop */
+        /* USER CODE BEGIN WHILE */
+      
+        /* start calibration */
+        if (HAL_ADCEx_Calibration_Start(&hadc1, ADC_SINGLE_ENDED) != HAL_OK)
+        {
+      	  Error_Handler();
+        }
+        /* start the conversion process */
+        if (HAL_ADC_Start(&hadc1) != HAL_OK)
+        {
+      	  Error_Handler();
+        }
+      
+        uint16_t adc1;
+      
+        while (1)
+        {
+          HAL_ADC_PollForConversion(&hadc1, 100);
+          adc1 = HAL_ADC_GetValue(&hadc1);
+          printf("ADC1_Temperature : %d \n", adc1);
+      	  /* USER CODE END WHILE */
+      
+          /* USER CODE BEGIN 3 */
+          HAL_Delay(100);
+        }
+      ```
+
+    - HAL_StatusTypeDef HAL_ADCEx_Calibration_Start(ADC_HandleTypeDef *hadc, uint32_t SingleDiff) 여기 singleDiff에 대한 설명
+
+      - SingleDiff Selection of single-ended or differential input 
+      - 내 생각엔 센서의 오차 정도를 줄일라고 저런 인자를 넣은게 아닐까 싶어
+
+  - 빌드 실행
+
+  - ADC 결과 값이 아닌 내부 온도를 계산하고 보내기
+
+    - ```
+      온도 구하는 공식
+      Temperature (in °C) = {(V25 - Vsense) / Avg_slope} + 25
+      ```
+
+    - datasheet 확인해보니
+      ![image-20210128144203651](C:\Users\JJW_N-771\Desktop\stmpjt\공부\STM32.assets\image-20210128144203651.png)
+
+    - ```c
+      /* USER CODE BEGIN PV */
+      const float AVG_SLOPE = 2.5E-03;
+      const float V30 = 0.76;
+      const float ADC_TO_VOLT = 3.3/4096;
+      
+      ...
+      
+      float vSense, temp;
+      
+        while (1)
+        {
+          HAL_ADC_PollForConversion(&hadc1, 100);
+          adc1 = HAL_ADC_GetValue(&hadc1);
+          //printf("ADC1_Temperature : %d \n", adc1);
+      
+          vSense = adc1 * ADC_TO_VOLT;
+          temp = (V30-vSense) / AVG_SLOPE + 25.0;
+          printf("ADC1, Temp : %d , %f \n", adc1, temp);
+      	  /* USER CODE END WHILE */
+      
+          /* USER CODE BEGIN 3 */
+          HAL_Delay(100);
+        }
+      ```
+
+
+
+
 
 
 
