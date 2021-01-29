@@ -5,22 +5,24 @@
 \1. Java JDK
 
 - [ftp://192.168.19.225/pub/tools/sdk/stm/stm32/1.%20tool/Java/jdk-8u241-windows-x64.exe](ftp://192.168.19.225/pub/tools/sdk/stm/stm32/1. tool/Java/jdk-8u241-windows-x64.exe)
+- 이클립스 기반으로 수행되는 STM32 제공 프로그램이라 이거 설치해야함
 
 \2. STM32CubeIDE
 
-- [ftp://192.168.19.225/pub/tools/sdk/stm/stm32/1.%20tool/STM32CubeIDE/st-stm32cubeide_1.5.0_8698_20201117_1050_x86_64.exe](ftp://192.168.19.225/pub/tools/sdk/stm/stm32/1. tool/STM32CubeIDE/st-stm32cubeide_1.5.0_8698_20201117_1050_x86_64.exe)
+- 코드 작성 통합 개발환경
 
 \3. STM32CubeMx
 
-- [ftp://192.168.19.225/pub/tools/sdk/stm/stm32/1.%20tool/STM32CubeMX/SetupSTM32CubeMX-6.1.1.exe](ftp://192.168.19.225/pub/tools/sdk/stm/stm32/1. tool/STM32CubeMX/SetupSTM32CubeMX-6.1.1.exe)
+- 코드 생성기
 
 \4. STM32CubeProg
 
-- [ftp://192.168.19.225/pub/tools/sdk/stm/stm32/1.%20tool/STM32CubeProg/SetupSTM32CubeProgrammer_win64_v2.6.0.exe](ftp://192.168.19.225/pub/tools/sdk/stm/stm32/1. tool/STM32CubeProg/SetupSTM32CubeProgrammer_win64_v2.6.0.exe)
+- (.bin) 이진코드를 보드에 로드하는 프로그램
+- connect, verify program, run after program하고 스타트
 
 \5. STM32CubeMon
 
-- [ftp://192.168.19.225/pub/tools/sdk/stm/stm32/1.%20tool/STM32CubeMon/setupSTM32CubeMonitor_1.1.0.exe](ftp://192.168.19.225/pub/tools/sdk/stm/stm32/1. tool/STM32CubeMon/setupSTM32CubeMonitor_1.1.0.exe)
+- 아직 안 써봄
 
 #### [Driver]
 
@@ -370,7 +372,7 @@ https://ndb796.tistory.com/360 여기 굿
           /* USER CODE BEGIN 2 */
           if (HAL_TIM_Base_Start_IT (&htim2) != HAL_OK)
           {
-        	  Error_Handler();
+          	  Error_Handler();
           }
         ```
 
@@ -486,6 +488,123 @@ https://ndb796.tistory.com/360 여기 굿
         }
       ```
 
+    - printf 실수 출력하는 방법
+
+      - project 탭 - properties
+        C/C++ Build - Settings - Tool Settings - MCU Settings
+        Use float with printf ... 체크 후 적용
+
+
+
+#### WWDG (Window Watch Dog)
+
+- 윈도우 와치독 : 응용 프로그램이 정상적인 순서를 벗어나게하는 외부 간섭이나 예기치 않은 논리 조건으로 인해 발생하는 소프트웨어 오류 발생을 감지하는데 사용
+
+- 프로그램이 WWDG 다운 카운터 값을 새로 갱신하지 않으면, 프로그래밍 시간이 만료되었을 때 MCU 리셋함 
+
+  - 이렇게 리셋되지 않도록 일정한 주기로 WWDG 다운 카운터 갱신하여, 일시적 결함 생겨도 시스템 지속되거나, 주어진 시간 이내에 정상 수행 가능한 상태로 복구되는 시스템 적용 필요
+
+- STM32의 MCU는 시간 정밀도와 결합 복원도에서 다른 2개 IWDG(Independent WDG), WWDG(Window WDG) 내장되어있음
+
+- 밑의 예제는 프로그램이 무한 루프 빠졌을 경우 MCU가 리셋되어 시스템 복원되게함 (리셋 안되게 할거라면서...)
+
+- 코드 생성
+
+  - system core - WWDG (activate)
+
+  - parameter settings - watchdog clocking
+
+    - 시간 설정은 https://m.blog.naver.com/eziya76/221518876037 참고
+
+    - 여튼 포인트는 WWDG는 7비트 다운 카운터 타이머
+
+    - refresh 는 window 시간 내에서만 가능 , 이외에는 리셋됨
+
+    - 설정은 0x7F ~ 0x40
+
+    - 7번째 비트가 1 -> 0 되는 시점인 카운터가 0x3F 시점에 리셋됨
+
+    - prescaler 1,2,4,8 가능
+
+    - 공식은
+
+      ```
+      Twwdg = Tpclk1 * 4096 * prescaler * (free-running. - window value + 1) (ms)
+      ```
+
+      나 같은 경우는 clock  64MHz / 카운터 0x7F / window 0x5F / prescaler 8 로 한다면
+
+      우선 1/64MHz * 4096 * 8 =  512us
+
+      그리고 refresh 안되는 시간은 512*(0x7F - 0x5F +1) = 16.896ms
+
+      WWDG Timeout : 512*(0x7F - 0x3F +1) = 33.280ms
+
+      여튼 이게 16.896 ~ 33.280 ms (0x3F time) 구간(window)에서 갱신해야함 아니면 리셋됨
+    
+
+- 코드 작성
+
+  - ```c
+    uint8_t i = 0;
+    
+      while (1)
+      {
+    	  if (i == 40)
+    	  {
+    		  i =0;
+    		  HAL_GPIO_TogglePin(LD4_GPIO_Port, LD4_Pin);
+    	  }
+    	  HAL_Delay(25);
+    	  i++;
+    
+    	  /* Refresh WWDG */
+    
+    	  if (HAL_WWDG_Refresh(&hwwdg) != HAL_OK)
+    	  {
+    		  Error_Handler();
+    	  }
+    ```
+
+  - 외부 인터럽트로 무한루프 빠지게하여 와치독에 의한 부팅 확인
+
+    - user 버튼 활성화 해줘야해 이거 하려면
+
+    - ```c
+      MX_USART2_UART_Init();	
+      
+        if (__HAL_RCC_GET_FLAG(RCC_FLAG_WWDGRST) != RESET)
+        {
+      	  // wwdg flag set, : LED4 on
+      	  HAL_GPIO_WritePin(LD4_GPIO_Port, LD4_Pin, GPIO_PIN_SET);
+      
+      	  // 4s delay
+      	  HAL_Delay(4000);
+      
+      	  //clear reset flags
+      	  __HAL_RCC_CLEAR_RESET_FLAGS();
+        }
+        else
+        {
+      	  // wwdg flag is not set : LED4 off
+      	  HAL_GPIO_WritePin(LD4_GPIO_Port, LD4_Pin, GPIO_PIN_RESET);
+        }
+      
+        MX_WWDG_Init();
+      
+      ...
+          
+      
+      /* USER CODE BEGIN 4 */
+      void HAL_GPIO_EXTI_Callback (uint16_t GPIO_Pin)
+      {
+      	while (1)
+      		;
+      }
+      ```
+
+  - 
+
 
 
 
@@ -495,3 +614,14 @@ https://ndb796.tistory.com/360 여기 굿
 
 
 #### I2C (Inter-Integrated Circuit)
+
+
+
+
+
+## 일단 내가 모르고 넘어가는 것들
+
+
+
+- IDE 에서 run 했을 때, download 가 안되는 경우가 있음. IDE의 버그인지...(실제로 문의글이 많지만 해결은 안되고있는걸로 봄) 디버그까지 행하다가 안되는지 알수는 없는데 여튼 이럴 때, cube Programmer 로 파일 다운해줘서 해결
+- IWDG랑 WWDG 기간 구하는 공식의 4096 (0xFFF +1) 의 값이긴 해. 근데 이게 뭔지 잘 모름
