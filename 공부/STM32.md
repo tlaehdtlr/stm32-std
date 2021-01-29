@@ -94,15 +94,20 @@ https://ndb796.tistory.com/360 여기 굿
 
 #### Clock
 
+- 심장이다 (에너지를 공급하는거지)
+  - 무조건 최대말고 저전력을 요구하면 좀 작게 할 필요가 있겠지?
+
 ##### 구성 요소?
 
+- CPU clock 은 HSE, HSI 중 선택
+  - HSE (High Speed External) : 외부 고속 Clock, stm32 외부에 Crystal/Ceramic resonator 필요, Duty가 50% 이하인 외부 구형파, 삼각파 신호로도 사용 가능
+  - HSI (High ... internal) : 내장된 RC 발진 회로에 의해 동작 clock, 자체 calibration 기능 있지만, RC 발진회로의 특성 문제로 온도 상승에 따른 오차 발생
+- 초당 clock
+  - LSE (Low ... ) : 32.768kHz의 Cryst.... 사용, 용도는 저전력 구현 및 정확한 시간 (RTC)을 맞추기 위함
+  - LSI () : independent watchdog와 AWU(Auto Wakeup) 기능 및 RTC clock에 사용 (정확성 확보 어려움)
+- MSI (Multi Speed internal) : 저전력이라는데 음?
 - HCLK : Core Clock 으로 실제 소스 코드 동작시키는 clock
 - SYSCLK : System Clock 으로 Power on reset 직후 무조건 내부 clock으로 먼저 동작
-- HSE (High Speed External) : 외부 고속 Clock, stm32 외부에 Crystal/Ceramic resonator 필요, Duty가 50% 이하인 외부 구형파, 삼각파 신호로도 사용 가능
-- HSI (High ... internal) : 내장된 RC 발진 회로에 의해 동작 clock, 자체 calibration 기능 있지만, RC 발진회로의 특성 문제로 온도 상승에 따른 오차 발생
-- LSE (Low ... ) : 32.768kHz의 Cryst.... 사용, 용도는 저전력 구현 및 정확한 시간 (RTC)을 맞추기 위함
-- LSI () : independent watchdog와 AWU(Auto Wakeup) 기능 및 RTC clock에 사용 (정확성 확보 어려움)
-- MSI (Multi Speed internal) : 저전력이라는데 음?
 - CSS (Clock Security System) : HSE clock 에 문제 발생시, NMI interrupt 발생 및 clock source 를 HSI clock으로 변경해주는 기능
 
 ##### 고려 사항?
@@ -123,6 +128,18 @@ https://ndb796.tistory.com/360 여기 굿
 - HAL_SYSTICK_Config 함수는 SysTick 타이머가 1ms 마다 구동하도록 설정
 - HAL_RCC_EnableCSS 함수는 HSE 에 오류 발생 시, 이를 검출하여 NMI Exception 을 발생시킴
 - HAL_RCC_MCOConfig 함수는 PLLCLK 클럭이 MCO 핀으로 출력되도록함
+
+
+
+#### DMA (Direct Memory Access)
+
+- https://m.blog.naver.com/PostView.nhn?blogId=eziya76&logNo=221436500639&proxyReferer=https:%2F%2Fwww.google.com%2F
+
+#### RCC (Reset Clock Controller)
+
+#### CRC
+
+#### NVIC (Nested vectored interrupt controller)
 
 
 
@@ -312,12 +329,12 @@ https://ndb796.tistory.com/360 여기 굿
   - Timers - RTC 에 Activate clock source 활성화
   - Clock Configuration 에서 RTC Clock Mux 를 LSE(다른 것도)로 선택
   
-- 종류가 여럿...
+- 종류가 여럿... datasheet 확인해보면 timer 종류 확인 가능
   - SysTick timer(항상 동작) 이런게 HAL_Delay() 함수 등에 사용됨
   - WatchDog timer(IWDG, WWDG) : CPU의 오동작을 탐지하여 문제가 발생하면 재부팅 시켜주는 타이머
-  - Basic timer : 입출력 기능없이 시간만 재는 놈 TIMx (x:6,7)
-  - General Purpose timer : 범용 타이머, 출려 비교, 원펄스, 입력 캡쳐 등 TIMx (x: 2~5, 9~14)
-  - Advanced-control timer : 모터 제어나 디지털 변환 TIMx (x:1,8)
+  - Basic timer : 입출력 기능없이 시간만 재는 놈 TIMx (x:6)
+  - General Purpose timer : 범용 타이머, 출려 비교, 원펄스, 입력 캡쳐 등 TIMx (x: 2,15,16)
+  - Advanced-control timer : 모터 제어나 디지털 변환 TIMx (x:1)
   - 뭐를 고를지 고려해봐
     - 카운터 해상도(크기), DMA 사용 여부, 최대 인터페이스 속도
     - 카운터 타입, 캡쳐/비교 채널수
@@ -624,7 +641,7 @@ https://ndb796.tistory.com/360 여기 굿
 
   - 'ring buffer source' 구글링으로 코드 써도됨
 
-  - 참고하는 책의 제공하는 라이브러리 파일 다운
+    - 참고하는 책에서 제공하는 라이브러리 파일 다운
 
   - ~ it.c 에서
 
