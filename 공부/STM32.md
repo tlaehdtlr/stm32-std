@@ -67,7 +67,7 @@ https://ndb796.tistory.com/360 여기 굿
   - 클럭 설정
   - 프로젝트 매니저
     - 이름, 경로
-    - IDE 선택, generate under root 체크 해제 (이유는 다음에 알려주신다했음)
+    - IDE 선택, generate under root 체크 해제
     - MCU 패키지 라이브러리 필요한 것만 카피
     - peripheral 마다  .c/.h 로 초기화 생성 체크
 - 코드 생성
@@ -300,7 +300,7 @@ https://ndb796.tistory.com/360 여기 굿
 
 
 
-#### Timer
+#### Timer 기본
 
 - clock 설정
   - HSE(high speed external), HSI(high speed internal),  LSE(low ...), LSI
@@ -603,11 +603,128 @@ https://ndb796.tistory.com/360 여기 굿
       }
       ```
 
-  - 
+
+
+#### USART (Universal Synchronous Receiver/Transmitter)
+
+- Tx 출력 기능만 이용하면 polling 방식도 괜찮
+
+- 통신으로 Rx 입력 받으면 polling 방식으로는 수신 데이터 유실 및 프로그램 구현에 에로사항
+
+- USART 수신 인터럽트로 수신 데이터를 링 버퍼(ring buffer)에 저장하고 링 버퍼 데이터를 읽어서 송신하는 Echo 예제
+
+- 코드 생성
+
+  - USART 세팅
+    - 설정값, NVIC enable
+    - HAL_UART_IRQHandler() 코드는 없앰 (NVIC - Code generation의 USART2 global interrupt 의 Call HAL Handler 해제)
+  - 클럭설정 적당히
+
+- 코드 작성
+
+  - 'ring buffer source' 구글링으로 코드 써도됨
+
+  - 참고하는 책의 제공하는 라이브러리 파일 다운
+
+  - ~ it.c 에서
+
+    ```c
+    /* USER CODE BEGIN USART2_IRQn 0 */
+    	if ((__HAL_UART_GET_FLAG(&huart2, UART_FLAG_RXNE) != RESET) && (__HAL_UART_GET_IT_SOURCE(&huart2, UART_IT_RXNE) != RESET))
+    	{
+    		HAL_UART_RxCpltCallback(&huart2);
+    		__HAL_UART_CLEAR_PEFLAG(&huart2);
+    	}
+    ```
+
+  - main.c
+
+    ```c
+    /* Private variables ---------------------------------------------------------*/
+    UART_HandleTypeDef huart2;
+    /* USER CODE BEGIN PV */
+    
+    /* USER CODE END PV */
+    RingFifo_t gtUart2Fifo;
+    
+     /* USER CODE BEGIN 2 */
+      __HAL_UART_ENABLE_IT(&huart2, UART_IT_RXNE);
+      if (RB_init (&gtUart2Fifo, 16)) //16bytes , 링 버퍼 크기 2의 지수승 (통신 프로토콜에 맞게 넉넉히), 링 버퍼 메모리 할당할 때 malloc 함수 사용하기 때문에 CSTACK 사이즈 고려할것
+      {
+    	  //assert(0);
+      }
+    
+    /* USER CODE BEGIN WHILE */
+      uint8_t ch;
+      while (1)
+      {
+    	  if (!RB_isempty (&gtUart2Fifo))   // 수신되면 링 버퍼 비어 있지 않아서 0 반환
+    	  {
+    		  ch = RB_read (&gtUart2Fifo);	// 링 버퍼의 데이터 읽기
+    		  HAL_UART_Transmit (&huart2, &ch, 1, 0xFF);	// 송신
+    	  }
+    
+    
+    /* USER CODE BEGIN 4 */
+    void HAL_UART_RxCpltCallback (UART_HandleTypeDef *UartHandle)
+    {
+    	uint8_t rx;
+    	
+    	if (UartHandle -> Instance == USART2)
+    	{
+    		rx = (uint8_t) (UartHandle -> Instance -> RDR & (uint8_t) 0x00FF);
+    		RB_write (&gtUart2Fifo, rx);
+    	}
+    }
+    ```
+
+- 실행 후, tera term - 제어 - 명령전송 
+
+  - 실시간 모드, enter 키 해제 / 이 프로세스에만 보내기 체크 후 제출 (여기 입력 값에 따라 링 버퍼 크기를 설정하는거지)
 
 
 
+#### TIM_PWM (Pulse width Modulation)
 
+- PWM 이란?
+
+  - 디지털 신호는 0과 1 뿐임 (ex. 형광등을 on/off 만 가능하겠지?)
+  - 여기 사잇값을 가지게 할 수 있는게 PWM인거임 (ex. 형광등 밝기를 조절할 수 있게 되는거지)
+    - 어떻게? 0과 1의 비율로! 이게 바로 Duty Cycle 임
+
+- 타이머 이용 PWM 출력 예제
+
+- 코드 생성
+
+  - RCC, clock
+  - TIM 
+    - clock source 는 internal
+    - channel1 은 PWM generation ch1
+    - parameter
+      - 주기 1kHz, 듀티비 50%로 해보자
+      - prescaler = APBx timer clock / Timer counter clock -1
+        - 난 APB2 80MHz , Timer counter clock을 1MHz 로 할거야 prescaler는 79
+      - counter period = timer counter clock / output clock -1
+        - output clock 은 1KHz 로~ / counter period 는 999
+      - pulse = (counter period +1)  *(duty ratio/100) 
+        - 500
+
+- 코드 작성
+
+  - PWM 시작
+
+    ```c
+    /* USER CODE BEGIN 2 */
+      // start channel 1
+      if (HAL_TIM_PWM_Start (&htim1, TIM_CHANNEL_1) != HAL_OK)
+      {
+    	  Error_Handler();
+      }
+    ```
+
+- 오실로스코프 파형 확인 (PA8 핀임)
+
+  - 근데 그냥 안할래 다른걸로 나중에 해보지 뭐
 
 
 
