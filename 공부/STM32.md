@@ -131,9 +131,22 @@ https://ndb796.tistory.com/360 여기 굿
 
 
 
+#### 소비전력 계산
+
+- https://m.blog.naver.com/compass1111/221205513966
+- MCU 소비전력 계산이고, 다른 장치들이 붙어있기 때문에 실제 장치의 소비전력과 사용시간은 다름.
+- MCU의 온도도 표시됨
+
+
+
+
+
 #### DMA (Direct Memory Access)
 
 - https://m.blog.naver.com/PostView.nhn?blogId=eziya76&logNo=221436500639&proxyReferer=https:%2F%2Fwww.google.com%2F
+- 주변장치에서 메모리(SRAM?)로 데이터를 옮길 때, 프로세서의 core의 작업 없이 DMA controller 가 수행함 (성능 개선 효과!!) 
+- NTD
+- 모드 2개
 
 #### RCC (Reset Clock Controller)
 
@@ -748,6 +761,30 @@ https://ndb796.tistory.com/360 여기 굿
 
 
 #### I2C (Inter-Integrated Circuit)
+
+- https://m.blog.naver.com/PostView.nhn?blogId=eziya76&logNo=221484861357&referrerCode=0&searchKeyword=i2c
+- SDA (data선), SCL(clock 선)만으로 연결 가능
+- 프로토콜
+  - 컨트롤 용으로 사용되며 저속이기 때문에 전용 HW 없이 일반 GPIO로도 구현 가능
+  - slave를 지정할 address 필요
+  - 7-bit의 address (10-bit 도 존재) 
+  - 통신 속도는 5개 모드
+  - master에 의해서 시작과 종료
+    - start condition : SCL high 이고 SDA high -> low
+    - stop condition : SCL high 이고, SDA low -> high
+    - restart condition : stop 대신 start 전송되면 버스에 계속 데이터 전송된다는 의미래
+  - I2C 프로토콜은 address frame과 data frame 으로 구성
+    - address : 7bit 주소 + 1bit R/W flag (1이 read, 0이 write)
+      - 0일 때, master가 address frame 전송 후, 다시 data frame 전송
+      - 1일 때, master가 address frame 전송 후, slave가 data frame 전송
+    - 바이트 크기로 전송되는 데이터 frame의 크기는 제약 없음, 매 바이트 전송 후 ACK 신호(정상 수신, SCL-high, SDA-low) 또는 NACK(수신 오류, SCL-high, SDA-high) 상태 확인 
+      - NACK 일 때, master 장치는 stop or restart 가능
+- 일부 slave 장치들은 데이터 전송 전에 데이터 처리가 끝나지 않은경우, SCL 라인을 low로 유지해서 master 장치가 다음 데이터를 전송하지 못하게 hold 할 수 있음 (clock stretching 이라고 함)
+- 
+
+
+
+
 
 
 
