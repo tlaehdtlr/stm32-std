@@ -145,8 +145,10 @@ https://ndb796.tistory.com/360 여기 굿
 
 - https://m.blog.naver.com/PostView.nhn?blogId=eziya76&logNo=221436500639&proxyReferer=https:%2F%2Fwww.google.com%2F
 - 주변장치에서 메모리(SRAM?)로 데이터를 옮길 때, 프로세서의 core의 작업 없이 DMA controller 가 수행함 (성능 개선 효과!!) 
+- peripheral 세팅할 때, DMA continous request 를 enable 해줘야해
 - NTD
-- 모드 2개
+- 모드 normal, circular(값을 계속 받을테니 이게 좋겠지?)
+- 메모리 주소를 증가시켜야겠지? (peripheral  주소를 증가시켜야하는 경우도 있을까 몰라)
 
 #### RCC (Reset Clock Controller)
 
@@ -436,7 +438,11 @@ https://ndb796.tistory.com/360 여기 굿
   - ADC 설정
     - temperature sensor channel
     - 연속으로 AD 변환위해 continuous conversion  mode 를 enable
-    - ADC_Regular_ConversionMode - Rank - Sampling Time 을 12.5 Cycles로 (이거는 왜함?)
+    - ADC_Regular_ConversionMode - Rank - Sampling Time 을 12.5 Cycles 설정
+      - https://m.blog.naver.com/PostView.nhn?blogId=ysahn2k&logNo=221308223328&proxyReferer=https:%2F%2Fwww.google.com%2F
+      - ADC 입력 단자로부터 받은 입력 신호로 MCU 내부 capacitor를 충전해
+      - 이게 낮으면 샘플링 사이클동안 충분히 충전을 못 시킨다.
+      - resolution 설정에 따라 바뀌는데 그 사이클 보다 크면 되긴해
   - clock
     - HCLK 값 최대로 주자
 
@@ -562,6 +568,8 @@ https://ndb796.tistory.com/360 여기 굿
       Twwdg = Tpclk1 * 4096 * prescaler * (free-running. - window value + 1) (ms)
       ```
 
+      4096은 전압을 12bit resolution(0~4095)으로 쪼갤 수 있어서인듯
+
       나 같은 경우는 clock  64MHz / 카운터 0x7F / window 0x5F / prescaler 8 로 한다면
 
       우선 1/64MHz * 4096 * 8 =  512us
@@ -569,7 +577,7 @@ https://ndb796.tistory.com/360 여기 굿
       그리고 refresh 안되는 시간은 512*(0x7F - 0x5F +1) = 16.896ms
 
       WWDG Timeout : 512*(0x7F - 0x3F +1) = 33.280ms
-
+      
       여튼 이게 16.896 ~ 33.280 ms (0x3F time) 구간(window)에서 갱신해야함 아니면 리셋됨
     
 
@@ -763,7 +771,9 @@ https://ndb796.tistory.com/360 여기 굿
 #### I2C (Inter-Integrated Circuit)
 
 - https://m.blog.naver.com/PostView.nhn?blogId=eziya76&logNo=221484861357&referrerCode=0&searchKeyword=i2c
+- https://igotit.tistory.com/entry/I2C-Bus-%EA%B8%B0%EB%B3%B8%EA%B0%9C%EB%85%90
 - SDA (data선), SCL(clock 선)만으로 연결 가능
+- 마스터와 슬레이브들 연결 (로직때문에 풀업저항이어야만함)
 - 프로토콜
   - 컨트롤 용으로 사용되며 저속이기 때문에 전용 HW 없이 일반 GPIO로도 구현 가능
   - slave를 지정할 address 필요
@@ -780,9 +790,43 @@ https://ndb796.tistory.com/360 여기 굿
     - 바이트 크기로 전송되는 데이터 frame의 크기는 제약 없음, 매 바이트 전송 후 ACK 신호(정상 수신, SCL-high, SDA-low) 또는 NACK(수신 오류, SCL-high, SDA-high) 상태 확인 
       - NACK 일 때, master 장치는 stop or restart 가능
 - 일부 slave 장치들은 데이터 전송 전에 데이터 처리가 끝나지 않은경우, SCL 라인을 low로 유지해서 master 장치가 다음 데이터를 전송하지 못하게 hold 할 수 있음 (clock stretching 이라고 함)
-- 
+- 코드 생성
+  - https://igotit.tistory.com/702
+  - 스피드 모드 선택
+  - GPIO 세팅에서 외부 장치가 있으면 nopull
+- 코드 작성
+  - HAL_I2C_Mem_ 이게 EEPROM(비휘발성)만 가능한건지는 모르겠음
+    - 여튼 여러 함수가 있는데 그 어떤 I2C 시퀀스를 원하냐에 따라 선택하면되는듯
 
 
+
+#### USB
+
+- USB CDC(Communication Device Class) 로 사용하기
+- 코드 생성
+  - USB - mode - device
+  - middleware - usb_device - mode - communication device class
+  - device descriptor
+    - VID 설정
+      - https://usb.org/sites/default/files/vendor_ids051920_0.pdf 에서 stmicro.. 검색해보면 1155 임
+  - clock 에 빨간불 남
+    - USB FS(full speed)로 쓰려면 48MHz 로 설정해야함
+
+- 코드 작성
+
+  - usbd_cdc_if.c 파일에서 데이터 수신 시 발생하는 CDC_Receive_FS 이벤트 핸들러를 수정하여 수신 버퍼의 마지막에 NULL 문자열을 추가
+
+    ```c
+    static int8_t CDC_Receive_FS(uint8_t* Buf, uint32_t *Len)
+    {
+      /* USER CODE BEGIN 6 */
+      USBD_CDC_SetRxBuffer(&hUsbDeviceFS, &Buf[0]);
+      Buf[*Len] = 0;
+      USBD_CDC_ReceivePacket(&hUsbDeviceFS);
+      return (USBD_OK);
+    ```
+
+  - 
 
 
 
@@ -795,4 +839,5 @@ https://ndb796.tistory.com/360 여기 굿
 
 
 - IDE 에서 run 했을 때, download 가 안되는 경우가 있음. IDE의 버그인지...(실제로 문의글이 많지만 해결은 안되고있는걸로 봄) 디버그까지 행하다가 안되는지 알수는 없는데 여튼 이럴 때, cube Programmer 로 파일 다운해줘서 해결
-- IWDG랑 WWDG 기간 구하는 공식의 4096 (0xFFF +1) 의 값이긴 해. 근데 이게 뭔지 잘 모름
+
+  
