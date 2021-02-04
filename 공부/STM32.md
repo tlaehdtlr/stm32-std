@@ -81,23 +81,12 @@ https://ndb796.tistory.com/360 여기 굿
 
 
 
----
-
-### 기타
-
-#### 용어
-
-- HAL library (Hardware Abstraction Layer)
-  - 하드웨어 추상화 계층 (MCU가 핀을 제어하는 함수들을 만듦
-
-
-
-#### Clock
+### Clock
 
 - 심장이다 (에너지를 공급하는거지)
   - 무조건 최대말고 저전력을 요구하면 좀 작게 할 필요가 있겠지?
 
-##### 구성 요소?
+#### 구성 요소?
 
 - CPU clock 은 HSE, HSI 중 선택
   - HSE (High Speed External) : 외부 고속 Clock, stm32 외부에 Crystal/Ceramic resonator 필요, Duty가 50% 이하인 외부 구형파, 삼각파 신호로도 사용 가능
@@ -110,7 +99,7 @@ https://ndb796.tistory.com/360 여기 굿
 - SYSCLK : System Clock 으로 Power on reset 직후 무조건 내부 clock으로 먼저 동작
 - CSS (Clock Security System) : HSE clock 에 문제 발생시, NMI interrupt 발생 및 clock source 를 HSI clock으로 변경해주는 기능
 
-##### 고려 사항?
+#### 고려 사항?
 
 - HSI/HSE는 시스템 clock 소스로 사용
   - 바로 사용되지 않고 clock tree를 통해 PLL이나 Prescaler 를 통해 필요한 주파수로 변경 후 사용
@@ -120,7 +109,7 @@ https://ndb796.tistory.com/360 여기 굿
   - crystal 은 외부에 clock 회로를 구성한 경우 선택
 - master clock output 을 설정하면 특정 clock source 를 다시 특정 pin으로 출력하여 다른 주변 IC Clock Source로 사용 가능
 
-##### HAL API
+#### HAL API
 
 - clock 초기화 시, RCC_OsclnitTypeDef, RCC_ClklnitTypeDef 구조체 변수 사용
 - HAL_RCC_OscConfig 함수는 Main PLL 설정하여 PLLCLK 설정
@@ -131,7 +120,7 @@ https://ndb796.tistory.com/360 여기 굿
 
 
 
-#### 소비전력 계산
+### 소비전력 계산
 
 - https://m.blog.naver.com/compass1111/221205513966
 - MCU 소비전력 계산이고, 다른 장치들이 붙어있기 때문에 실제 장치의 소비전력과 사용시간은 다름.
@@ -141,7 +130,7 @@ https://ndb796.tistory.com/360 여기 굿
 
 
 
-#### DMA (Direct Memory Access)
+### DMA (Direct Memory Access)
 
 - https://m.blog.naver.com/PostView.nhn?blogId=eziya76&logNo=221436500639&proxyReferer=https:%2F%2Fwww.google.com%2F
 - 주변장치에서 메모리(SRAM?)로 데이터를 옮길 때, 프로세서의 core의 작업 없이 DMA controller 가 수행함 (성능 개선 효과!!) 
@@ -150,11 +139,32 @@ https://ndb796.tistory.com/360 여기 굿
 - 모드 normal, circular(값을 계속 받을테니 이게 좋겠지?)
 - 메모리 주소를 증가시켜야겠지? (peripheral  주소를 증가시켜야하는 경우도 있을까 몰라)
 
-#### RCC (Reset Clock Controller)
+### RCC (Reset Clock Controller)
 
-#### CRC
+### CRC(Cyclic Redundancy Check)
 
-#### NVIC (Nested vectored interrupt controller)
+### NVIC (Nested vectored interrupt controller)
+
+
+
+### freeRTOS
+
+- 무료 제공 RTOS (MIT 라이센스)
+- https://m.blog.naver.com/PostView.nhn?blogId=oh930418&logNo=221152205204&proxyReferer=https:%2F%2Fwww.google.com%2F
+
+- 설정
+  - MINIMAL_STACK_SIZE 디폴트 128인데 이러면 stack overflow 발생
+    256 증가하기
+  - Ethernet 의 PHY Address 확인 (pull down 이면 0 으로 설정)
+  - RCC 설정...
+  - SYS의 debug 
+  - ETH
+
+
+
+#### Ethernet 초기화
+
+
 
 
 
