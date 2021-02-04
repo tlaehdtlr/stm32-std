@@ -826,7 +826,21 @@ https://ndb796.tistory.com/360 여기 굿
       return (USBD_OK);
     ```
 
-  - 
+  - main.c
+    UserRxBufferFS, UserTxBufferFS 의 extern 선언을 추가한다. 
+    while 루프 내부에서 수신 버퍼에 새로운 데이터가 들어온 경우 해당 Rx 버퍼의 내용을 그대로 TxBuffer에 추가하여 전송하도록 코드를 추가
+
+    ```c
+    /* Private variables ---------------------------------------------------------*/
+    
+    /* USER CODE BEGIN PV */
+    #define APP_RX_DATA_SIZE  64
+    #define APP_TX_DATA_SIZE  64
+    extern uint8_t UserRxBufferFS[APP_RX_DATA_SIZE];
+    extern uint8_t UserTxBufferFS[APP_TX_DATA_SIZE];
+    ```
+
+    
 
 
 
