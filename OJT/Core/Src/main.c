@@ -63,7 +63,7 @@ void SystemClock_Config(void);
 
 PUTCHAR_PROTOTYPE
 {
-	HAL_UART_Transmit(&huart2, (uint8_t *)&ch, 1, 0xFFFF);
+  HAL_UART_Transmit(&huart1, (uint8_t*) &ch, 1, 0xFFFF);
   return ch;
 }
 
@@ -98,30 +98,32 @@ int main(void)
   /* Initialize all configured peripherals */
   MX_GPIO_Init();
   MX_USART2_UART_Init();
+  MX_USART1_UART_Init();
   /* USER CODE BEGIN 2 */
 
   /* USER CODE END 2 */
 
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
-  uint8_t check_button;
+  /*uint8_t check_button;*/
   uint8_t cnt_from_start = 0;
   while (1)
   {
-	  cnt_from_start++;
-	  printf("Hello DongSik!! \r\n");
-	  printf("time : %d \r\n", cnt_from_start);
-	  HAL_Delay(1000);
-
-	  /*polling*/
-	  check_button = HAL_GPIO_ReadPin(B1_USER_GPIO_Port, B1_USER_Pin);
-	  if (check_button)
-	  {
-		  HAL_GPIO_WritePin(LD4_USER_GPIO_Port, LD4_USER_Pin, GPIO_PIN_SET);
-	  } else
-	  {
-		  HAL_GPIO_WritePin(LD4_USER_GPIO_Port, LD4_USER_Pin, GPIO_PIN_RESET);
-	  }
+    cnt_from_start++;
+    printf("Hello DongSik!! \r\n");
+    printf("time : %d \r\n", cnt_from_start);
+    HAL_Delay(1000);
+    /*polling*/
+    /*
+     check_button = HAL_GPIO_ReadPin(B1_USER_GPIO_Port, B1_USER_Pin);
+     if (check_button)
+     {
+     HAL_GPIO_WritePin(LD4_USER_GPIO_Port, LD4_USER_Pin, GPIO_PIN_SET);
+     } else
+     {
+     HAL_GPIO_WritePin(LD4_USER_GPIO_Port, LD4_USER_Pin, GPIO_PIN_RESET);
+     }
+     */
 
 
     /* USER CODE END WHILE */
@@ -177,7 +179,8 @@ void SystemClock_Config(void)
   {
     Error_Handler();
   }
-  PeriphClkInit.PeriphClockSelection = RCC_PERIPHCLK_USART2;
+  PeriphClkInit.PeriphClockSelection = RCC_PERIPHCLK_USART1|RCC_PERIPHCLK_USART2;
+  PeriphClkInit.Usart1ClockSelection = RCC_USART1CLKSOURCE_PCLK2;
   PeriphClkInit.Usart2ClockSelection = RCC_USART2CLKSOURCE_PCLK1;
   if (HAL_RCCEx_PeriphCLKConfig(&PeriphClkInit) != HAL_OK)
   {
@@ -186,7 +189,20 @@ void SystemClock_Config(void)
 }
 
 /* USER CODE BEGIN 4 */
-
+void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin)
+{
+  if (GPIO_Pin == BUTTON_USER_Pin)
+  {
+    if (HAL_GPIO_ReadPin(BUTTON_USER_GPIO_Port, BUTTON_USER_Pin) == GPIO_PIN_SET)
+    {
+      HAL_GPIO_WritePin(LD4_USER_GPIO_Port, LD4_USER_Pin, GPIO_PIN_SET);
+    }
+    else
+    {
+      HAL_GPIO_WritePin(LD4_USER_GPIO_Port, LD4_USER_Pin, GPIO_PIN_RESET);
+    }
+  }
+}
 /* USER CODE END 4 */
 
 /**
