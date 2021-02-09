@@ -438,6 +438,33 @@ https://ndb796.tistory.com/360 여기 굿
         ```
 
 
+#### 5가지 모드
+
+1) Counter 모드 
+
+- CNT 가 ARR 에 의해 0 되면서 인터럽트
+
+2) External Input Counter 모드
+
+- 외부 인터럽트에 의해 카운터 값 증가
+- ARR 값에 도달하면 reset 되면서 다른 인터럽트 발생
+
+3) PWM Output 모드 
+
+- 걍 뭐 암거나 x% 듀티비의 PWM 파형 생성해
+
+4) Input Capture 모드 
+
+- x 타이머로 PWM 생성
+- y 타이머 채널 2개 input capture 모드로 각각 pwm 의 rising, falling 체크하고 주기랑 듀티비 구하기
+
+5) Output Compare 모드
+
+- cnt 가 ccr 과 일치할 때, 인터럽트 발생
+- OC 인터럽트
+
+
+
 
 
 
