@@ -126,7 +126,7 @@ int main(void)
   uint16_t adc1;
 
   float vSense, temp;
-
+  printf("STM on!! \r\n");
   while (1)
   {
     HAL_ADC_PollForConversion(&hadc1, 100);

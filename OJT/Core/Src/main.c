@@ -19,6 +19,7 @@
 /* USER CODE END Header */
 /* Includes ------------------------------------------------------------------*/
 #include "main.h"
+#include "tim.h"
 #include "usart.h"
 #include "gpio.h"
 
@@ -45,6 +46,7 @@
 
 /* USER CODE BEGIN PV */
 
+
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -66,6 +68,7 @@ PUTCHAR_PROTOTYPE
   HAL_UART_Transmit(&huart1, (uint8_t*) &ch, 1, 0xFFFF);
   return ch;
 }
+
 
 /* USER CODE END 0 */
 
@@ -99,20 +102,88 @@ int main(void)
   MX_GPIO_Init();
   MX_USART2_UART_Init();
   MX_USART1_UART_Init();
+  MX_TIM15_Init();
   /* USER CODE BEGIN 2 */
+
+  HAL_TIMEx_PWMN_Start(&htim15, TIM_CHANNEL_1);
+  //htim15.Instance->CCR2 = 0;
+
 
   /* USER CODE END 2 */
 
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
+
+
+
   /*uint8_t check_button;*/
-  uint8_t cnt_from_start = 0;
+  //uint8_t cnt_from_start = 0;
+
+
+  uint8_t check_mode = 0;
+#if 1
+//  htim15.Instance->CCR1 = 100;
+  uint8_t duty = 0;
+
   while (1)
   {
+    /* 1sec. */
+    while (duty < 100 )
+    {
+      /*LED */
+      htim15.Instance->CCR1 = duty;
+      duty += 1;
+
+      /*motor */
+
+      HAL_Delay(10);
+
+    }
+    while (duty > 0 )
+    {
+      htim15.Instance->CCR1 = duty;
+      duty -= 1;
+      HAL_Delay(10);
+    }
+
+
+
+  }
+#else
+  while (1)
+  {
+
+    /*LED */
+    switch (check_mode)
+    {
+      case (0):
+        htim15.Instance->CCR1 += 10;
+        if (htim15.Instance->CCR1 > 99)
+        {
+          check_mode = 1;
+        }
+        break;
+      case (1):
+        htim15.Instance->CCR1 -= 10;
+        if (htim15.Instance->CCR1 < 1)
+        {
+          check_mode = 0;
+        }
+        break;
+    }
+
+
+    /* motor */
+
+
+    HAL_Delay(1000);
+
+    /*
     cnt_from_start++;
     printf("Hello DongSik!! \r\n");
     printf("time : %d \r\n", cnt_from_start);
     HAL_Delay(1000);
+     */
     /*polling*/
     /*
      check_button = HAL_GPIO_ReadPin(B1_USER_GPIO_Port, B1_USER_Pin);
@@ -126,10 +197,12 @@ int main(void)
      */
 
 
+
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
   }
+#endif
   /* USER CODE END 3 */
 }
 
@@ -189,6 +262,10 @@ void SystemClock_Config(void)
 }
 
 /* USER CODE BEGIN 4 */
+
+
+/*
+ *
 void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin)
 {
   if (GPIO_Pin == BUTTON_USER_Pin)
@@ -203,6 +280,12 @@ void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin)
     }
   }
 }
+ */
+
+
+
+
+
 /* USER CODE END 4 */
 
 /**

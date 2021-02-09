@@ -172,14 +172,14 @@ https://ndb796.tistory.com/360 여기 굿
 
 ## Peripheral
 
-#### 코드 참고
+### 코드 참고
 
 - C:\Users\유저\STM32Cube\Repository\STM32Cube_FW_L4_V1.16.0\Projects\NUCLEO-L412RB-P\Examples
   - 여기 참고 하면됨
 
 
 
-#### GPIO (General Purpose Input/Output)
+### GPIO (General Purpose Input/Output)
 
 - MCU가 입출력 장치제어하는 포트 또는 핀 (여러 핀으로 이뤄진 포트)
 
@@ -243,7 +243,7 @@ https://ndb796.tistory.com/360 여기 굿
   - 1) SFRs 여기에서 제어 가능
   - 2) window - show view -memory 들어가면 메모리로 접근 가능
 
-#### UART (Universal Asynchronous Receiver/Transmitter)
+### UART (Universal Asynchronous Receiver/Transmitter)
 
 - USART 는 Synchronous 즉 등기인데 UART와의 차이는 Clock 소스 유무임
 
@@ -302,7 +302,7 @@ https://ndb796.tistory.com/360 여기 굿
 
 
 
-#### EXTI (External Interrupt)
+### EXTI (External Interrupt)
 
 - 버튼 눌러 LED 토글하는 예제
 
@@ -342,7 +342,7 @@ https://ndb796.tistory.com/360 여기 굿
 
 
 
-#### Timer 기본
+### Timer 기본
 
 - clock 설정
   - HSE(high speed external), HSI(high speed internal),  LSE(low ...), LSI
@@ -377,6 +377,7 @@ https://ndb796.tistory.com/360 여기 굿
   - prescaler와 period는  parameter settings 에서 설정
   
 - **원하는 주기 구하는 공식**
+  
   - `Period * (1/APB1 버스 속도) * Prescaler`
     - ex) 0.01ms = 900 x(1/90MHz) x 1000
   
@@ -436,9 +437,14 @@ https://ndb796.tistory.com/360 여기 굿
         }
         ```
 
-  
 
-#### ADC (Analog to Digital Converter)
+
+
+
+
+
+
+### ADC (Analog to Digital Converter)
 
 - 온도센싱 값 프린트 찍기
 
@@ -542,7 +548,7 @@ https://ndb796.tistory.com/360 여기 굿
 
 
 
-#### WWDG (Window Watch Dog)
+### WWDG (Window Watch Dog)
 
 - 윈도우 와치독 : 응용 프로그램이 정상적인 순서를 벗어나게하는 외부 간섭이나 예기치 않은 논리 조건으로 인해 발생하는 소프트웨어 오류 발생을 감지하는데 사용
 
@@ -653,7 +659,7 @@ https://ndb796.tistory.com/360 여기 굿
 
 
 
-#### USART (Universal Synchronous Receiver/Transmitter)
+### USART (Universal Synchronous Receiver/Transmitter)
 
 - Tx 출력 기능만 이용하면 polling 방식도 괜찮
 
@@ -732,7 +738,7 @@ https://ndb796.tistory.com/360 여기 굿
 
 
 
-#### TIM_PWM (Pulse width Modulation)
+### TIM_PWM (Pulse width Modulation)
 
 - PWM 이란?
 
@@ -744,6 +750,8 @@ https://ndb796.tistory.com/360 여기 굿
 
 - 코드 생성
 
+  - parameter
+  - https://dkeemin.com/stm32f0xx-pwm-%EC%84%A4%EC%A0%95-%EB%B6%80%EB%A1%9D-%EC%84%A4%EB%AA%85/
   - RCC, clock
   - TIM 
     - clock source 는 internal
@@ -778,7 +786,7 @@ https://ndb796.tistory.com/360 여기 굿
 
 
 
-#### I2C (Inter-Integrated Circuit)
+### I2C (Inter-Integrated Circuit)
 
 - https://m.blog.naver.com/PostView.nhn?blogId=eziya76&logNo=221484861357&referrerCode=0&searchKeyword=i2c
 - https://igotit.tistory.com/entry/I2C-Bus-%EA%B8%B0%EB%B3%B8%EA%B0%9C%EB%85%90
@@ -810,7 +818,7 @@ https://ndb796.tistory.com/360 여기 굿
 
 
 
-#### USB
+### USB
 
 - USB CDC(Communication Device Class) 로 사용하기
 - 코드 생성
