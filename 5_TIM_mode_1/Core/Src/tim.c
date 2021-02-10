@@ -25,6 +25,7 @@
 /* USER CODE END 0 */
 
 TIM_HandleTypeDef htim6;
+DMA_HandleTypeDef hdma_tim6_up;
 
 /* TIM6 init function */
 void MX_TIM6_Init(void)
@@ -32,9 +33,9 @@ void MX_TIM6_Init(void)
   TIM_MasterConfigTypeDef sMasterConfig = {0};
 
   htim6.Instance = TIM6;
-  htim6.Init.Prescaler = 8000;
+  htim6.Init.Prescaler = 8000-1;
   htim6.Init.CounterMode = TIM_COUNTERMODE_UP;
-  htim6.Init.Period = 10000;
+  htim6.Init.Period = 10000-1;
   htim6.Init.AutoReloadPreload = TIM_AUTORELOAD_PRELOAD_DISABLE;
   if (HAL_TIM_Base_Init(&htim6) != HAL_OK)
   {
@@ -60,6 +61,24 @@ void HAL_TIM_Base_MspInit(TIM_HandleTypeDef* tim_baseHandle)
     /* TIM6 clock enable */
     __HAL_RCC_TIM6_CLK_ENABLE();
 
+    /* TIM6 DMA Init */
+    /* TIM6_UP Init */
+    hdma_tim6_up.Instance = DMA1_Channel3;
+    hdma_tim6_up.Init.Request = DMA_REQUEST_6;
+    hdma_tim6_up.Init.Direction = DMA_MEMORY_TO_PERIPH;
+    hdma_tim6_up.Init.PeriphInc = DMA_PINC_DISABLE;
+    hdma_tim6_up.Init.MemInc = DMA_MINC_ENABLE;
+    hdma_tim6_up.Init.PeriphDataAlignment = DMA_PDATAALIGN_BYTE;
+    hdma_tim6_up.Init.MemDataAlignment = DMA_MDATAALIGN_BYTE;
+    hdma_tim6_up.Init.Mode = DMA_CIRCULAR;
+    hdma_tim6_up.Init.Priority = DMA_PRIORITY_LOW;
+    if (HAL_DMA_Init(&hdma_tim6_up) != HAL_OK)
+    {
+      Error_Handler();
+    }
+
+    __HAL_LINKDMA(tim_baseHandle,hdma[TIM_DMA_ID_UPDATE],hdma_tim6_up);
+
     /* TIM6 interrupt Init */
     HAL_NVIC_SetPriority(TIM6_IRQn, 0, 0);
     HAL_NVIC_EnableIRQ(TIM6_IRQn);
@@ -79,6 +98,9 @@ void HAL_TIM_Base_MspDeInit(TIM_HandleTypeDef* tim_baseHandle)
   /* USER CODE END TIM6_MspDeInit 0 */
     /* Peripheral clock disable */
     __HAL_RCC_TIM6_CLK_DISABLE();
+
+    /* TIM6 DMA DeInit */
+    HAL_DMA_DeInit(tim_baseHandle->hdma[TIM_DMA_ID_UPDATE]);
 
     /* TIM6 interrupt Deinit */
     HAL_NVIC_DisableIRQ(TIM6_IRQn);

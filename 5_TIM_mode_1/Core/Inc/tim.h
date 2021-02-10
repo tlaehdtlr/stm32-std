@@ -35,6 +35,8 @@ extern TIM_HandleTypeDef htim6;
 
 /* USER CODE BEGIN Private defines */
 
+extern DMA_HandleTypeDef hdma_tim6_up;
+
 /* USER CODE END Private defines */
 
 void MX_TIM6_Init(void);

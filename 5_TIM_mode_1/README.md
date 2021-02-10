@@ -1,38 +1,23 @@
 ## 5_TIM_mode_1
 
-#### Counter, External Input Counter, Output Compare Mode
-
-- Counter 모드 
-  - CNT 가 ARR 에 의해 0 되면서 인터럽트
-
-- External Input Counter 모드
-  - 외부 인터럽트에 의해 카운터 값 증가
-  - ARR 값에 도달하면 reset 되면서 다른 인터럽트 발생
-
-- Output Compare 모드
-  - cnt 가 ccr 과 일치할 때, 인터럽트 발생
-  - OC 인터럽트
-
-1. TIM_1(TIM2, general)로 0.5 초마다 시간 카운트 1초 마다 exti_1 발생
-2. exti_1 에 의해 TIM_2(TIM15, general) 카운팅 5번이면 LED
-3. TIM_3(TIM6, basic) 에 의해 printf
-
-
-
 ### Counter Mode
 
-#### 코드 생성
+- CNT 가 ARR 에 의해 0 되면서 인터럽트
+
+
+
+#### MX
 
 - TIM6(basic timer), 1s 마다 인터럽트, LED toggle
-  ![image-20210209210349822](C:\Users\JJW_N-771\Desktop\stmpjt\5_TIM_mode_1\README.assets\image-20210209210349822.png)
+  ![image-20210210091311286](C:\Users\JJW_N-771\Desktop\stmpjt\5_TIM_mode_1\README.assets\image-20210210091311286.png)
 
-- NVIC, clock
+- NVIC, clock 설정
 
 
 
-#### 코드 작성
+#### IDE
 
-- 
+- timer interrupt 활성화, 80MHz, prescaler 8000, clock period 10000 -> 1s 당 콜백 불림
 
 
   ```c
@@ -52,7 +37,51 @@
 
 
 
+### DMA 전송
 
+- APB1 에 USART2, TIM 6 연결되어있음 -> DMA 전송 가능
+  ![image-20210210093423226](C:\Users\JJW_N-771\Desktop\stmpjt\5_TIM_mode_1\README.assets\image-20210210093423226.png)
+
+#### MX
+
+- UART2
+  ![image-20210210093726566](C:\Users\JJW_N-771\Desktop\stmpjt\5_TIM_mode_1\README.assets\image-20210210093726566.png)
+
+- TIM6 DMA setting
+  ![image-20210210100059094](C:\Users\JJW_N-771\Desktop\stmpjt\5_TIM_mode_1\README.assets\image-20210210100059094.png)
+
+#### IDE
+
+- tim.h
+
+  ```c
+  /* USER CODE BEGIN Private defines */
+  
+  extern DMA_HandleTypeDef hdma_tim6_up;
+  ```
+
+  
+
+- main.c
+
+  ```c
+  /* USER CODE BEGIN 0 */
+  uint8_t data[] = "HELLO, DongSik!\r\n";
+  
+  
+  /* USER CODE BEGIN 2 */
+    HAL_TIM_Base_Start_IT(&htim6);
+  
+    HAL_DMA_Start(&hdma_tim6_up, (uint32_t)data, (uint32_t)&USART2->TDR, sizeof(data)-1);
+    __HAL_TIM_ENABLE_DMA(&htim6, TIM_DMA_UPDATE);
+  ```
+
+  
+
+#### 결과
+
+- 1초당 한 글자씩
+  ![image-20210210100405665](C:\Users\JJW_N-771\Desktop\stmpjt\5_TIM_mode_1\README.assets\image-20210210100405665.png)
 
 
 

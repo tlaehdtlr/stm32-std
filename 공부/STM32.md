@@ -463,6 +463,11 @@ https://ndb796.tistory.com/360 여기 굿
 - cnt 가 ccr 과 일치할 때, 인터럽트 발생
 - OC 인터럽트
 
+#### 참고
+
+- 타이머 모드와 개념 등 상세 설명
+  https://m.blog.naver.com/duvallee/221459826325
+
 
 
 
