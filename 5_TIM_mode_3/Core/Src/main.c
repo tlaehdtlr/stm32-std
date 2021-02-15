@@ -26,6 +26,7 @@
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
 #include <stdio.h>
+#include <stdbool.h>
 
 /* USER CODE END Includes */
 
@@ -70,22 +71,19 @@ PUTCHAR_PROTOTYPE
 }
 
 
-uint16_t capture1[2];
-uint16_t capture2[2];
-uint32_t period, active, freq, duty;
-uint8_t ch1done = 0;
-uint8_t ch2done = 0;
+bool ch1done = false;
+bool ch2done = false;
 
 void HAL_TIM_IC_CaptureCallback(TIM_HandleTypeDef *htim)
 {
   if(htim->Instance == TIM1 && htim->Channel == HAL_TIM_ACTIVE_CHANNEL_1)
   {
-    ch1done = 1;
+    ch1done = true;
   }
 
   if(htim->Instance == TIM1 && htim->Channel == HAL_TIM_ACTIVE_CHANNEL_2)
   {
-    ch2done = 1;
+    ch2done = true;
   }
 }
 
@@ -121,7 +119,6 @@ int main(void)
 
   /* Initialize all configured peripherals */
   MX_GPIO_Init();
-  MX_TIM2_Init();
   MX_USART2_UART_Init();
   MX_TIM15_Init();
   MX_TIM1_Init();
@@ -138,48 +135,29 @@ int main(void)
   HAL_TIM_IC_Start_IT(&htim1, TIM_CHANNEL_1);
   HAL_TIM_IC_Start_IT(&htim1, TIM_CHANNEL_2);
   //HAL_TIMEx_PWMN_Start(&htim15, TIM_CHANNEL_1);
-  HAL_TIM_PWM_Start(&htim15, TIM_CHANNEL_1);
+  HAL_TIM_PWM_Start(&htim15, TIM_CHANNEL_2);
 
   /* USER CODE END 2 */
 
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
+  printf("start \r\n");
   while (1)
   {
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
     if(ch1done)
-        {
-          if(capture1[0] > capture1[1])
-          {
-            period = htim2.Instance->ARR + capture1[1] - capture1[0];
-          }
-          else
-          {
-            period = capture1[1] - capture1[0];
-          }
+    {
+      printf("ch1 \r\n");
+      ch1done = false;
+    }
 
-          freq = (HAL_RCC_GetPCLK1Freq() * 2) / (htim2.Instance->PSC + 1);  //84000000
-          freq = freq / period;
-
-          ch1done = 0;
-        }
-
-        if(ch2done)
-        {
-          if(capture2[0] >= capture1[0] && capture2[0] <= capture1[1])
-          {
-            active = capture2[0] - capture1[0];
-          }
-          else if(capture2[1] >= capture1[0] && capture2[1] <= capture1[1])
-          {
-            active = capture2[1] - capture1[0];
-          }
-
-          duty = active * 100 / period;
-          ch2done = 0;
-        }
+    if(ch2done)
+    {
+      printf("ch2 \r\n");
+      ch2done = false;
+    }
 
   }
   /* USER CODE END 3 */
