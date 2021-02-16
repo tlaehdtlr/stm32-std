@@ -141,11 +141,12 @@ void MAX30100_PlotIrToUART(UART_HandleTypeDef *uuart, uint16_t *samples, uint8_t
 }
 
 
-
 void MAX30100_PlotBothToUART(UART_HandleTypeDef *uuart, uint16_t *samplesRed, uint16_t *samplesIr, uint8_t sampleSize){
 	char data[20];
+
 	for(uint8_t i = 0; i< sampleSize; i++){
-	  sprintf(data, "red:%d\tir:%d\n", samplesRed[i], samplesIr[i]);
+	  //sprintf(data, "red:%d\tir:%d \r\n", samplesRed[i], samplesIr[i]);
+	  sprintf(data, "%d,%d \r\n", samplesRed[i], samplesIr[i]);
       HAL_UART_Transmit(uuart, data, strlen(data), MAX30100_TIMEOUT);
 	}
 }

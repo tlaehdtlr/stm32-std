@@ -823,22 +823,41 @@ https://ndb796.tistory.com/360 여기 굿
 - https://m.blog.naver.com/PostView.nhn?blogId=eziya76&logNo=221484861357&referrerCode=0&searchKeyword=i2c
 - https://igotit.tistory.com/entry/I2C-Bus-%EA%B8%B0%EB%B3%B8%EA%B0%9C%EB%85%90
 - SDA (data선), SCL(clock 선)만으로 연결 가능
-- 마스터와 슬레이브들 연결 (로직때문에 풀업저항이어야만함)
+- 마스터와 슬레이브들 연결 **(로직때문에 풀업저항이어야만함)**
 - 프로토콜
   - 컨트롤 용으로 사용되며 저속이기 때문에 전용 HW 없이 일반 GPIO로도 구현 가능
+  
   - slave를 지정할 address 필요
+  
   - 7-bit의 address (10-bit 도 존재) 
+  
   - 통신 속도는 5개 모드
+  
+    - non busy 일 때, 데이터 전송 (SCL-High, SDL-Low)
+  
   - master에 의해서 시작과 종료
-    - start condition : SCL high 이고 SDA high -> low
-    - stop condition : SCL high 이고, SDA low -> high
+    - start condition (S) : SCL high 이고 SDA high -> low
+    - stop condition (P) : SCL high 이고, SDA low -> high
     - restart condition : stop 대신 start 전송되면 버스에 계속 데이터 전송된다는 의미래
+    
   - I2C 프로토콜은 address frame과 data frame 으로 구성
     - address : 7bit 주소 + 1bit R/W flag (1이 read, 0이 write)
       - 0일 때, master가 address frame 전송 후, 다시 data frame 전송
       - 1일 때, master가 address frame 전송 후, slave가 data frame 전송
+      
     - 바이트 크기로 전송되는 데이터 frame의 크기는 제약 없음, 매 바이트 전송 후 ACK 신호(정상 수신, SCL-high, SDA-low) 또는 NACK(수신 오류, SCL-high, SDA-high) 상태 확인 
+      
       - NACK 일 때, master 장치는 stop or restart 가능
+      
+    - Write !!
+    
+      ![image-20210216090551002](C:\Users\JJW_N-771\Desktop\stmpjt\공부\STM32.assets\image-20210216090551002.png)
+      
+    
+    - READ !!
+    
+      ![image-20210216090729264](C:\Users\JJW_N-771\Desktop\stmpjt\공부\STM32.assets\image-20210216090729264.png)
+      
 - 일부 slave 장치들은 데이터 전송 전에 데이터 처리가 끝나지 않은경우, SCL 라인을 low로 유지해서 master 장치가 다음 데이터를 전송하지 못하게 hold 할 수 있음 (clock stretching 이라고 함)
 - 코드 생성
   - https://igotit.tistory.com/702

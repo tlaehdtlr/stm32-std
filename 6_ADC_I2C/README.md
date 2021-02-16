@@ -32,3 +32,16 @@
 
 - I2C Pin
   ![image-20210215111658803](C:\Users\JJW_N-771\AppData\Roaming\Typora\typora-user-images\image-20210215111658803.png)
+
+
+
+
+
+
+
+#### 결과 확인
+
+- teraterm 가능
+- pyserial/
+  - 
+

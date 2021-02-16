@@ -13,6 +13,6 @@ max30100_for_stm32_hal.c:121:7:MAX30100_ReadTemperature	24	static
 max30100_for_stm32_hal.c:127:6:MAX30100_PlotTemperatureToUART	40	static
 max30100_for_stm32_hal.c:135:6:MAX30100_PlotIrToUART	40	static
 max30100_for_stm32_hal.c:145:6:MAX30100_PlotBothToUART	48	static
-max30100_for_stm32_hal.c:153:6:MAX30100_Stop	8	static
-max30100_for_stm32_hal.c:159:6:MAX30100_Pause	8	static
-max30100_for_stm32_hal.c:167:6:MAX30100_Resume	8	static
+max30100_for_stm32_hal.c:154:6:MAX30100_Stop	8	static
+max30100_for_stm32_hal.c:160:6:MAX30100_Pause	8	static
+max30100_for_stm32_hal.c:168:6:MAX30100_Resume	8	static

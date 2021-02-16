@@ -27,6 +27,7 @@
 /* USER CODE BEGIN Includes */
 
 #include <stdio.h>
+#include <string.h>
 #include "MAX30100/max30100_for_stm32_hal.h"
 
 
@@ -49,6 +50,10 @@
 /* Private variables ---------------------------------------------------------*/
 
 /* USER CODE BEGIN PV */
+#define MAX30100_ADDRESS        0x57 <<1
+#define MAX30100_PART_ID        0xFF
+#define MAX30100_LED_Config     0x09
+
 
 /* USER CODE END PV */
 
@@ -68,9 +73,37 @@ void SystemClock_Config(void);
 
 PUTCHAR_PROTOTYPE
 {
+  if (ch == '\n')
+      HAL_UART_Transmit(&huart1, (uint8_t *) "\r", 1, 0xFFFF);
   HAL_UART_Transmit(&huart1, (uint8_t *)&ch, 1, 0xFFFF);
   return ch;
 }
+
+
+
+int _write(int file, char *ptr, int len)
+{
+    int DataIdx;
+
+    for (DataIdx = 0; DataIdx < len; DataIdx++)
+    {
+        HAL_UART_Transmit(&huart1,(uint8_t*)ptr++,1,100);
+    }
+    return len;
+}
+
+
+uint8_t i2c_read_byte(uint8_t dev_addr, uint8_t reg_addr)
+{
+  uint8_t value;
+
+  HAL_I2C_Mem_Read(&hi2c1, dev_addr, reg_addr, I2C_MEMADD_SIZE_8BIT, &value,1 , 100);
+
+  return value;
+}
+
+
+
 /* USER CODE END 0 */
 
 /**
@@ -80,7 +113,10 @@ PUTCHAR_PROTOTYPE
 int main(void)
 {
   /* USER CODE BEGIN 1 */
-
+  HAL_StatusTypeDef ret;
+  uint8_t buf[8];
+  int16_t val;
+  float temp_c;
   /* USER CODE END 1 */
 
   /* MCU Configuration--------------------------------------------------------*/
@@ -108,20 +144,66 @@ int main(void)
 
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
-#if 1
   printf("start!! \r\n");
+#if 1
   MAX30100_Init(&hi2c1, &huart1);
   MAX30100_SetSpO2SampleRate(MAX30100_SPO2SR_DEFAULT);
   MAX30100_SetLEDPulseWidth(MAX30100_LEDPW_DEFAULT);
   MAX30100_SetLEDCurrent(MAX30100_LEDCURRENT_DEFAULT, MAX30100_LEDCURRENT_DEFAULT);
   MAX30100_SetMode(MAX30100_SPO2_MODE);
 #else
+  printf("i2c scanning...\r\n");
+
+  for (int i = 0; i < 127; i++) {
+    if (HAL_OK == HAL_I2C_IsDeviceReady(&hi2c1, (uint8_t) i << 1, 2, 10))
+      printf("\r\ndevice found at address : 0x%x\r\n", i << 1);
+    else
+      printf(".");
+  }
+  printf("\r\n");
 #endif
   while (1)
   {
-    HAL_GPIO_TogglePin(GPIOB, GPIO_PIN_13);
-    printf("running~ \r\n");
+    MAX30100_ReadFIFO();
+    MAX30100_PlotBothToUART(&huart1, _max30100_red_sample, _max30100_ir_sample, 16);
     HAL_Delay(1000);
+
+    /*
+    buf[0] = MAX30100_PART_ID;
+    ret = HAL_I2C_Master_Transmit(&hi2c1, MAX30100_ADDRESS, buf, 1, HAL_MAX_DELAY);
+    if (ret != HAL_OK)
+    {
+      strcpy((char*)buf, "Error Tx \r\n");
+    }
+    else
+    {
+      ret = HAL_I2C_Master_Receive(&hi2c1, MAX30100_ADDRESS, buf, 2, HAL_MAX_DELAY);
+      if (ret != HAL_OK)
+      {
+        strcpy((char*)buf, "Error Rx \r\n");
+      }
+      else
+      {
+        // connect!!
+        val = ((int16_t)buf[0] << 4 | buf[1] >> 4);
+
+        if (val > 0x7FF)
+        {
+          val |= 0xF000;
+        }
+        temp_c = val;
+        sprintf((char*)buf, "%u,%02u ?\r\n", ((unsigned int)temp_c/100), ((unsigned int)temp_c %100));
+
+      }
+    }
+
+    // ?
+    HAL_UART_Transmit(&huart1, buf, strlen((char*)buf), HAL_MAX_DELAY);
+    HAL_Delay(1000);
+     *
+     */
+
+
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
