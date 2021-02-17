@@ -46,24 +46,26 @@
 /* Private variables ---------------------------------------------------------*/
 
 /* USER CODE BEGIN PV */
-
+#if 0
 #define DMA_BUF_SIZE 100
 uint8_t rx_dma_buf[DMA_BUF_SIZE];
 #define get_dma_data_length() huart1.hdmarx->Instance->CNDTR
 #define get_dma_total_size()  huart1.RxXferSize
+#else
+uint8_t rxBuffer[10];
 
+#endif
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
 void SystemClock_Config(void);
 /* USER CODE BEGIN PFP */
 
-void contRXBuffer(void);
-
 /* USER CODE END PFP */
 
 /* Private user code ---------------------------------------------------------*/
 /* USER CODE BEGIN 0 */
+#if 0
 void uart_rx_dma_handler(){
     /* buffer index*/
     static uint32_t old_pos=0;
@@ -116,6 +118,13 @@ void uart_rx_dma_handler(){
         }
     }
 }
+#else
+void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart)
+{
+  HAL_UART_Transmit(&huart1, rxBuffer, 10, 0xFFFF);
+}
+
+#endif
 /* USER CODE END 0 */
 
 /**
@@ -149,16 +158,22 @@ int main(void)
   MX_DMA_Init();
   MX_USART1_UART_Init();
   /* USER CODE BEGIN 2 */
+#if 0
   HAL_UART_Receive_DMA(&huart1, rx_dma_buf, DMA_BUF_SIZE);
-
+#else
+  HAL_UART_Receive_DMA(&huart1, rxBuffer, 10);
+#endif
   /* USER CODE END 2 */
 
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
   while (1)
   {
+#if 0
     uart_rx_dma_handler();
+#else
 
+#endif
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
@@ -221,8 +236,6 @@ void SystemClock_Config(void)
 }
 
 /* USER CODE BEGIN 4 */
-
-
 
 /* USER CODE END 4 */
 

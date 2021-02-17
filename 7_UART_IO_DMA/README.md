@@ -1,10 +1,42 @@
 ## 7_UART_IO_DMA
 
+### callback 이용
+
+- https://m.blog.naver.com/PostView.nhn?blogId=eziya76&logNo=220943681644&proxyReferer=https:%2F%2Fwww.google.com%2F
+
+- TX는 굳이 쓸 필요없는거 같아서 RX만 함
+
+#### MX
+
+- ![image-20210217183206261](C:\Users\JJW_N-771\Desktop\stmpjt\7_UART_IO_DMA\README.assets\image-20210217183206261.png)
+  ![image-20210217173003476](C:\Users\JJW_N-771\Desktop\stmpjt\7_UART_IO_DMA\README.assets\image-20210217173003476.png)
 
 
-- 참고 링크 (설명 상세함)
-  https://m.blog.naver.com/PostView.nhn?blogId=jrkim&logNo=220927030543&proxyReferer=https:%2F%2Fwww.google.com%2F 
-  여기 코드는 아마 overflow 상황을 처리가 없는 거 같음
+
+#### IDE
+
+- 링 버퍼를 10칸 줬으니 10개가 채워질 때마다 콜백이 불림
+  UART Interrupt 방식과 다른 점은 출력하고 나서도 HAL_UART_Receive_DMA 함수를 계속 켜줄 필요가 없다(활성화되어 있음, 중단하는 함수들 있음)
+
+  ```c
+  /* USER CODE BEGIN 0 */
+  uint8_t rxBuffer[10];
+  
+  void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart)
+  {
+    HAL_UART_Transmit(&huart1, rxBuffer, 10, 0xFFFF);
+  }
+  
+    /* USER CODE BEGIN 2 */
+    HAL_UART_Receive_DMA(&huart1, rxBuffer, 10);
+  
+  ```
+
+
+
+### 직접 짜기 (어쩌다가 하게된 것)
+
+- 언젠가는 쓰이겠지...?
 
 #### MX
 
@@ -17,8 +49,8 @@
 
 #### IDE
 
-- https://blog.naver.com/chandong83/222036416616 참고
-  코드 그대로 하면 아스키 코드로 출력되길래 transmit 함수 사용함
+- 
+  참고 코드 그대로 하면 아스키 코드로 출력되길래 transmit 함수 사용함
 
   ```c
   #include <string.h>

@@ -38,6 +38,8 @@
 
 ## STM32
 
+##### 각 예제 폴더에 README 로 설명 적어놨으니 확인할 것
+
 ### 목표
 
 - 사용자가 작성한 코드를 (.c 파일) 이진코드 (.bin)으로 바꿔서 STM32 (flash? 레지스터? 찾아봐 여튼 보드 메모리 공간에 보낸다)
@@ -853,11 +855,10 @@ https://ndb796.tistory.com/360 여기 굿
     
       ![image-20210216090551002](C:\Users\JJW_N-771\Desktop\stmpjt\공부\STM32.assets\image-20210216090551002.png)
       
-    
     - READ !!
     
       ![image-20210216090729264](C:\Users\JJW_N-771\Desktop\stmpjt\공부\STM32.assets\image-20210216090729264.png)
-      
+  
 - 일부 slave 장치들은 데이터 전송 전에 데이터 처리가 끝나지 않은경우, SCL 라인을 low로 유지해서 master 장치가 다음 데이터를 전송하지 못하게 hold 할 수 있음 (clock stretching 이라고 함)
 - 코드 생성
   - https://igotit.tistory.com/702
