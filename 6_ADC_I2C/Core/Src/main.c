@@ -113,10 +113,7 @@ uint8_t i2c_read_byte(uint8_t dev_addr, uint8_t reg_addr)
 int main(void)
 {
   /* USER CODE BEGIN 1 */
-  HAL_StatusTypeDef ret;
-  uint8_t buf[8];
-  int16_t val;
-  float temp_c;
+
   /* USER CODE END 1 */
 
   /* MCU Configuration--------------------------------------------------------*/
@@ -168,40 +165,6 @@ int main(void)
     MAX30100_PlotBothToUART(&huart1, _max30100_red_sample, _max30100_ir_sample, 16);
     HAL_Delay(1000);
 
-    /*
-    buf[0] = MAX30100_PART_ID;
-    ret = HAL_I2C_Master_Transmit(&hi2c1, MAX30100_ADDRESS, buf, 1, HAL_MAX_DELAY);
-    if (ret != HAL_OK)
-    {
-      strcpy((char*)buf, "Error Tx \r\n");
-    }
-    else
-    {
-      ret = HAL_I2C_Master_Receive(&hi2c1, MAX30100_ADDRESS, buf, 2, HAL_MAX_DELAY);
-      if (ret != HAL_OK)
-      {
-        strcpy((char*)buf, "Error Rx \r\n");
-      }
-      else
-      {
-        // connect!!
-        val = ((int16_t)buf[0] << 4 | buf[1] >> 4);
-
-        if (val > 0x7FF)
-        {
-          val |= 0xF000;
-        }
-        temp_c = val;
-        sprintf((char*)buf, "%u,%02u ?\r\n", ((unsigned int)temp_c/100), ((unsigned int)temp_c %100));
-
-      }
-    }
-
-    // ?
-    HAL_UART_Transmit(&huart1, buf, strlen((char*)buf), HAL_MAX_DELAY);
-    HAL_Delay(1000);
-     *
-     */
 
 
     /* USER CODE END WHILE */
@@ -234,7 +197,12 @@ void SystemClock_Config(void)
   RCC_OscInitStruct.MSIState = RCC_MSI_ON;
   RCC_OscInitStruct.MSICalibrationValue = 0;
   RCC_OscInitStruct.MSIClockRange = RCC_MSIRANGE_6;
-  RCC_OscInitStruct.PLL.PLLState = RCC_PLL_NONE;
+  RCC_OscInitStruct.PLL.PLLState = RCC_PLL_ON;
+  RCC_OscInitStruct.PLL.PLLSource = RCC_PLLSOURCE_MSI;
+  RCC_OscInitStruct.PLL.PLLM = 1;
+  RCC_OscInitStruct.PLL.PLLN = 40;
+  RCC_OscInitStruct.PLL.PLLQ = RCC_PLLQ_DIV2;
+  RCC_OscInitStruct.PLL.PLLR = RCC_PLLR_DIV2;
   if (HAL_RCC_OscConfig(&RCC_OscInitStruct) != HAL_OK)
   {
     Error_Handler();
@@ -243,12 +211,12 @@ void SystemClock_Config(void)
   */
   RCC_ClkInitStruct.ClockType = RCC_CLOCKTYPE_HCLK|RCC_CLOCKTYPE_SYSCLK
                               |RCC_CLOCKTYPE_PCLK1|RCC_CLOCKTYPE_PCLK2;
-  RCC_ClkInitStruct.SYSCLKSource = RCC_SYSCLKSOURCE_MSI;
+  RCC_ClkInitStruct.SYSCLKSource = RCC_SYSCLKSOURCE_PLLCLK;
   RCC_ClkInitStruct.AHBCLKDivider = RCC_SYSCLK_DIV1;
   RCC_ClkInitStruct.APB1CLKDivider = RCC_HCLK_DIV1;
   RCC_ClkInitStruct.APB2CLKDivider = RCC_HCLK_DIV1;
 
-  if (HAL_RCC_ClockConfig(&RCC_ClkInitStruct, FLASH_LATENCY_0) != HAL_OK)
+  if (HAL_RCC_ClockConfig(&RCC_ClkInitStruct, FLASH_LATENCY_4) != HAL_OK)
   {
     Error_Handler();
   }

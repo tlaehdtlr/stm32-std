@@ -44,7 +44,7 @@ def animate(i, xs, ys):
     # relProb = line_as_list[1]
     # relProb_as_list = relProb.split(b'\n')
     # relProb_float = float(relProb_as_list[0])
-
+    
     ir_line = line_as_list[1].split('\r\n')    
     if not time:
         time.append(0)
@@ -57,6 +57,11 @@ def animate(i, xs, ys):
     # Limit x and y lists to 20 items
     #xs = xs[-20:]
     #ys = ys[-20:]
+    # time = time[-20:]
+    # ir = ir[-20:]
+    # red = red[-20:]
+
+
 
     # Draw x and y lists
     ax.clear()
