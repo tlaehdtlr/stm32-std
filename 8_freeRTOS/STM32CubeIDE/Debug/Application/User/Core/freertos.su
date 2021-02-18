@@ -1,0 +1,7 @@
+freertos.c:77:6:vApplicationGetIdleTaskMemory	24	static
+freertos.c:91:6:MX_FREERTOS_Init	56	static
+freertos.c:138:6:StartDefaultTask	16	static
+freertos.c:152:6:vPrint_Task_1	8	static
+freertos.c:161:6:vPrint_Task_2	8	static
+freertos.c:170:6:vPrint_Task_3	8	static
+freertos.c:180:6:vPrint_Task_4	8	static

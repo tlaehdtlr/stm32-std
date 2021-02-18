@@ -153,20 +153,119 @@ https://ndb796.tistory.com/360 여기 굿
 
 - 무료 제공 RTOS (MIT 라이센스)
 - https://m.blog.naver.com/PostView.nhn?blogId=oh930418&logNo=221152205204&proxyReferer=https:%2F%2Fwww.google.com%2F
+- https://github.com/d-h-k/Learing-RTOS-with-STM32 (나 같네)
+- 참고자료
+  - RTOS(Real Time Operating System) & FreeRTOS Porting.pdf 에 한글로 이론적인 것들 설명 되어있음
+  - user_manual with RTOS.pdf 에서 고려사항들? 확인 가능
 
-- 설정
-  - MINIMAL_STACK_SIZE 디폴트 128인데 이러면 stack overflow 발생
-    256 증가하기
-  - Ethernet 의 PHY Address 확인 (pull down 이면 0 으로 설정)
-  - RCC 설정...
-  - SYS의 debug 
-  - ETH
+#### CBD (component based development) 개발 방법론 적용
+
+- 속한 팀의 룰을 따르기 
+- 한 개의 컴포넌트는 task, module, driver 로 구성됨
+- task
+  - task 간 통신 (스케쥴러가 제어할 대상)
+- module
+  - driver에서 구성한 함수 등을 이용하여 기능을 수행
+- driver
+  - 레지스터를 어떻게 쓸지 정의해놓음
+- Ex. 어떤 버튼 누르면 온도 측정 데이터 받기
+  - driver에 온도 센서의 레지스터를 제어하는 코드가 있음
+  - 온도를 측정 데이터를 I2C로 수신하는 함수를 module에 작성
+  - 인터럽트 걸리면 task 걸리게 하고 이 task 에서 작성한 모듈로 처리 / 필요하다면 완료라는 printf를 띄워주기 위해 printf task 에 통신을 보내던가
 
 
 
-#### Ethernet 초기화
+#### task와 thread 생성
+
+-  **osThreadDef**(defaultTask, StartDefaultTask, osPriorityNormal, 0, 128);
+   defaultTaskHandle = **osThreadCreate**(osThread(defaultTask), NULL);
+
+  ```c
+  osThreadDef(name, thread, priority, instances, stacksz)  \
+  const osThreadDef_t os_thread_def_##name = \
+  { #name, (thread), (priority), (instances), (stacksz)}
+  ```
+
+  - name : 생성할 테스크의 이름
+    thread : 동작시킬 함수
+    priority : 테스크의 우선순위 (하단에 우선순위 표 첨부)
+    instances : 동일한 osThreadDef에 대해 선언 될 수 있는 횟수
+    stacksz : 테스크에 사용할 스택 크기 (보통 configMINIMAL_STACK_SIZE를 기준으로 사용한다)
+
+  ```c
+  osThreadCreate (const osThreadDef_t *thread_def, void *argument)
+  ```
+
+  - *thread_def : 생성할 osThreadDef
+    *argument : 테스크 함수에 넣을 매개변수
+
+- xTaskCreate
 
 
+  ```c
+  xTaskCreate( TaskFunction_t pxTaskCode,
+         const char * const pcName,
+         const uint16_t usStackDepth,
+         void * const pvParameters,
+         UBaseType_t uxPriority,
+         TaskHandle_t * const pxCreatedTask )
+  ```
+  - pxTaskCode : 동작시킬 함수
+    pcName : 생성할 테스크의 이름
+    usStackDepth : 테스크에 사용할 스택 크기 (보통 configMINIMAL_STACK_SIZE를 기준으로 사용)
+    pvParameters : 테스크 실행시 전달할 매개변수
+    uxPriority : 테스크의 우선순위 (숫자가 클수록 우선순위 높음)
+    pxCreatedTask : 테스크 핸들을 지정 (TaskHandle_t xTaskHandle;와 같이 선언한 테스크 핸들을 &xTaskHandle와 같이 주소값을 이용하여 지정, 다른 테스크의 핸들을 이용하여 우선순위 변경 등의 작업이 가능)
+    테스크 함수, 스택크기, 우선순위를 제외한 나머지 값은 null로 입력해도 상관없다.
+    (예:TaskCreate( vTask1, null, configMINIMAL_STACK_SIZE, NULL, 2, NULL ); 
+
+- Ex.
+
+  - ```c
+    // 함수 만듦
+    void vPrint_Task()
+    {
+      for (;;)
+      {
+        printf("task : %lu\r\n", osKernelSysTick());
+        osDelay(1000);
+      }
+    }
+    
+    osThreadId Print_Handle_1
+    
+    // (1)
+    osThreadDef(myTaskName_1, vPrint_Task_1, osPriorityNormal, 0, 128);
+    Print_Handle_1 = osThreadCreate(osThread(myTaskName_1), NULL);
+    
+    // (2)
+    xTaskCreate(vPrint_Task, "myTaskName" , configMINIMAL_STACK_SIZE, NULL, 1, NULL);
+    ```
+
+  
+
+- RTOS 초기화 및 스케줄러 실행 (MX 가 해줌)
+
+  - main.c
+
+    ```c
+      /* Call init function for freertos objects (in freertos.c) */
+      MX_FREERTOS_Init();
+    
+      /* Start scheduler */
+      osKernelStart();
+    ```
+
+
+
+#### Queue, Message, Mail
+
+- Queue 를 이용해서 task 간에 통신 (함수에서 전역변수 쓰는 느낌임)
+- https://www.freertos.org/a00116.html
+
+#### 세마포어
+
+#### 뮤텍스
 
 
 
