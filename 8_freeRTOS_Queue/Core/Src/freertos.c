@@ -51,6 +51,9 @@ typedef struct
 
 /* Private variables ---------------------------------------------------------*/
 /* USER CODE BEGIN Variables */
+QueueHandle_t Queue1Handle;
+SemaphoreHandle_t SemaphoreHandle;
+
 
 /* USER CODE END Variables */
 osThreadId defaultTaskHandle;
@@ -59,7 +62,8 @@ osThreadId defaultTaskHandle;
 /* USER CODE BEGIN FunctionPrototypes */
 
 void SenderTask(void const * argument);
-void ReceiverTask(void const * argument);
+void ReceiverTask_1(void const * argument);
+void ReceiverTask_2(void const * argument);
 
 /* USER CODE END FunctionPrototypes */
 
@@ -116,11 +120,12 @@ void MX_FREERTOS_Init(void) {
 
   /* USER CODE BEGIN RTOS_THREADS */
   /* add threads, ... */
+  Queue1Handle = xQueueCreate(8, sizeof(_Message));
+  vSemaphoreCreateBinary(SemaphoreHandle);
 
-  Queue1Handle = xQueueCreate(10, sizeof(_Message));
-
-  xTaskCreate(SenderTask, "Sender" , configMINIMAL_STACK_SIZE, NULL, 1, NULL);
-  xTaskCreate(ReceiverTask, "Receiver" , configMINIMAL_STACK_SIZE, NULL, 1, NULL);
+  xTaskCreate((void*)SenderTask, "Sender" , configMINIMAL_STACK_SIZE, NULL, 1, NULL);
+  xTaskCreate((void*)ReceiverTask_1, "Receiver1" , configMINIMAL_STACK_SIZE, NULL, 1, NULL);
+  xTaskCreate((void*)ReceiverTask_2, "Receiver2" , configMINIMAL_STACK_SIZE, NULL, 1, NULL);
 
 
 
@@ -152,46 +157,74 @@ void StartDefaultTask(void const * argument)
 void SenderTask(void const * argument)
 {
   /* USER CODE BEGIN SenderTask */
-    _Message msg;
-    msg.buf[0] = 0xAA;
-    msg.buf[1] = 0xBB;
-    msg.idx = 0;
+  _Message msg = { 0 };
+  msg.buf[0] = 0xAA;
+  msg.buf[1] = 0xBB;
+  msg.idx = 0;
 
-    /* Infinite loop */
-    for (;;)
-    {
-        printf("Sender enqueues \r\n");
-        xQueueSendToBack(Queue1Handle, msg, 100);
-        msg.idx++;
-        printf("Sender delays for a sec.\r\n");
-        vTaskDelay(1000);
-    }
+  /* Infinite loop */
+  for (;;)
+  {
+    printf("Sender on! %X %d\r\n", msg.buf[0], msg.idx);
+    xQueueSend(Queue1Handle, &msg, 100);
+    msg.idx++;
+    msg.buf[0]++;
+    vTaskDelay(1000);
+  }
   /* USER CODE END SenderTask */
 }
 
 
-void ReceiverTask(void const * argument)
+void ReceiverTask_1(void const * argument)
 {
   /* USER CODE BEGIN ReceiverTask */
-    _Message *pMsg;
+  _Message Msg = { 0 };
 
-    /* Infinite loop */
-    for (;;)
+  /* Infinite loop */
+  for (;;)
+  {
+    printf("Receiver_1 on!! \r\n");
+
+    if (xSemaphoreTake(SemaphoreHandle, 1000) == pdTRUE)
     {
-        printf("Receiver is trying to dequeue \r\n");
-
-        if(xQueueReceive(Queue1Handle, pMsg, 500))
+      if (xQueueReceive(Queue1Handle, &Msg, 1000))
         {
-            printf("Receiver received: msg.buf[0]=0x%X, msg.idx=%u \r\n", pMsg->buf[0]  , pMsg->idx);
+          printf("Receiver 1 received: msg.buf[0]=0x%X, msg.idx=%d \r\n", Msg.buf[0], Msg.idx);
         }
+      xSemaphoreGive(SemaphoreHandle);
     }
+    else
+    {
+      printf("reject receiver_1 \r\n");
+    }
+  }
   /* USER CODE END ReceiverTask */
 }
 
+void ReceiverTask_2(void const * argument)
+{
+  /* USER CODE BEGIN ReceiverTask */
+  _Message Msg = { 0 };
 
-
-
-
+  /* Infinite loop */
+  for (;;)
+  {
+    printf("Receiver_2 on!! \r\n");
+    if (xSemaphoreTake(SemaphoreHandle, 800) == pdTRUE)
+    {
+      if (xQueueReceive(Queue1Handle, &Msg, 1000))
+      {
+        printf("Receiver 2 received: msg.buf[0]=0x%X, msg.idx=%d \r\n", Msg.buf[0], Msg.idx);
+      }
+      xSemaphoreGive(SemaphoreHandle);
+    }
+    else
+    {
+      printf("reject receiver_2 \r\n");
+    }
+  }
+  /* USER CODE END ReceiverTask */
+}
 
 
 /* USER CODE END Application */

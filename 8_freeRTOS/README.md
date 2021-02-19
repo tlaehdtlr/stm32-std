@@ -1,6 +1,6 @@
 ## 8_freeRTOS
 
-### basic
+### basic (Task, Delay, Heap)
 
 - 따라하기 
   https://m.blog.naver.com/oh930418/221152205204
@@ -87,7 +87,7 @@
 - default task 있는거 없애주지 않아서 총 5개의 task를 가지게 되었다
 
   - 디버깅에서  window - show view - freertos - freertos task list 를 확인해보면 vPrint_Task_4 가 등록되지 않는다
-  - heap 데이터가 초과되어서 그런 것 MX 설정에서 memory management settings의 heap size를 6000Bytes 로 설정 (이것에 대한 계산하는 방법 같은 가이드를 알고 싶은데 아직 잘...)
+  - heap 데이터가 초과되어서 그런 것 MX 설정에서 memory management settings의 heap size를 6000Bytes 로 설정
 
 - HAL_Delay 는 CPU를 지연한다? 음... 이 프로그램 전체를 지연한다면 vTaskDelay 는 task 만 지연한다 (스레드만 지연되고 있다) 근데 블로그의 말은 뭔 말인지 잘 모르겠다 나는 저렇게 안 나온다
   ![image-20210218155718087](README.assets/image-20210218155718087.png)

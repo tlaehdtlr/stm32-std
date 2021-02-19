@@ -263,9 +263,30 @@ https://ndb796.tistory.com/360 여기 굿
 - Queue 를 이용해서 task 간에 통신 (함수에서 전역변수 쓰는 느낌임)
 - https://www.freertos.org/a00116.html
 
-#### 세마포어
+#### 세마포어, 뮤텍스
 
-#### 뮤텍스
+- https://iredays.tistory.com/125
+  race condition 에 대한 설명과 세마포어와 뮤텍스의 필요
+- https://sanghyunj.tistory.com/19
+  세마포어와 뮤텍스의 차이와 구현원리
+
+
+
+#### API
+
+- CMSIS-OS 는 여러 종류의 RTOS 를 사용할 때 표준적인 입출력 수단으로 중간계층에 해당한대. 
+
+- 그래서 얘네 API 쓰면 되는데 다른 RTOS porting 하기 쉬워지긴하는데 어쨌든 지금은 FreeRTOS API 를 직접 호출해서 쓸 거니까 매핑되는 것들을 조금씩 정리해본다 (귀찮다)
+
+- https://www.freertos.org/a00106.html (FreeRTOS API)
+
+  https://m.cafe.daum.net/easyflow/F13G/search?r=https%3A%2F%2Fm.cafe.daum.net%2Feasyflow%2FF13G%3FboardType%3D&query=freeRTOS
+
+|      | FreeRTOS | CMSIS-OS |
+| ---- | -------- | -------- |
+|      |          |          |
+
+
 
 
 
