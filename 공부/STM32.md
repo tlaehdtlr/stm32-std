@@ -282,9 +282,17 @@ https://ndb796.tistory.com/360 여기 굿
 
   https://m.cafe.daum.net/easyflow/F13G/search?r=https%3A%2F%2Fm.cafe.daum.net%2Feasyflow%2FF13G%3FboardType%3D&query=freeRTOS
 
-|      | FreeRTOS | CMSIS-OS |
-| ---- | -------- | -------- |
-|      |          |          |
+|      | FreeRTOS               | CMSIS-OS          |
+| ---- | ---------------------- | ----------------- |
+|      | xTaskCreate            | osThreadCreate    |
+|      | vTaskDelay             | osDelay           |
+|      | vSemaphoreCreateBinary | osSemaphoreCreate |
+|      | xSemaphoreCreateMutex  | osMutexCreate     |
+|      | xQueueCreate           | osMessageCreate   |
+|      |                        |                   |
+|      |                        |                   |
+|      |                        |                   |
+|      |                        |                   |
 
 
 
