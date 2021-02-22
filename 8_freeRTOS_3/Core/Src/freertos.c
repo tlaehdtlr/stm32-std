@@ -42,6 +42,8 @@ typedef enum
 /* Private define ------------------------------------------------------------*/
 /* USER CODE BEGIN PD */
 
+#define mode 0
+
 /* USER CODE END PD */
 
 /* Private macro -------------------------------------------------------------*/
@@ -53,7 +55,9 @@ typedef enum
 /* USER CODE BEGIN Variables */
 SemaphoreHandle_t MutexHandle;
 
-TaskHandle_t MyNotifyTaskHandle = NULL;
+TaskHandle_t MyNotifyTaskHandle_1 = NULL;
+TaskHandle_t MyPrintTaskHandle = NULL;
+
 
 /* USER CODE END Variables */
 osThreadId defaultTaskHandle;
@@ -62,8 +66,10 @@ osThreadId defaultTaskHandle;
 /* USER CODE BEGIN FunctionPrototypes */
 void GetMutexTask_1();
 void GetMutexTask_2();
-void NotifyTask();
-void vCall_TaskNotify(eNotifyValue eNofiValue);
+
+void NotifyTask_1();
+void printTask();
+//void vCall_TaskNotify(eNotifyValue eNofiValue);
 /* USER CODE END FunctionPrototypes */
 
 void StartDefaultTask(void const * argument);
@@ -119,10 +125,15 @@ void MX_FREERTOS_Init(void) {
 
   /* USER CODE BEGIN RTOS_THREADS */
   /* add threads, ... */
+#if mode
   MutexHandle = xSemaphoreCreateMutex();
   xTaskCreate(GetMutexTask_1, "GetMutex_1" , configMINIMAL_STACK_SIZE, NULL, 1, NULL);
   xTaskCreate(GetMutexTask_2, "GetMutex_2" , configMINIMAL_STACK_SIZE, NULL, 1, NULL);
 
+#else
+  xTaskCreate(NotifyTask_1, "notify_1" , configMINIMAL_STACK_SIZE, NULL, 1, &MyNotifyTaskHandle_1);
+  xTaskCreate(printTask, "printtt" , configMINIMAL_STACK_SIZE, NULL, 1, &MyPrintTaskHandle);
+#endif
   //xTaskCreate(NotifyTask, "Notify" , configMINIMAL_STACK_SIZE, NULL, 1, &MyNotifyTaskHandle);
 
 
@@ -150,6 +161,7 @@ void StartDefaultTask(void const * argument)
 
 /* Private application code --------------------------------------------------*/
 /* USER CODE BEGIN Application */
+#if mode
 void GetMutexTask_1()
 {
   /* Infinite loop */
@@ -190,22 +202,35 @@ void GetMutexTask_2()
     }
   }
 }
+#else
 
-
-void NotifyTask()
+void NotifyTask_1()
 {
-  printf("I'm here \r\n");
-}
+  uint8_t cnt=0;
 
-
-void vCall_TaskNotify(eNotifyValue eNofiValue)
-{
-  if (NotifyTask != NULL)
+  for (;;)
   {
-    xTaskNotify(NotifyTask, eNofiValue, eSetValueWithOverwrite);
+    cnt++;
+    printf("task1 \r\n");
+    vTaskDelay(1000);
+    if (cnt==5)
+    {
+      xTaskNotify(MyPrintTaskHandle, eNotifyFlashInitialized, eSetValueWithOverwrite);
+    }
   }
 }
 
+void printTask()
+{
+  ulTaskNotifyTake( pdTRUE, portMAX_DELAY );
+  for (;;)
+  {
+    printf("cnt is over 5 \r\n");
+    vTaskDelay(1000);
+  }
+}
+
+#endif
 
 
 /* USER CODE END Application */

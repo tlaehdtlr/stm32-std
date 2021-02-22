@@ -85,10 +85,54 @@
 
 ### Notification
 
-- FreeRTOS 커널 개발자 안내서.pdf 참고
-- ![image-20210219170528689](README.assets/image-20210219170528689.png)
+- flag 처럼 써봤다.
 
-- ![image-20210219170550472](README.assets/image-20210219170550472.png)
+#### IDE
+
+```c
+/* USER CODE BEGIN Variables */
+TaskHandle_t MyNotifyTaskHandle_1 = NULL;
+TaskHandle_t MyPrintTaskHandle = NULL;
+
+/* USER CODE BEGIN FunctionPrototypes */
+void NotifyTask_1();
+void printTask();
+
+...
+    
+  xTaskCreate(NotifyTask_1, "notify_1" , configMINIMAL_STACK_SIZE, NULL, 1, &MyNotifyTaskHandle_1);
+  xTaskCreate(printTask, "printtt" , configMINIMAL_STACK_SIZE, NULL, 1, &MyPrintTaskHandle);
+
+...
+
+void NotifyTask_1()
+{
+  uint8_t cnt=0;
+
+  for (;;)
+  {
+    cnt++;
+    printf("task1 \r\n");
+    vTaskDelay(1000);
+    if (cnt==5)
+    {
+      xTaskNotify(MyPrintTaskHandle, eNotifyFlashInitialized, eSetValueWithOverwrite);
+    }
+  }
+}
+
+void printTask()
+{
+  ulTaskNotifyTake( pdTRUE, portMAX_DELAY );
+  for (;;)
+  {
+    printf("cnt is over 5 \r\n");
+    vTaskDelay(1000);
+  }
+}
+```
+
+
 
 
 

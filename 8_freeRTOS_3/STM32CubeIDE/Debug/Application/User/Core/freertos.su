@@ -1,7 +1,0 @@
-freertos.c:80:6:vApplicationGetIdleTaskMemory	24	static
-freertos.c:94:6:MX_FREERTOS_Init	56	static
-freertos.c:140:6:StartDefaultTask	16	static
-freertos.c:153:6:GetMutexTask_1	8	static
-freertos.c:171:6:GetMutexTask_2	8	static
-freertos.c:195:6:NotifyTask	8	static
-freertos.c:201:6:vCall_TaskNotify	16	static
