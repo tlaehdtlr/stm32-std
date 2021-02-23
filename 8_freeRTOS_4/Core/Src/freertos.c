@@ -27,15 +27,12 @@
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
 #include <stdio.h>
+#include "timers.h"
+#include "stm32l4xx_hal.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
 /* USER CODE BEGIN PTD */
-typedef enum
-{
-  falling = 0,
-  rising = 1,
-} buttonCtl;
 
 /* USER CODE END PTD */
 
@@ -54,6 +51,8 @@ typedef enum
 TaskHandle_t printTaskHandle = NULL;
 TaskHandle_t xButtonTaskHandle = NULL;
 QueueHandle_t xButtonQueueHandle = NULL;
+TimerHandle_t xMyTimerHandle = NULL;
+uint8_t timerCheck = 0;
 
 
 /* USER CODE END Variables */
@@ -63,6 +62,9 @@ osThreadId defaultTaskHandle;
 /* USER CODE BEGIN FunctionPrototypes */
 void vButton_QueueSendFromISR(uint8_t* pucButtonState);
 void vButton_Task();
+
+void vTimerCallback();
+
 
 /* USER CODE END FunctionPrototypes */
 
@@ -127,7 +129,13 @@ void MX_FREERTOS_Init(void) {
   vQueueAddToRegistry(xButtonQueueHandle, "buttonQueue");
   /* create button task */
   xTaskCreate(vButton_Task, "buttonTask", configMINIMAL_STACK_SIZE, NULL, 1, &xButtonTaskHandle);
-  //xTaskCreate(vPrint_Task, "printTask", configMINIMAL_STACK_SIZE, NULL, 1, &printTaskHandle);
+
+  xMyTimerHandle = xTimerCreate("TimerName", pdMS_TO_TICKS(500), pdTRUE, (void*)0, vTimerCallback);
+
+  if (xTimerStart(xMyTimerHandle, 0)!=pdPASS) {
+    printf("timer wasn't created");
+  }
+
 
   /* USER CODE END RTOS_THREADS */
 
@@ -153,35 +161,53 @@ void StartDefaultTask(void const * argument)
 
 /* Private application code --------------------------------------------------*/
 /* USER CODE BEGIN Application */
+
 void vButton_QueueSendFromISR(uint8_t* pucButtonState)
 {
   BaseType_t xHigherPriorityTaskWoken = pdFALSE;
-  //buttonCtl* peButtonReq = (buttonCtl*)pucButtonState;
   if (xButtonQueueHandle != NULL)
   {
     xQueueSendFromISR(xButtonQueueHandle, pucButtonState, &xHigherPriorityTaskWoken);
-
   }
 }
 
 void vButton_Task()
 {
   printf("On!! \r\n");
-  //buttonCtl* btnCtl;
   uint8_t btnCtl;
+
   for (;;)
   {
-    if (xQueueReceive(xButtonQueueHandle, &btnCtl, 1000))
+
+    if (xQueueReceive(xButtonQueueHandle, &btnCtl, 1000)==pdTRUE)
     {
-        printf("here : %d \r\n", btnCtl);
+        if (btnCtl == 0)
+        {
+          printf("pull up ! \r\n");
+        }
+        else
+        {
+          printf("press down ! \r\n");
+        }
     }
     else
     {
-      printf("no! \r\n");
+
+    }
+
+    if (timerCheck)
+    {
+      printf("timer expired");
+      timerCheck = 0;
     }
   }
 }
 
+
+void vTimerCallback()
+{
+ timerCheck = 1;
+}
 
 
 /* USER CODE END Application */

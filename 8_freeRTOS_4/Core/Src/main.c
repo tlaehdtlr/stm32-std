@@ -27,6 +27,7 @@
 /* USER CODE BEGIN Includes */
 #include <stdio.h>
 #include "freertos.h"
+
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -57,7 +58,6 @@ PUTCHAR_PROTOTYPE
 /* Private variables ---------------------------------------------------------*/
 
 /* USER CODE BEGIN PV */
-static GPIO_PinState g_prev_btn_state = GPIO_PIN_RESET;
 
 /* USER CODE END PV */
 
@@ -181,14 +181,9 @@ void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin)
 {
   if (GPIO_Pin == GPIO_PIN_13)
   {
-    GPIO_PinState btn_state = HAL_GPIO_ReadPin(GPIOC, GPIO_PIN_13);
-    uint8_t _btn_state;
-    _btn_state = btn_state == GPIO_PIN_RESET? 0:1;
-    vButton_QueueSendFromISR(&_btn_state);
-    if (g_prev_btn_state != btn_state)
-    {
-      g_prev_btn_state = btn_state;
-    }
+    uint8_t btn_state = HAL_GPIO_ReadPin(GPIOC, GPIO_PIN_13);
+    btn_state = btn_state == GPIO_PIN_RESET? 0:1;
+    vButton_QueueSendFromISR(&btn_state);
   }
 }
 

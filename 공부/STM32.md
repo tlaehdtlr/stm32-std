@@ -1065,12 +1065,31 @@ https://ndb796.tistory.com/360 여기 굿
 
 - task 나 ISR 과의 커뮤니케이션을 위해 queue, message, semaphore 등을 썼는데 이것들은 communication object 라는걸 썼음
 - 이거는 communication object 없이 직접적으로 이벤트를 날린다
+- 예제에는 ulTaskNotifyTake( pdTRUE, portMAX_DELAY ) 를 이용하여 조건이 성립되면 뒤의 명령문들이 실행되게 하였다.
 
 
 
 #### Interrupt
 
 - FreeRTOS API 는 Task 와 ISR 으로부터 불려지는 2가지 함수를 제공함
+- callback 으로 처리되는 경우는 non blocking 의 FromISR 함수 사용 필요
+
+
+
+#### Timer
+
+- https://mcuoneclipse.com/2018/05/27/tutorial-understanding-and-using-freertos-software-timers/
+- SW 방식으로 타이머 제공 (정확도는 높지 않지만 주기적 동작 처리 적합)
+- software timer 는 하나의 별도 시스템 task 로 구동 (configMAX_PRIORITIES -1 로 최댓값을 적용하여 타이머 오차 줄이기)
+- 2가지 활용
+  - timer callback
+  - queue 이용해서 어떤 task 가 timer task 에 보내면 timer task 가 wake up 해서 작동 (ticksToWait 같이)
+- 2가지 software timer
+  - one shot : 한 번 expired 되면 restart 안함
+  - Auto reload : expires 되고 다시 restart (주기적인걸로 쓰이지)
+- software timer 인자
+  - queue length : 타이머 동작 위한 command 큐 크기 지정
+  - stack depth : 타이머 task 의 stack 사이즈 지정 word 단위 설정 고
 
 
 

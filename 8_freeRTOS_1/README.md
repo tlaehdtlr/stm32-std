@@ -14,8 +14,10 @@
 - freeRTOS 켜주기
   ![image-20210218154744613](README.assets/image-20210218154744613.png)
 - Timebase source 를 sys tick 그대로 코드 생성하려고 하면 재고해보라는 메시지를 받음
-  tim6으로 설정 (어떤 타이머를 주는게 좋을지는 아직 잘 모르겠음)
-  ![image-20210218155025901](README.assets/image-20210218155025901.png)
+  tim6으로 설정 
+  - systick 은 시스템 타이머인데 FreeRTOS 를 적용하면 우선순위가 높아져 안 좋아진다. (NVIC time base의 숫자가 커짐)
+  - timebase source 를 TIMx로 변경해주어 우선순위를 0으로 만들어준다
+  - ![image-20210218155025901](README.assets/image-20210218155025901.png)
 
 #### IDE
 
