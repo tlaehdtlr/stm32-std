@@ -5,9 +5,9 @@
 #### Schematic
 
 1. stlink 칩과 nucleo 보드가 서로 연결된 UART2 사용
-   - ![image-20210205114941546](C:\Users\JJW_N-771\Desktop\stmpjt\2_UART_printf\README.assets\image-20210205114941546.png)
+   - ![image-20210205114941546](README.assets/image-20210205114941546.png)
 2. 자체 UART 사용 (이것으로 진행!!)
-   - ![image-20210205114819956](C:\Users\JJW_N-771\Desktop\stmpjt\2_UART_printf\README.assets\image-20210205114819956.png)
+   - ![image-20210205114819956](README.assets/image-20210205114819956.png)
 
 
 
@@ -27,13 +27,13 @@
   - 2 : USB serial converter 연결
 
     RX, TX 선을 서로 교차해서 연결해준다
-    ![image-20210205142729466](C:\Users\JJW_N-771\Desktop\stmpjt\2_UART_printf\README.assets\image-20210205142729466-1612849059339.png)
+    ![image-20210205142729466](README.assets/image-20210205142729466.png)
 
 #### 코드 생성
 
 - clock 80MHz (전부)
-- ![image-20210209143915690](C:\Users\JJW_N-771\Desktop\stmpjt\2_UART_printf\README.assets\image-20210209143915690.png)
-- ![image-20210209143954047](C:\Users\JJW_N-771\Desktop\stmpjt\2_UART_printf\README.assets\image-20210209143954047.png)
+- ![image-20210209143915690](README.assets/image-20210209143915690.png)
+- ![image-20210209143954047](README.assets/image-20210209143954047.png)
 
 
 
@@ -75,12 +75,12 @@ PUTCHAR_PROTOTYPE
 #### Tera term 연결
 
 - COM8 이 UART 선으로 연결한 것 (COM5는 USB로 ST link 연결된 것
-  ![image-20210209145641775](C:\Users\JJW_N-771\Desktop\stmpjt\2_UART_printf\README.assets\image-20210209145641775.png)
+  ![image-20210209145641775](README.assets/image-20210209145641775.png)
 - 테라텀 설정
-  ![image-20210209145542951](C:\Users\JJW_N-771\Desktop\stmpjt\2_UART_printf\README.assets\image-20210209145542951.png)
+  ![image-20210209145542951](README.assets/image-20210209145542951.png)
 
 
 
 #### 결과
 
-- ![image-20210209145955035](C:\Users\JJW_N-771\Desktop\stmpjt\2_UART_printf\README.assets\image-20210209145955035.png)
+- ![image-20210209145955035](README.assets/image-20210209145955035.png)

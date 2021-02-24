@@ -2,6 +2,7 @@
 
 ### Counter Mode
 
+- 1초마다 timer callback 으로 LED 토글
 - CNT 가 ARR 에 의해 0 되면서 인터럽트
 
 
@@ -9,7 +10,7 @@
 #### MX
 
 - TIM6(basic timer), 1s 마다 인터럽트, LED toggle
-  ![image-20210210091311286](C:\Users\JJW_N-771\Desktop\stmpjt\5_TIM_mode_1\README.assets\image-20210210091311286.png)
+  ![image-20210210091311286](README.assets/image-20210210091311286.png)
 
 - NVIC, clock 설정
 
@@ -39,16 +40,18 @@
 
 ### DMA 전송
 
+- Timer DMA
+
 - APB1 에 USART2, TIM 6 연결되어있음 -> DMA 전송 가능
-  ![image-20210210093423226](C:\Users\JJW_N-771\Desktop\stmpjt\5_TIM_mode_1\README.assets\image-20210210093423226.png)
+  ![image-20210210093423226](README.assets/image-20210210093423226.png)
 
 #### MX
 
 - UART2
-  ![image-20210210093726566](C:\Users\JJW_N-771\Desktop\stmpjt\5_TIM_mode_1\README.assets\image-20210210093726566.png)
+  ![image-20210210093726566](README.assets/image-20210210093726566.png)
 
 - TIM6 DMA setting
-  ![image-20210210100059094](C:\Users\JJW_N-771\Desktop\stmpjt\5_TIM_mode_1\README.assets\image-20210210100059094.png)
+  ![image-20210210100059094](README.assets/image-20210210100059094.png)
 
 #### IDE
 
@@ -81,7 +84,7 @@
 #### 결과
 
 - 1초당 한 글자씩
-  ![image-20210210100405665](C:\Users\JJW_N-771\Desktop\stmpjt\5_TIM_mode_1\README.assets\image-20210210100405665.png)
+  ![image-20210210100405665](README.assets/image-20210210100405665.png)
 
 
 

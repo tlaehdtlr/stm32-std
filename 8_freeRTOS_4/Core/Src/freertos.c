@@ -27,8 +27,9 @@
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
 #include <stdio.h>
-#include "timers.h"
-#include "stm32l4xx_hal.h"
+//#include "usart.h"
+//#include "timers.h"
+
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -57,6 +58,7 @@ uint8_t timerCheck = 0;
 
 /* USER CODE END Variables */
 osThreadId defaultTaskHandle;
+osTimerId myTimer01Handle;
 
 /* Private function prototypes -----------------------------------------------*/
 /* USER CODE BEGIN FunctionPrototypes */
@@ -65,15 +67,18 @@ void vButton_Task();
 
 void vTimerCallback();
 
-
 /* USER CODE END FunctionPrototypes */
 
 void StartDefaultTask(void const * argument);
+void Callback01(void const * argument);
 
 void MX_FREERTOS_Init(void); /* (MISRA C 2004 rule 8.1) */
 
 /* GetIdleTaskMemory prototype (linked to static allocation support) */
 void vApplicationGetIdleTaskMemory( StaticTask_t **ppxIdleTaskTCBBuffer, StackType_t **ppxIdleTaskStackBuffer, uint32_t *pulIdleTaskStackSize );
+
+/* GetTimerTaskMemory prototype (linked to static allocation support) */
+void vApplicationGetTimerTaskMemory( StaticTask_t **ppxTimerTaskTCBBuffer, StackType_t **ppxTimerTaskStackBuffer, uint32_t *pulTimerTaskStackSize );
 
 /* USER CODE BEGIN GET_IDLE_TASK_MEMORY */
 static StaticTask_t xIdleTaskTCBBuffer;
@@ -87,6 +92,19 @@ void vApplicationGetIdleTaskMemory( StaticTask_t **ppxIdleTaskTCBBuffer, StackTy
   /* place for user code */
 }
 /* USER CODE END GET_IDLE_TASK_MEMORY */
+
+/* USER CODE BEGIN GET_TIMER_TASK_MEMORY */
+static StaticTask_t xTimerTaskTCBBuffer;
+static StackType_t xTimerStack[configTIMER_TASK_STACK_DEPTH];
+
+void vApplicationGetTimerTaskMemory( StaticTask_t **ppxTimerTaskTCBBuffer, StackType_t **ppxTimerTaskStackBuffer, uint32_t *pulTimerTaskStackSize )
+{
+  *ppxTimerTaskTCBBuffer = &xTimerTaskTCBBuffer;
+  *ppxTimerTaskStackBuffer = &xTimerStack[0];
+  *pulTimerTaskStackSize = configTIMER_TASK_STACK_DEPTH;
+  /* place for user code */
+}
+/* USER CODE END GET_TIMER_TASK_MEMORY */
 
 /**
   * @brief  FreeRTOS initialization
@@ -105,6 +123,11 @@ void MX_FREERTOS_Init(void) {
   /* USER CODE BEGIN RTOS_SEMAPHORES */
   /* add semaphores, ... */
   /* USER CODE END RTOS_SEMAPHORES */
+
+  /* Create the timer(s) */
+  /* definition and creation of myTimer01 */
+  osTimerDef(myTimer01, Callback01);
+  myTimer01Handle = osTimerCreate(osTimer(myTimer01), osTimerPeriodic, NULL);
 
   /* USER CODE BEGIN RTOS_TIMERS */
   /* start timers, add new ones, ... */
@@ -132,7 +155,8 @@ void MX_FREERTOS_Init(void) {
 
   xMyTimerHandle = xTimerCreate("TimerName", pdMS_TO_TICKS(500), pdTRUE, (void*)0, vTimerCallback);
 
-  if (xTimerStart(xMyTimerHandle, 0)!=pdPASS) {
+  if (xTimerStart(xMyTimerHandle, 0)!=pdPASS)
+  {
     printf("timer wasn't created");
   }
 
@@ -157,6 +181,14 @@ void StartDefaultTask(void const * argument)
     osDelay(1);
   }
   /* USER CODE END StartDefaultTask */
+}
+
+/* Callback01 function */
+void Callback01(void const * argument)
+{
+  /* USER CODE BEGIN Callback01 */
+
+  /* USER CODE END Callback01 */
 }
 
 /* Private application code --------------------------------------------------*/
@@ -195,11 +227,12 @@ void vButton_Task()
 
     }
 
-    if (timerCheck)
+    if (timerCheck==1)
     {
-      printf("timer expired");
+      printf("timer expired \r\n");
       timerCheck = 0;
     }
+
   }
 }
 
@@ -208,6 +241,7 @@ void vTimerCallback()
 {
  timerCheck = 1;
 }
+
 
 
 /* USER CODE END Application */

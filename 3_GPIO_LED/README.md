@@ -4,7 +4,7 @@
 
 #### Schematic
 
-- ![image-20210205115939076](C:\Users\JJW_N-771\Desktop\stmpjt\OJT\README.assets\image-20210205115939076.png)
+- ![image-20210205115939076](README.assets/image-20210205115939076.png)
 
 
 
@@ -20,9 +20,9 @@
 #### 코드 생성
 
 - Pinout
-  ![image-20210209150852642](C:\Users\JJW_N-771\AppData\Roaming\Typora\typora-user-images\image-20210209150852642.png)
+  ![image-20210209150852642](README.assets/image-20210209150852642.png)
 - clock
-  ![image-20210209150917198](C:\Users\JJW_N-771\AppData\Roaming\Typora\typora-user-images\image-20210209150917198.png)
+  ![image-20210209150917198](README.assets/image-20210209150917198.png)
 
 #### 코드 작성
 
@@ -75,7 +75,7 @@
 
 - rising, falling 다 봐야하므로
 
-  ![image-20210205164342156](C:\Users\JJW_N-771\Desktop\stmpjt\3_GPIO_LED\README.assets\image-20210205164342156.png)
+  ![image-20210205164342156](README.assets/image-20210205164342156.png)
 
 #### 코드 작성
 

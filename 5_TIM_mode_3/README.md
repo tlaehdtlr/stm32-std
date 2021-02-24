@@ -3,17 +3,17 @@
 ### Input Capture Mode
 
 - 다른 타이머의 rising/falling edge 를 캡쳐하여 frequency, duty ratio 확인
-
 - Core i7, 7세대에서는 잘 안 되었지만 간혹 캡쳐가 되었음 (xeon, ram 64에서는 정말 잘 됨. 분석 필요)
+- 확인이 어려워 edge 캡쳐 되는지만 확인하는 것으로 마무리
 
 #### MX
 
 - TIM1
-  ![image-20210215092053371](C:\Users\JJW_N-771\Desktop\stmpjt\5_TIM_mode_3\README.assets\image-20210215092053371.png)
+  ![image-20210215092053371](README.assets/image-20210215092053371.png)
 - TIM15
-  ![image-20210215092112830](C:\Users\JJW_N-771\Desktop\stmpjt\5_TIM_mode_3\README.assets\image-20210215092112830.png)
+  ![image-20210215092112830](README.assets/image-20210215092112830.png)
 - UART2
-  ![image-20210215092136512](C:\Users\JJW_N-771\Desktop\stmpjt\5_TIM_mode_3\README.assets\image-20210215092136512.png)
+  ![image-20210215092136512](README.assets/image-20210215092136512.png)
 
 
 
@@ -78,4 +78,4 @@
 #### 결과
 
 - 콜백함수가 호출되는 것은 확인됨 (낮은 확률로 성공)
-  ![image-20210215091410357](C:\Users\JJW_N-771\Desktop\stmpjt\5_TIM_mode_3\README.assets\image-20210215091410357.png)
+  ![image-20210215091410357](README.assets/image-20210215091410357.png)

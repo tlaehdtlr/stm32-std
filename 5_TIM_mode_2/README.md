@@ -12,10 +12,10 @@
 #### MX
 
 - 
-  ![image-20210210111249473](C:\Users\JJW_N-771\Desktop\stmpjt\5_TIM_mode_2\README.assets\image-20210210111249473.png)
+  ![image-20210210111249473](README.assets/image-20210210111249473.png)
 
-- 
-  
+
+
 
 #### IDE
 

@@ -2,7 +2,7 @@
 
 ### Dimming LED (1sec.)
 
-
+- 1초 동안 LED가 흐려지고, 1초 동안 다시 밝아지는 예제
 
 #### PinMap
 
@@ -18,14 +18,14 @@
   - TIM15- general
     - channel 1
     - PWM 으로 LD4의 경우 CH1N 으로만 가능 (위상 반대)
-      ![image-20210209162031472](C:\Users\JJW_N-771\Desktop\stmpjt\4_TIM_PWM\README.assets\image-20210209162031472.png)
+      ![image-20210209162031472](README.assets/image-20210209162031472.png)
 - NVIC 활성화도 해주기
-  ![image-20210209154040783](C:\Users\JJW_N-771\Desktop\stmpjt\4_TIM_PWM\README.assets\image-20210209154040783.png)
+  ![image-20210209154040783](README.assets/image-20210209154040783.png)
 
 
 
 - clock
-  ![image-20210209154107099](C:\Users\JJW_N-771\Desktop\stmpjt\4_TIM_PWM\README.assets\image-20210209154107099.png)
+  ![image-20210209154107099](README.assets/image-20210209154107099.png)
 - bus clock 80MHz, prescaler 8000-1, clock period 100-1
   - output clock 은 80MHz/ 8000 / 100 = 100Hz , 10ms 주기
   - duty 제어는 clock period 값으로 생각해야함
@@ -37,7 +37,7 @@
   up, down 체크 flag
 
   직접 CCR 제어 (__HAL_TIM_SET_COMPARE(&htim2,TIM_CHANNEL_1,dutyCycle-10) 같은 함수로도 가능)
-  0~100 범위를 1의 값을 변화 시키므로 10ms 딜레이를 주면서 1s 를 맞춤
+  0~100 범위를 1의 값을 변화시키므로 10ms 딜레이를 주면서 1s 를 맞춤
 
 ```c
   /* USER CODE BEGIN 2 */

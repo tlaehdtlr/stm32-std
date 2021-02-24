@@ -1,6 +1,6 @@
 ## 8_freeRTOS_4
 
-- timer, Interrupt (버튼이나 shell로?)
+- Interrupt, timer
 
 
 
@@ -109,6 +109,10 @@ void vButton_Task()
 
 ### Timer
 
+- timer가 expired 될 때마다 callback 부르기
+
+- https://m.blog.naver.com/eziya76/221837794273
+
 - https://mcuoneclipse.com/2018/05/27/tutorial-understanding-and-using-freertos-software-timers/
 
 - ```c
@@ -120,7 +124,73 @@ void vButton_Task()
         vTimerCallback1SecExpired); /* callback */
   ```
 
-- 
+- One shot, Auto reload 
 
 
 
+#### MX
+
+- ![image-20210224102102908](README.assets/image-20210224102102908.png)
+
+- ![image-20210224102127968](README.assets/image-20210224102127968.png)
+
+
+
+#### IDE
+
+```c
+TimerHandle_t xMyTimerHandle = NULL;
+uint8_t timerCheck = 0;
+
+void vTimerCallback();
+
+...
+    
+    xMyTimerHandle = xTimerCreate("TimerName", pdMS_TO_TICKS(500), pdTRUE, (void*)0, vTimerCallback);
+
+  if (xTimerStart(xMyTimerHandle, 0)!=pdPASS)
+  {
+    printf("timer wasn't created");
+  }
+
+...
+
+void vButton_Task()
+{
+  printf("On!! \r\n");
+  uint8_t btnCtl;
+
+  for (;;)
+  {
+
+    if (xQueueReceive(xButtonQueueHandle, &btnCtl, 1000)==pdTRUE)
+    {
+        if (btnCtl == 0)
+        {
+          printf("pull up ! \r\n");
+        }
+        else
+        {
+          printf("press down ! \r\n");
+        }
+    }
+    else
+    {
+
+    }
+
+    if (timerCheck==1)
+    {
+      printf("timer expired \r\n");
+      timerCheck = 0;
+    }
+  }
+}
+        
+    
+void vTimerCallback()
+{
+ timerCheck = 1;
+}
+
+```
