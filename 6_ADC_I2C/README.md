@@ -9,14 +9,15 @@
   - LED를 인체 조직에 비추고 조직을 통과하는 혈액량을 포토다이오드가 반사된 빛 검출
   - 측정된 값의 피크로 심작 박동 측정
 
-
+- MAX30100 과 I2C 통신을 이용
+  - IR, Red 값 읽기
 
 #### MX
 
 - I2C Pin
-  ![image-20210215111658803](C:\Users\JJW_N-771\Desktop\stmpjt\6_ADC_I2C\README.assets\image-20210215111658803.png)
+  ![image-20210215111658803](README.assets/image-20210215111658803.png)
 
-- ![image-20210217083645385](C:\Users\JJW_N-771\Desktop\stmpjt\6_ADC_I2C\README.assets\image-20210217083645385.png)
+- ![image-20210217083645385](README.assets/image-20210217083645385.png)
 
 
 
@@ -24,19 +25,20 @@
 
 - https://github.com/eepj/MAX30100_for_STM32_HAL
   - 외부 라이브러리 추가 후, 편하게 이용하기 위해 include 경로 등록
-    이 때, main.c 의 properties 에서 경로 추가했는데 프로젝트에다가 하는게 맞을지 확실하지 않음
+    이 때, main.c 의 properties 에서 경로 추가 (어느 properies를 설정해야하는지 의문)
     
-    ![image-20210217084314966](C:\Users\JJW_N-771\Desktop\stmpjt\6_ADC_I2C\README.assets\image-20210217084314966.png)
+    ![image-20210217084314966](README.assets/image-20210217084314966.png)
     
 
 
 
 - MAX30100 의 datasheet 를 읽고 코드 작성
-  ![image-20210215111519535](C:\Users\JJW_N-771\AppData\Roaming\Typora\typora-user-images\image-20210215111519535.png)	
-  ![image-20210217084914829](C:\Users\JJW_N-771\Desktop\stmpjt\6_ADC_I2C\README.assets\image-20210217084914829.png)
+  	![image-20210215111519535](README.assets/image-20210215111519535.png)
+  ![image-20210217084914829](README.assets/image-20210217084914829.png)
 
-- main.c 라이브러리 이용하여 간단하게 구현
-
+- 라이브러리 이용하여 간단하게 구현
+main.c
+  
   ```c
     /* USER CODE BEGIN WHILE */
     printf("start!! \r\n");
@@ -51,8 +53,8 @@
       MAX30100_ReadFIFO();
       MAX30100_PlotBothToUART(&huart1, _max30100_red_sample, _max30100_ir_sample, 16);
       HAL_Delay(1000);
-  ```
-
+```
+  
   
 
 #### 결과 확인
@@ -68,5 +70,5 @@
   - 일정 시간 경과 후, stuck
     - 배열이 커져서 터질 수 있음
       - csv 파일 or numpy 이용하면 해결 가능하지 않을까
-  - ![image-20210217090252197](C:\Users\JJW_N-771\Desktop\stmpjt\6_ADC_I2C\README.assets\image-20210217090252197.png)
+  - ![image-20210217090252197](README.assets/image-20210217090252197.png)
 

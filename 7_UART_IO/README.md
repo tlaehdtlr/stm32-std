@@ -1,12 +1,14 @@
 ## 7_UART_IO
 
+- UART 송수신
+
 ### UART 입출력 (polling)
 
 - https://how-to-make-a-quadcopter.tistory.com/2?category=837039
 
 #### MX
 
-- ![image-20210217110707078](C:\Users\JJW_N-771\Desktop\stmpjt\7_UART_IO\README.assets\image-20210217110707078.png)
+- ![image-20210217110707078](README.assets/image-20210217110707078.png)
 
 #### IDE
 
@@ -35,7 +37,7 @@
   
 
 - 결과
-  ![image-20210217112959648](C:\Users\JJW_N-771\Desktop\stmpjt\7_UART_IO\README.assets\image-20210217112959648.png)
+  ![image-20210217112959648](README.assets/image-20210217112959648.png)
 
 
 
@@ -43,7 +45,7 @@
 
 #### MX
 
-- ![image-20210217113711340](C:\Users\JJW_N-771\Desktop\stmpjt\7_UART_IO\README.assets\image-20210217113711340.png)
+- ![image-20210217113711340](README.assets/image-20210217113711340.png)
 
 
 

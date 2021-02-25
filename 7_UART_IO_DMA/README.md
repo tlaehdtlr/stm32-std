@@ -1,5 +1,7 @@
 ## 7_UART_IO_DMA
 
+- DMA 이용하여 UART 송수신
+
 ### callback 이용
 
 - https://m.blog.naver.com/PostView.nhn?blogId=eziya76&logNo=220943681644&proxyReferer=https:%2F%2Fwww.google.com%2F
@@ -8,8 +10,8 @@
 
 #### MX
 
-- ![image-20210217183206261](C:\Users\JJW_N-771\Desktop\stmpjt\7_UART_IO_DMA\README.assets\image-20210217183206261.png)
-  ![image-20210217173003476](C:\Users\JJW_N-771\Desktop\stmpjt\7_UART_IO_DMA\README.assets\image-20210217173003476.png)
+- ![image-20210217183206261](README.assets/image-20210217183206261.png)
+  ![image-20210217173003476](README.assets/image-20210217173003476.png)
 
 
 
@@ -41,9 +43,9 @@
 #### MX
 
 - DMA setting
-  ![image-20210217121344615](C:\Users\JJW_N-771\Desktop\stmpjt\7_UART_IO_DMA\README.assets\image-20210217121344615.png)
+  ![image-20210217121344615](README.assets/image-20210217121344615.png)
 - NVIC
-  ![image-20210217121412752](C:\Users\JJW_N-771\Desktop\stmpjt\7_UART_IO_DMA\README.assets\image-20210217121412752.png)
+  ![image-20210217121412752](README.assets/image-20210217121412752.png)
 
 
 
