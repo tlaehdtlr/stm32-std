@@ -53,9 +53,10 @@ main.c
       MAX30100_ReadFIFO();
       MAX30100_PlotBothToUART(&huart1, _max30100_red_sample, _max30100_ir_sample, 16);
       HAL_Delay(1000);
-```
+  ```
+
   
-  
+
 
 #### 결과 확인
 
@@ -71,4 +72,3 @@ main.c
     - 배열이 커져서 터질 수 있음
       - csv 파일 or numpy 이용하면 해결 가능하지 않을까
   - ![image-20210217090252197](README.assets/image-20210217090252197.png)
-
