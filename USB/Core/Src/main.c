@@ -35,6 +35,9 @@
 
 /* Private define ------------------------------------------------------------*/
 /* USER CODE BEGIN PD */
+#define APP_RX_DATA_SIZE  64
+#define APP_TX_DATA_SIZE  64
+
 /* USER CODE END PD */
 
 /* Private macro -------------------------------------------------------------*/
@@ -45,7 +48,8 @@
 /* Private variables ---------------------------------------------------------*/
 
 /* USER CODE BEGIN PV */
-
+extern uint8_t UserRxBufferFS[APP_RX_DATA_SIZE];
+extern uint8_t UserTxBufferFS[APP_TX_DATA_SIZE];
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -96,6 +100,19 @@ int main(void)
   /* USER CODE BEGIN WHILE */
   while (1)
   {
+    uint16_t len = strlen((const char*)UserRxBufferFS);
+
+    if(len > 0)
+    {
+      strncpy((char *)UserTxBufferFS, (const char*)UserRxBufferFS, len);
+      strcat((char *)UserTxBufferFS, "\r\n");
+      CDC_Transmit_FS((uint8_t*)UserTxBufferFS, strlen((const char*)UserTxBufferFS));
+      memset(UserRxBufferFS, 0, sizeof(UserRxBufferFS));
+      memset(UserTxBufferFS, 0, sizeof(UserTxBufferFS));
+    }
+
+    HAL_Delay(500);
+
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */

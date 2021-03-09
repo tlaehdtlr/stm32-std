@@ -457,6 +457,15 @@ https://ndb796.tistory.com/360 여기 굿
 
 ### ADC (Analog to Digital Converter)
 
+- https://m.blog.naver.com/PostView.nhn?blogId=rlaghlfh&logNo=221385737830&proxyReferer=https:%2F%2Fwww.google.com%2F
+
+  - ADC 자체에 대한 개념
+  - https://m.blog.naver.com/ansdbtls4067/220873048333 좀더 계산적으로 자세하게
+
+- https://blog.naver.com/PostView.nhn?blogId=eziya76&logNo=221472568302&redirect=Dlog&widgetTypeCall=true&directAccess=false
+
+  - 개념, 예제 잘 돼있었네 이거로 할걸
+
 - 온도센싱 값 프린트 찍기
 
 - 코드 생성
@@ -850,6 +859,10 @@ https://ndb796.tistory.com/360 여기 굿
 ### USB
 
 - USB CDC(Communication Device Class) 로 사용하기
+
+  - https://jeonhj.tistory.com/29
+  - https://m.blog.naver.com/PostView.nhn?blogId=eziya76&logNo=220945926732&referrerCode=0&searchKeyword=usb
+
 - 코드 생성
   - USB - mode - device
   - middleware - usb_device - mode - communication device class
@@ -887,7 +900,13 @@ https://ndb796.tistory.com/360 여기 굿
     extern uint8_t UserTxBufferFS[APP_TX_DATA_SIZE];
     ```
 
-    
+
+### SPI
+
+- 
+- ![image-20210309162053475](STM32.assets/image-20210309162053475.png)
+
+
 
 ## FreeRTOS
 
