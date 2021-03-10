@@ -81,7 +81,13 @@ https://ndb796.tistory.com/360 여기 굿
 - 프로젝트 빌드
 - 실행
 
+### Cube Programmer
 
+- 지금 경로가 꼬인건지 관리자 권한으로 실행해야하네
+- ![image-20210310085208475](STM32.assets/image-20210310085208475.png)
+- connect 하고 
+- file path 확인해서 원하는 bin 파일, start address 확인
+- start programming
 
 ### Clock
 
