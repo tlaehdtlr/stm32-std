@@ -25,6 +25,7 @@
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
+#include <stdio.h>
 
 /* USER CODE END Includes */
 
@@ -35,6 +36,17 @@
 
 /* Private define ------------------------------------------------------------*/
 /* USER CODE BEGIN PD */
+#ifdef __GNUC__
+    #define PUTCHAR_PROTOTYPE int __io_putchar(int ch)
+#else
+    #define PUTCHAR_PROTOTYPE int fputc(int ch, FILE *f)
+#endif
+
+PUTCHAR_PROTOTYPE
+{
+  HAL_UART_Transmit(&huart2, (uint8_t *)&ch, 1, 0xFFFF);
+  return ch;
+}
 /* USER CODE END PD */
 
 /* Private macro -------------------------------------------------------------*/
@@ -89,12 +101,14 @@ int main(void)
   MX_GPIO_Init();
   MX_SPI2_Init();
   MX_USART2_UART_Init();
+  MX_SPI1_Init();
   /* USER CODE BEGIN 2 */
 
   /* USER CODE END 2 */
 
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
+#if 0
   uint8_t Hi[] = "start\r\n";
   uint8_t * hi;
   hi = Hi;
@@ -114,7 +128,14 @@ int main(void)
       HAL_UART_Transmit(&huart2, &rx_buffer, 1, 100);
     }
     /* USER CODE END WHILE */
-
+#else
+    printf("hi");
+    while (1)
+    {
+      HAL_Delay(1000);
+      printf("hello\r\n");
+      /* USER CODE END WHILE */
+#endif
     /* USER CODE BEGIN 3 */
   }
   /* USER CODE END 3 */
