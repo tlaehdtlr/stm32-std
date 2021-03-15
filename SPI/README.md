@@ -40,7 +40,7 @@
     while (1)
     {
       HAL_Delay(1000);
-  
+    
       uint8_t tx_buffer[] = { 'H', 'e', 'l', 'l', 'o', '\r', '\n' };
       uint8_t rx_buffer;
       for (int i = 0; i < sizeof(tx_buffer); i++) {
@@ -48,7 +48,7 @@
         HAL_UART_Transmit(&huart2, &rx_buffer, 1, 100);
       }
       /* USER CODE END WHILE */
-  
+    
       /* USER CODE BEGIN 3 */
     }
     /* USER CODE END 3 */
@@ -62,3 +62,45 @@
 
 
 
+
+
+
+
+
+
+### SPI1, SPI2 사용
+
+- 뭔가 이상함 몇번 되다가 안됨
+- 내 생각에는 얘 통신 방식때문인거 같애
+- 클럭을 맞추고 빠르게 막~ 되는건데 지금 이러면 벗어난다?
+
+#### MX
+
+- ![image-20210315143559201](README.assets/image-20210315143559201.png)
+
+#### IDE
+
+- ```c
+  uint8_t tx_buf[10] = {1,2,3,4,5,6,7,8,9,10};
+  uint8_t rx_buf[10] = {0,0,0,0,0,0,0,0,0,0};
+  while (1)
+  {
+      HAL_Delay(1000);
+  
+      for (int i=0; i<10;i++)
+      {
+          if (HAL_SPI_Receive(&hspi1, &rx_buf[i], 1, 100)==HAL_OK)
+          {
+              printf("Receive : %d ", rx_buf[i]);
+          }
+          if (HAL_SPI_Transmit(&hspi2, &tx_buf[i], 1, 100)==HAL_OK)
+          {
+              printf("Trans : %d ", tx_buf[i]);
+          }
+          printf("\r\n");
+      }
+  ```
+
+#### 결과
+
+- ![image-20210315143653715](README.assets/image-20210315143653715.png)

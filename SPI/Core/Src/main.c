@@ -108,6 +108,7 @@ int main(void)
 
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
+  printf("new~ \r\n");
 #if 0
   uint8_t Hi[] = "start\r\n";
   uint8_t * hi;
@@ -127,15 +128,38 @@ int main(void)
       HAL_SPI_TransmitReceive(&hspi2, tx_buffer + i, &rx_buffer, 1, 100);
       HAL_UART_Transmit(&huart2, &rx_buffer, 1, 100);
     }
-    /* USER CODE END WHILE */
 #else
-    printf("hi");
-    while (1)
+
+
+  uint8_t tx_buf[10] = {1,2,3,4,5,6,7,8,9,10};
+  uint8_t rx_buf[10] = {0,0,0,0,0,0,0,0,0,0};
+//  uint8_t rx_buf;
+
+  while (1)
+  {
+    HAL_Delay(1000);
+
+    for (int i=0; i<10;i++)
     {
-      HAL_Delay(1000);
-      printf("hello\r\n");
-      /* USER CODE END WHILE */
+      if (HAL_SPI_Receive(&hspi1, &rx_buf[i], 1, 100)==HAL_OK)
+      {
+        printf("Receive : %d ", rx_buf[i]);
+      }
+      if (HAL_SPI_Transmit(&hspi2, &tx_buf[i], 1, 100)==HAL_OK)
+      {
+        printf("Trans : %d ", tx_buf[i]);
+      }
+      printf("\r\n");
+    }
+//    for (int i=0; i<10;i++)
+//    {
+////      HAL_UART_Transmit(&huart2, &rx_buf[i], 1, 100);
+//      printf("%d ", &rx_buf[i]);
+//    }
+    printf("\r\n");
 #endif
+    /* USER CODE END WHILE */
+
     /* USER CODE BEGIN 3 */
   }
   /* USER CODE END 3 */
