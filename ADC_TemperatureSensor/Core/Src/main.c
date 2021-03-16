@@ -134,7 +134,9 @@ int main(void)
     //printf("ADC1_Temperature : %d \n", adc1);
 
     vSense = adc1 * ADC_TO_VOLT;
-    temp = (V30-vSense) / AVG_SLOPE + 25.0;
+//    temp = (uint16_t)(V30-vSense) / AVG_SLOPE + 25.0;
+    printf("Sense : %f \r\n", vSense);
+    temp = (uint16_t)(((V30 * 1000.0 - (float)vSense * 0.8) / AVG_SLOPE) + 25.0);
     printf("ADC1, Temp : %d , %f \n", adc1, temp);
 	  /* USER CODE END WHILE */
 

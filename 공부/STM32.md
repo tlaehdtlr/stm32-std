@@ -909,8 +909,31 @@ https://ndb796.tistory.com/360 여기 굿
 
 ### SPI
 
-- 
+- SPI datasheet 읽는법
+  - https://dkeemin.com/stm32f1-ll-spi-%EB%8D%B0%EC%9D%B4%ED%84%B0%EC%8B%9C%ED%8A%B8-%EA%B3%B5%EB%B6%80%ED%95%98%EA%B8%B0/
+  - CPOL 핀 : SPI 통신하지 않을 때 clock 핀을 High? Low?
+  - NSS : 칩 선택 핀 (제어할 칩 통신할 때 High? Low?) -> 다수의 칩 개별 제어 가능
+  - MSB (처음 비트부터), LSB(역순)
+    - ex. 0xF0 보내면 MSB (0xF0), LSB(0x0F)
+  - CPHA : 몇번째 egde 읽음? (0 : 첫번째, 1: 두번째)
+- 설정
+  - https://dkeemin.com/stm32f1xx-spi-%ED%86%B5%EC%8B%A0-cubemx%EB%A1%9C-%EC%B4%88%EA%B8%B0-%EC%84%A4%EC%A0%95%ED%95%98%EA%B8%B0/
 - ![image-20210309162053475](STM32.assets/image-20210309162053475.png)
+
+#### 설정
+
+- ![image-20210316092029880](STM32.assets/image-20210316092029880.png)
+  - 클럭 분주해줘야함
+- ![image-20210316091903762](STM32.assets/image-20210316091903762.png)
+  - 어디인지 봐
+- ![image-20210316093241424](STM32.assets/image-20210316093241424.png)
+  - slave CPHA 0으로 가능 (극성은 상관없음)
+- ![image-20210316093437515](STM32.assets/image-20210316093437515.png)
+  - 이것도 가능 첫번째는 MSB 인 것도 확인
+
+
+
+
 
 
 

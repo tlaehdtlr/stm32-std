@@ -1,30 +1,31 @@
 ################################################################################
 # Automatically-generated file. Do not edit!
+# Toolchain: GNU Tools for STM32 (9-2020-q2-update)
 ################################################################################
 
 # Add inputs and outputs from these tool invocations to the build variables 
 C_SRCS += \
-C:/Users/JJW_N-771/Desktop/stmpjt/ADC_TemperatureSensor/Drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal.c \
-C:/Users/JJW_N-771/Desktop/stmpjt/ADC_TemperatureSensor/Drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_adc.c \
-C:/Users/JJW_N-771/Desktop/stmpjt/ADC_TemperatureSensor/Drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_adc_ex.c \
-C:/Users/JJW_N-771/Desktop/stmpjt/ADC_TemperatureSensor/Drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_cortex.c \
-C:/Users/JJW_N-771/Desktop/stmpjt/ADC_TemperatureSensor/Drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_dma.c \
-C:/Users/JJW_N-771/Desktop/stmpjt/ADC_TemperatureSensor/Drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_dma_ex.c \
-C:/Users/JJW_N-771/Desktop/stmpjt/ADC_TemperatureSensor/Drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_exti.c \
-C:/Users/JJW_N-771/Desktop/stmpjt/ADC_TemperatureSensor/Drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_flash.c \
-C:/Users/JJW_N-771/Desktop/stmpjt/ADC_TemperatureSensor/Drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_flash_ex.c \
-C:/Users/JJW_N-771/Desktop/stmpjt/ADC_TemperatureSensor/Drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_flash_ramfunc.c \
-C:/Users/JJW_N-771/Desktop/stmpjt/ADC_TemperatureSensor/Drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_gpio.c \
-C:/Users/JJW_N-771/Desktop/stmpjt/ADC_TemperatureSensor/Drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_i2c.c \
-C:/Users/JJW_N-771/Desktop/stmpjt/ADC_TemperatureSensor/Drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_i2c_ex.c \
-C:/Users/JJW_N-771/Desktop/stmpjt/ADC_TemperatureSensor/Drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_pwr.c \
-C:/Users/JJW_N-771/Desktop/stmpjt/ADC_TemperatureSensor/Drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_pwr_ex.c \
-C:/Users/JJW_N-771/Desktop/stmpjt/ADC_TemperatureSensor/Drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_rcc.c \
-C:/Users/JJW_N-771/Desktop/stmpjt/ADC_TemperatureSensor/Drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_rcc_ex.c \
-C:/Users/JJW_N-771/Desktop/stmpjt/ADC_TemperatureSensor/Drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_tim.c \
-C:/Users/JJW_N-771/Desktop/stmpjt/ADC_TemperatureSensor/Drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_tim_ex.c \
-C:/Users/JJW_N-771/Desktop/stmpjt/ADC_TemperatureSensor/Drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_uart.c \
-C:/Users/JJW_N-771/Desktop/stmpjt/ADC_TemperatureSensor/Drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_uart_ex.c 
+D:/stmpjt/ADC_TemperatureSensor/Drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal.c \
+D:/stmpjt/ADC_TemperatureSensor/Drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_adc.c \
+D:/stmpjt/ADC_TemperatureSensor/Drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_adc_ex.c \
+D:/stmpjt/ADC_TemperatureSensor/Drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_cortex.c \
+D:/stmpjt/ADC_TemperatureSensor/Drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_dma.c \
+D:/stmpjt/ADC_TemperatureSensor/Drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_dma_ex.c \
+D:/stmpjt/ADC_TemperatureSensor/Drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_exti.c \
+D:/stmpjt/ADC_TemperatureSensor/Drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_flash.c \
+D:/stmpjt/ADC_TemperatureSensor/Drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_flash_ex.c \
+D:/stmpjt/ADC_TemperatureSensor/Drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_flash_ramfunc.c \
+D:/stmpjt/ADC_TemperatureSensor/Drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_gpio.c \
+D:/stmpjt/ADC_TemperatureSensor/Drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_i2c.c \
+D:/stmpjt/ADC_TemperatureSensor/Drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_i2c_ex.c \
+D:/stmpjt/ADC_TemperatureSensor/Drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_pwr.c \
+D:/stmpjt/ADC_TemperatureSensor/Drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_pwr_ex.c \
+D:/stmpjt/ADC_TemperatureSensor/Drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_rcc.c \
+D:/stmpjt/ADC_TemperatureSensor/Drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_rcc_ex.c \
+D:/stmpjt/ADC_TemperatureSensor/Drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_tim.c \
+D:/stmpjt/ADC_TemperatureSensor/Drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_tim_ex.c \
+D:/stmpjt/ADC_TemperatureSensor/Drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_uart.c \
+D:/stmpjt/ADC_TemperatureSensor/Drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_uart_ex.c 
 
 OBJS += \
 ./Drivers/STM32L4xx_HAL_Driver/stm32l4xx_hal.o \
@@ -74,46 +75,46 @@ C_DEPS += \
 
 
 # Each subdirectory must supply rules for building sources it contributes
-Drivers/STM32L4xx_HAL_Driver/stm32l4xx_hal.o: C:/Users/JJW_N-771/Desktop/stmpjt/ADC_TemperatureSensor/Drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal.c
+Drivers/STM32L4xx_HAL_Driver/stm32l4xx_hal.o: D:/stmpjt/ADC_TemperatureSensor/Drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal.c Drivers/STM32L4xx_HAL_Driver/subdir.mk
 	arm-none-eabi-gcc "$<" -mcpu=cortex-m4 -std=gnu11 -g3 -DUSE_HAL_DRIVER -DSTM32L412xx -DDEBUG -c -I../../Core/Inc -I../../Drivers/STM32L4xx_HAL_Driver/Inc -I../../Drivers/STM32L4xx_HAL_Driver/Inc/Legacy -I../../Drivers/CMSIS/Device/ST/STM32L4xx/Include -I../../Drivers/CMSIS/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -MMD -MP -MF"Drivers/STM32L4xx_HAL_Driver/stm32l4xx_hal.d" -MT"$@" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "$@"
-Drivers/STM32L4xx_HAL_Driver/stm32l4xx_hal_adc.o: C:/Users/JJW_N-771/Desktop/stmpjt/ADC_TemperatureSensor/Drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_adc.c
+Drivers/STM32L4xx_HAL_Driver/stm32l4xx_hal_adc.o: D:/stmpjt/ADC_TemperatureSensor/Drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_adc.c Drivers/STM32L4xx_HAL_Driver/subdir.mk
 	arm-none-eabi-gcc "$<" -mcpu=cortex-m4 -std=gnu11 -g3 -DUSE_HAL_DRIVER -DSTM32L412xx -DDEBUG -c -I../../Core/Inc -I../../Drivers/STM32L4xx_HAL_Driver/Inc -I../../Drivers/STM32L4xx_HAL_Driver/Inc/Legacy -I../../Drivers/CMSIS/Device/ST/STM32L4xx/Include -I../../Drivers/CMSIS/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -MMD -MP -MF"Drivers/STM32L4xx_HAL_Driver/stm32l4xx_hal_adc.d" -MT"$@" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "$@"
-Drivers/STM32L4xx_HAL_Driver/stm32l4xx_hal_adc_ex.o: C:/Users/JJW_N-771/Desktop/stmpjt/ADC_TemperatureSensor/Drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_adc_ex.c
+Drivers/STM32L4xx_HAL_Driver/stm32l4xx_hal_adc_ex.o: D:/stmpjt/ADC_TemperatureSensor/Drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_adc_ex.c Drivers/STM32L4xx_HAL_Driver/subdir.mk
 	arm-none-eabi-gcc "$<" -mcpu=cortex-m4 -std=gnu11 -g3 -DUSE_HAL_DRIVER -DSTM32L412xx -DDEBUG -c -I../../Core/Inc -I../../Drivers/STM32L4xx_HAL_Driver/Inc -I../../Drivers/STM32L4xx_HAL_Driver/Inc/Legacy -I../../Drivers/CMSIS/Device/ST/STM32L4xx/Include -I../../Drivers/CMSIS/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -MMD -MP -MF"Drivers/STM32L4xx_HAL_Driver/stm32l4xx_hal_adc_ex.d" -MT"$@" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "$@"
-Drivers/STM32L4xx_HAL_Driver/stm32l4xx_hal_cortex.o: C:/Users/JJW_N-771/Desktop/stmpjt/ADC_TemperatureSensor/Drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_cortex.c
+Drivers/STM32L4xx_HAL_Driver/stm32l4xx_hal_cortex.o: D:/stmpjt/ADC_TemperatureSensor/Drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_cortex.c Drivers/STM32L4xx_HAL_Driver/subdir.mk
 	arm-none-eabi-gcc "$<" -mcpu=cortex-m4 -std=gnu11 -g3 -DUSE_HAL_DRIVER -DSTM32L412xx -DDEBUG -c -I../../Core/Inc -I../../Drivers/STM32L4xx_HAL_Driver/Inc -I../../Drivers/STM32L4xx_HAL_Driver/Inc/Legacy -I../../Drivers/CMSIS/Device/ST/STM32L4xx/Include -I../../Drivers/CMSIS/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -MMD -MP -MF"Drivers/STM32L4xx_HAL_Driver/stm32l4xx_hal_cortex.d" -MT"$@" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "$@"
-Drivers/STM32L4xx_HAL_Driver/stm32l4xx_hal_dma.o: C:/Users/JJW_N-771/Desktop/stmpjt/ADC_TemperatureSensor/Drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_dma.c
+Drivers/STM32L4xx_HAL_Driver/stm32l4xx_hal_dma.o: D:/stmpjt/ADC_TemperatureSensor/Drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_dma.c Drivers/STM32L4xx_HAL_Driver/subdir.mk
 	arm-none-eabi-gcc "$<" -mcpu=cortex-m4 -std=gnu11 -g3 -DUSE_HAL_DRIVER -DSTM32L412xx -DDEBUG -c -I../../Core/Inc -I../../Drivers/STM32L4xx_HAL_Driver/Inc -I../../Drivers/STM32L4xx_HAL_Driver/Inc/Legacy -I../../Drivers/CMSIS/Device/ST/STM32L4xx/Include -I../../Drivers/CMSIS/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -MMD -MP -MF"Drivers/STM32L4xx_HAL_Driver/stm32l4xx_hal_dma.d" -MT"$@" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "$@"
-Drivers/STM32L4xx_HAL_Driver/stm32l4xx_hal_dma_ex.o: C:/Users/JJW_N-771/Desktop/stmpjt/ADC_TemperatureSensor/Drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_dma_ex.c
+Drivers/STM32L4xx_HAL_Driver/stm32l4xx_hal_dma_ex.o: D:/stmpjt/ADC_TemperatureSensor/Drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_dma_ex.c Drivers/STM32L4xx_HAL_Driver/subdir.mk
 	arm-none-eabi-gcc "$<" -mcpu=cortex-m4 -std=gnu11 -g3 -DUSE_HAL_DRIVER -DSTM32L412xx -DDEBUG -c -I../../Core/Inc -I../../Drivers/STM32L4xx_HAL_Driver/Inc -I../../Drivers/STM32L4xx_HAL_Driver/Inc/Legacy -I../../Drivers/CMSIS/Device/ST/STM32L4xx/Include -I../../Drivers/CMSIS/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -MMD -MP -MF"Drivers/STM32L4xx_HAL_Driver/stm32l4xx_hal_dma_ex.d" -MT"$@" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "$@"
-Drivers/STM32L4xx_HAL_Driver/stm32l4xx_hal_exti.o: C:/Users/JJW_N-771/Desktop/stmpjt/ADC_TemperatureSensor/Drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_exti.c
+Drivers/STM32L4xx_HAL_Driver/stm32l4xx_hal_exti.o: D:/stmpjt/ADC_TemperatureSensor/Drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_exti.c Drivers/STM32L4xx_HAL_Driver/subdir.mk
 	arm-none-eabi-gcc "$<" -mcpu=cortex-m4 -std=gnu11 -g3 -DUSE_HAL_DRIVER -DSTM32L412xx -DDEBUG -c -I../../Core/Inc -I../../Drivers/STM32L4xx_HAL_Driver/Inc -I../../Drivers/STM32L4xx_HAL_Driver/Inc/Legacy -I../../Drivers/CMSIS/Device/ST/STM32L4xx/Include -I../../Drivers/CMSIS/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -MMD -MP -MF"Drivers/STM32L4xx_HAL_Driver/stm32l4xx_hal_exti.d" -MT"$@" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "$@"
-Drivers/STM32L4xx_HAL_Driver/stm32l4xx_hal_flash.o: C:/Users/JJW_N-771/Desktop/stmpjt/ADC_TemperatureSensor/Drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_flash.c
+Drivers/STM32L4xx_HAL_Driver/stm32l4xx_hal_flash.o: D:/stmpjt/ADC_TemperatureSensor/Drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_flash.c Drivers/STM32L4xx_HAL_Driver/subdir.mk
 	arm-none-eabi-gcc "$<" -mcpu=cortex-m4 -std=gnu11 -g3 -DUSE_HAL_DRIVER -DSTM32L412xx -DDEBUG -c -I../../Core/Inc -I../../Drivers/STM32L4xx_HAL_Driver/Inc -I../../Drivers/STM32L4xx_HAL_Driver/Inc/Legacy -I../../Drivers/CMSIS/Device/ST/STM32L4xx/Include -I../../Drivers/CMSIS/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -MMD -MP -MF"Drivers/STM32L4xx_HAL_Driver/stm32l4xx_hal_flash.d" -MT"$@" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "$@"
-Drivers/STM32L4xx_HAL_Driver/stm32l4xx_hal_flash_ex.o: C:/Users/JJW_N-771/Desktop/stmpjt/ADC_TemperatureSensor/Drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_flash_ex.c
+Drivers/STM32L4xx_HAL_Driver/stm32l4xx_hal_flash_ex.o: D:/stmpjt/ADC_TemperatureSensor/Drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_flash_ex.c Drivers/STM32L4xx_HAL_Driver/subdir.mk
 	arm-none-eabi-gcc "$<" -mcpu=cortex-m4 -std=gnu11 -g3 -DUSE_HAL_DRIVER -DSTM32L412xx -DDEBUG -c -I../../Core/Inc -I../../Drivers/STM32L4xx_HAL_Driver/Inc -I../../Drivers/STM32L4xx_HAL_Driver/Inc/Legacy -I../../Drivers/CMSIS/Device/ST/STM32L4xx/Include -I../../Drivers/CMSIS/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -MMD -MP -MF"Drivers/STM32L4xx_HAL_Driver/stm32l4xx_hal_flash_ex.d" -MT"$@" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "$@"
-Drivers/STM32L4xx_HAL_Driver/stm32l4xx_hal_flash_ramfunc.o: C:/Users/JJW_N-771/Desktop/stmpjt/ADC_TemperatureSensor/Drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_flash_ramfunc.c
+Drivers/STM32L4xx_HAL_Driver/stm32l4xx_hal_flash_ramfunc.o: D:/stmpjt/ADC_TemperatureSensor/Drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_flash_ramfunc.c Drivers/STM32L4xx_HAL_Driver/subdir.mk
 	arm-none-eabi-gcc "$<" -mcpu=cortex-m4 -std=gnu11 -g3 -DUSE_HAL_DRIVER -DSTM32L412xx -DDEBUG -c -I../../Core/Inc -I../../Drivers/STM32L4xx_HAL_Driver/Inc -I../../Drivers/STM32L4xx_HAL_Driver/Inc/Legacy -I../../Drivers/CMSIS/Device/ST/STM32L4xx/Include -I../../Drivers/CMSIS/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -MMD -MP -MF"Drivers/STM32L4xx_HAL_Driver/stm32l4xx_hal_flash_ramfunc.d" -MT"$@" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "$@"
-Drivers/STM32L4xx_HAL_Driver/stm32l4xx_hal_gpio.o: C:/Users/JJW_N-771/Desktop/stmpjt/ADC_TemperatureSensor/Drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_gpio.c
+Drivers/STM32L4xx_HAL_Driver/stm32l4xx_hal_gpio.o: D:/stmpjt/ADC_TemperatureSensor/Drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_gpio.c Drivers/STM32L4xx_HAL_Driver/subdir.mk
 	arm-none-eabi-gcc "$<" -mcpu=cortex-m4 -std=gnu11 -g3 -DUSE_HAL_DRIVER -DSTM32L412xx -DDEBUG -c -I../../Core/Inc -I../../Drivers/STM32L4xx_HAL_Driver/Inc -I../../Drivers/STM32L4xx_HAL_Driver/Inc/Legacy -I../../Drivers/CMSIS/Device/ST/STM32L4xx/Include -I../../Drivers/CMSIS/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -MMD -MP -MF"Drivers/STM32L4xx_HAL_Driver/stm32l4xx_hal_gpio.d" -MT"$@" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "$@"
-Drivers/STM32L4xx_HAL_Driver/stm32l4xx_hal_i2c.o: C:/Users/JJW_N-771/Desktop/stmpjt/ADC_TemperatureSensor/Drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_i2c.c
+Drivers/STM32L4xx_HAL_Driver/stm32l4xx_hal_i2c.o: D:/stmpjt/ADC_TemperatureSensor/Drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_i2c.c Drivers/STM32L4xx_HAL_Driver/subdir.mk
 	arm-none-eabi-gcc "$<" -mcpu=cortex-m4 -std=gnu11 -g3 -DUSE_HAL_DRIVER -DSTM32L412xx -DDEBUG -c -I../../Core/Inc -I../../Drivers/STM32L4xx_HAL_Driver/Inc -I../../Drivers/STM32L4xx_HAL_Driver/Inc/Legacy -I../../Drivers/CMSIS/Device/ST/STM32L4xx/Include -I../../Drivers/CMSIS/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -MMD -MP -MF"Drivers/STM32L4xx_HAL_Driver/stm32l4xx_hal_i2c.d" -MT"$@" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "$@"
-Drivers/STM32L4xx_HAL_Driver/stm32l4xx_hal_i2c_ex.o: C:/Users/JJW_N-771/Desktop/stmpjt/ADC_TemperatureSensor/Drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_i2c_ex.c
+Drivers/STM32L4xx_HAL_Driver/stm32l4xx_hal_i2c_ex.o: D:/stmpjt/ADC_TemperatureSensor/Drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_i2c_ex.c Drivers/STM32L4xx_HAL_Driver/subdir.mk
 	arm-none-eabi-gcc "$<" -mcpu=cortex-m4 -std=gnu11 -g3 -DUSE_HAL_DRIVER -DSTM32L412xx -DDEBUG -c -I../../Core/Inc -I../../Drivers/STM32L4xx_HAL_Driver/Inc -I../../Drivers/STM32L4xx_HAL_Driver/Inc/Legacy -I../../Drivers/CMSIS/Device/ST/STM32L4xx/Include -I../../Drivers/CMSIS/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -MMD -MP -MF"Drivers/STM32L4xx_HAL_Driver/stm32l4xx_hal_i2c_ex.d" -MT"$@" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "$@"
-Drivers/STM32L4xx_HAL_Driver/stm32l4xx_hal_pwr.o: C:/Users/JJW_N-771/Desktop/stmpjt/ADC_TemperatureSensor/Drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_pwr.c
+Drivers/STM32L4xx_HAL_Driver/stm32l4xx_hal_pwr.o: D:/stmpjt/ADC_TemperatureSensor/Drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_pwr.c Drivers/STM32L4xx_HAL_Driver/subdir.mk
 	arm-none-eabi-gcc "$<" -mcpu=cortex-m4 -std=gnu11 -g3 -DUSE_HAL_DRIVER -DSTM32L412xx -DDEBUG -c -I../../Core/Inc -I../../Drivers/STM32L4xx_HAL_Driver/Inc -I../../Drivers/STM32L4xx_HAL_Driver/Inc/Legacy -I../../Drivers/CMSIS/Device/ST/STM32L4xx/Include -I../../Drivers/CMSIS/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -MMD -MP -MF"Drivers/STM32L4xx_HAL_Driver/stm32l4xx_hal_pwr.d" -MT"$@" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "$@"
-Drivers/STM32L4xx_HAL_Driver/stm32l4xx_hal_pwr_ex.o: C:/Users/JJW_N-771/Desktop/stmpjt/ADC_TemperatureSensor/Drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_pwr_ex.c
+Drivers/STM32L4xx_HAL_Driver/stm32l4xx_hal_pwr_ex.o: D:/stmpjt/ADC_TemperatureSensor/Drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_pwr_ex.c Drivers/STM32L4xx_HAL_Driver/subdir.mk
 	arm-none-eabi-gcc "$<" -mcpu=cortex-m4 -std=gnu11 -g3 -DUSE_HAL_DRIVER -DSTM32L412xx -DDEBUG -c -I../../Core/Inc -I../../Drivers/STM32L4xx_HAL_Driver/Inc -I../../Drivers/STM32L4xx_HAL_Driver/Inc/Legacy -I../../Drivers/CMSIS/Device/ST/STM32L4xx/Include -I../../Drivers/CMSIS/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -MMD -MP -MF"Drivers/STM32L4xx_HAL_Driver/stm32l4xx_hal_pwr_ex.d" -MT"$@" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "$@"
-Drivers/STM32L4xx_HAL_Driver/stm32l4xx_hal_rcc.o: C:/Users/JJW_N-771/Desktop/stmpjt/ADC_TemperatureSensor/Drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_rcc.c
+Drivers/STM32L4xx_HAL_Driver/stm32l4xx_hal_rcc.o: D:/stmpjt/ADC_TemperatureSensor/Drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_rcc.c Drivers/STM32L4xx_HAL_Driver/subdir.mk
 	arm-none-eabi-gcc "$<" -mcpu=cortex-m4 -std=gnu11 -g3 -DUSE_HAL_DRIVER -DSTM32L412xx -DDEBUG -c -I../../Core/Inc -I../../Drivers/STM32L4xx_HAL_Driver/Inc -I../../Drivers/STM32L4xx_HAL_Driver/Inc/Legacy -I../../Drivers/CMSIS/Device/ST/STM32L4xx/Include -I../../Drivers/CMSIS/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -MMD -MP -MF"Drivers/STM32L4xx_HAL_Driver/stm32l4xx_hal_rcc.d" -MT"$@" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "$@"
-Drivers/STM32L4xx_HAL_Driver/stm32l4xx_hal_rcc_ex.o: C:/Users/JJW_N-771/Desktop/stmpjt/ADC_TemperatureSensor/Drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_rcc_ex.c
+Drivers/STM32L4xx_HAL_Driver/stm32l4xx_hal_rcc_ex.o: D:/stmpjt/ADC_TemperatureSensor/Drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_rcc_ex.c Drivers/STM32L4xx_HAL_Driver/subdir.mk
 	arm-none-eabi-gcc "$<" -mcpu=cortex-m4 -std=gnu11 -g3 -DUSE_HAL_DRIVER -DSTM32L412xx -DDEBUG -c -I../../Core/Inc -I../../Drivers/STM32L4xx_HAL_Driver/Inc -I../../Drivers/STM32L4xx_HAL_Driver/Inc/Legacy -I../../Drivers/CMSIS/Device/ST/STM32L4xx/Include -I../../Drivers/CMSIS/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -MMD -MP -MF"Drivers/STM32L4xx_HAL_Driver/stm32l4xx_hal_rcc_ex.d" -MT"$@" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "$@"
-Drivers/STM32L4xx_HAL_Driver/stm32l4xx_hal_tim.o: C:/Users/JJW_N-771/Desktop/stmpjt/ADC_TemperatureSensor/Drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_tim.c
+Drivers/STM32L4xx_HAL_Driver/stm32l4xx_hal_tim.o: D:/stmpjt/ADC_TemperatureSensor/Drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_tim.c Drivers/STM32L4xx_HAL_Driver/subdir.mk
 	arm-none-eabi-gcc "$<" -mcpu=cortex-m4 -std=gnu11 -g3 -DUSE_HAL_DRIVER -DSTM32L412xx -DDEBUG -c -I../../Core/Inc -I../../Drivers/STM32L4xx_HAL_Driver/Inc -I../../Drivers/STM32L4xx_HAL_Driver/Inc/Legacy -I../../Drivers/CMSIS/Device/ST/STM32L4xx/Include -I../../Drivers/CMSIS/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -MMD -MP -MF"Drivers/STM32L4xx_HAL_Driver/stm32l4xx_hal_tim.d" -MT"$@" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "$@"
-Drivers/STM32L4xx_HAL_Driver/stm32l4xx_hal_tim_ex.o: C:/Users/JJW_N-771/Desktop/stmpjt/ADC_TemperatureSensor/Drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_tim_ex.c
+Drivers/STM32L4xx_HAL_Driver/stm32l4xx_hal_tim_ex.o: D:/stmpjt/ADC_TemperatureSensor/Drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_tim_ex.c Drivers/STM32L4xx_HAL_Driver/subdir.mk
 	arm-none-eabi-gcc "$<" -mcpu=cortex-m4 -std=gnu11 -g3 -DUSE_HAL_DRIVER -DSTM32L412xx -DDEBUG -c -I../../Core/Inc -I../../Drivers/STM32L4xx_HAL_Driver/Inc -I../../Drivers/STM32L4xx_HAL_Driver/Inc/Legacy -I../../Drivers/CMSIS/Device/ST/STM32L4xx/Include -I../../Drivers/CMSIS/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -MMD -MP -MF"Drivers/STM32L4xx_HAL_Driver/stm32l4xx_hal_tim_ex.d" -MT"$@" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "$@"
-Drivers/STM32L4xx_HAL_Driver/stm32l4xx_hal_uart.o: C:/Users/JJW_N-771/Desktop/stmpjt/ADC_TemperatureSensor/Drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_uart.c
+Drivers/STM32L4xx_HAL_Driver/stm32l4xx_hal_uart.o: D:/stmpjt/ADC_TemperatureSensor/Drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_uart.c Drivers/STM32L4xx_HAL_Driver/subdir.mk
 	arm-none-eabi-gcc "$<" -mcpu=cortex-m4 -std=gnu11 -g3 -DUSE_HAL_DRIVER -DSTM32L412xx -DDEBUG -c -I../../Core/Inc -I../../Drivers/STM32L4xx_HAL_Driver/Inc -I../../Drivers/STM32L4xx_HAL_Driver/Inc/Legacy -I../../Drivers/CMSIS/Device/ST/STM32L4xx/Include -I../../Drivers/CMSIS/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -MMD -MP -MF"Drivers/STM32L4xx_HAL_Driver/stm32l4xx_hal_uart.d" -MT"$@" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "$@"
-Drivers/STM32L4xx_HAL_Driver/stm32l4xx_hal_uart_ex.o: C:/Users/JJW_N-771/Desktop/stmpjt/ADC_TemperatureSensor/Drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_uart_ex.c
+Drivers/STM32L4xx_HAL_Driver/stm32l4xx_hal_uart_ex.o: D:/stmpjt/ADC_TemperatureSensor/Drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_uart_ex.c Drivers/STM32L4xx_HAL_Driver/subdir.mk
 	arm-none-eabi-gcc "$<" -mcpu=cortex-m4 -std=gnu11 -g3 -DUSE_HAL_DRIVER -DSTM32L412xx -DDEBUG -c -I../../Core/Inc -I../../Drivers/STM32L4xx_HAL_Driver/Inc -I../../Drivers/STM32L4xx_HAL_Driver/Inc/Legacy -I../../Drivers/CMSIS/Device/ST/STM32L4xx/Include -I../../Drivers/CMSIS/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -MMD -MP -MF"Drivers/STM32L4xx_HAL_Driver/stm32l4xx_hal_uart_ex.d" -MT"$@" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "$@"
 

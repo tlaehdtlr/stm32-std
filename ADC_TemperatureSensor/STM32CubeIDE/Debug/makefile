@@ -1,5 +1,6 @@
 ################################################################################
 # Automatically-generated file. Do not edit!
+# Toolchain: GNU Tools for STM32 (9-2020-q2-update)
 ################################################################################
 
 -include ../makefile.init
@@ -29,6 +30,12 @@ endif
 
 -include ../makefile.defs
 
+OPTIONAL_TOOL_DEPS := \
+$(wildcard ../makefile.defs) \
+$(wildcard ../makefile.init) \
+$(wildcard ../makefile.targets) \
+
+
 BUILD_ARTIFACT_NAME := ADC_TemperatureSensor
 BUILD_ARTIFACT_EXTENSION := elf
 BUILD_ARTIFACT_PREFIX := 
@@ -55,22 +62,22 @@ all: main-build
 main-build: ADC_TemperatureSensor.elf secondary-outputs
 
 # Tool invocations
-ADC_TemperatureSensor.elf: $(OBJS) $(USER_OBJS) C:\Users\JJW_N-771\Desktop\stmpjt\ADC_TemperatureSensor\STM32CubeIDE\STM32L412RBTXP_FLASH.ld
-	arm-none-eabi-gcc -o "ADC_TemperatureSensor.elf" @"objects.list" $(USER_OBJS) $(LIBS) -mcpu=cortex-m4 -T"C:\Users\JJW_N-771\Desktop\stmpjt\ADC_TemperatureSensor\STM32CubeIDE\STM32L412RBTXP_FLASH.ld" --specs=nosys.specs -Wl,-Map="ADC_TemperatureSensor.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -u _printf_float -Wl,--start-group -lc -lm -Wl,--end-group
+ADC_TemperatureSensor.elf: $(OBJS) $(USER_OBJS) D:\stmpjt\ADC_TemperatureSensor\STM32CubeIDE\STM32L412RBTXP_FLASH.ld makefile objects.list $(OPTIONAL_TOOL_DEPS)
+	arm-none-eabi-gcc -o "ADC_TemperatureSensor.elf" @"objects.list" $(USER_OBJS) $(LIBS) -mcpu=cortex-m4 -T"D:\stmpjt\ADC_TemperatureSensor\STM32CubeIDE\STM32L412RBTXP_FLASH.ld" --specs=nosys.specs -Wl,-Map="ADC_TemperatureSensor.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -u _printf_float -Wl,--start-group -lc -lm -Wl,--end-group
 	@echo 'Finished building target: $@'
 	@echo ' '
 
-default.size.stdout: $(EXECUTABLES)
+default.size.stdout: $(EXECUTABLES) makefile objects.list $(OPTIONAL_TOOL_DEPS)
 	arm-none-eabi-size  $(EXECUTABLES)
 	@echo 'Finished building: $@'
 	@echo ' '
 
-ADC_TemperatureSensor.list: $(EXECUTABLES)
+ADC_TemperatureSensor.list: $(EXECUTABLES) makefile objects.list $(OPTIONAL_TOOL_DEPS)
 	arm-none-eabi-objdump -h -S $(EXECUTABLES) > "ADC_TemperatureSensor.list"
 	@echo 'Finished building: $@'
 	@echo ' '
 
-ADC_TemperatureSensor.bin: $(EXECUTABLES)
+ADC_TemperatureSensor.bin: $(EXECUTABLES) makefile objects.list $(OPTIONAL_TOOL_DEPS)
 	arm-none-eabi-objcopy  -O binary $(EXECUTABLES) "ADC_TemperatureSensor.bin"
 	@echo 'Finished building: $@'
 	@echo ' '
