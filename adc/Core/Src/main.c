@@ -20,7 +20,6 @@
 /* Includes ------------------------------------------------------------------*/
 #include "main.h"
 #include "adc.h"
-#include "dma.h"
 #include "usart.h"
 #include "gpio.h"
 
@@ -56,15 +55,16 @@ PUTCHAR_PROTOTYPE
 /* Private variables ---------------------------------------------------------*/
 
 /* USER CODE BEGIN PV */
-#if 0
-const float AVG_SLOPE = 2.5E-03;
-//const float V30 = 0.76;
-const float V30 = 0.76;
-const float ADC_TO_VOLT = 3.3/4096;
+#if 1
+
+
 #else
-const float AVG_SLOPE = 4.3;
-const float V30 = 1.43;
-const float ADC_TO_VOLT = 3.3/4096;
+const float AVG_SLOPE = 4.3 / 1000;
+const float V25 = 1.43;
+const float ADC_TO_VOLT = 3.0/4096;
+
+const float AVG_SLOPE_1 = 2.5 / 1000;
+const float V30 = 0.76;
 #endif
 /* USER CODE END PV */
 
@@ -107,30 +107,55 @@ int main(void)
 
   /* Initialize all configured peripherals */
   MX_GPIO_Init();
-  MX_DMA_Init();
   MX_USART2_UART_Init();
   MX_ADC1_Init();
   /* USER CODE BEGIN 2 */
 
-#if 0
-  uint16_t adc1;
+#if 1
+#define TEMPSENSOR_CAL1_ADDR               ((uint16_t*) (0x1FFF75A8UL)) /* Internal temperature sensor, address of parameter TS_CAL1: On STM32L4, temperature sensor ADC raw data acquired at temperature  30 DegC (tolerance: +-5 DegC), Vref+ = 3.0 V (tolerance: +-10 mV). */
+#define TEMPSENSOR_CAL2_ADDR               ((uint16_t*) (0x1FFF75CAUL)
+  /* 0x1FFF 75CA - 0x1FFF 75CB */
+  const uint16_t* TEMP130_CAL_VALUE = ((uint16_t*)((uint32_t)0x1FFF75CA));
+  /* 0x1FFF 75A8 - 0x1FFF 75A9 */
+  const uint16_t* TEMP30_CAL_VALUE = ((uint16_t*)((uint32_t)0x1FFF75A8));
+  //#define TEMP30_CAL_VALUE                                        ((uint16_t*)((uint32_t)0x1FFF75A8))
+  //#define TEMP130                                                 130.0f
+  //#define TEMP30
+  float const TEMP130 = 130.0f;
+  float const TEMP30 = 30.0f;
 
-  float vSense, temp;
-  /* start calibration */
+
+  uint16_t temperature;
+  float sensorValue;
+//  float adcCalValue30;
+//  float adcCalValue130;
+//  adcCalValue30 = (float)*TEMP30_CAL_VALUE;
+//  adcCalValue130 = (float)*TEMP130_CAL_VALUE;
+
+
+//  ADC1->CR |= ADC_CCR_TSVREFE;
+//  ADC1->CR &= ~ADC_CCR_VBATE ;
+  //  uint16_t adc1;
+//
+//  float vSense, temp;
+
+
+//  /* start calibration */
   if (HAL_ADCEx_Calibration_Start(&hadc1, ADC_SINGLE_ENDED) != HAL_OK)
   {
       Error_Handler();
   }
-  /* start the conversion process */
-  if (HAL_ADC_Start(&hadc1) != HAL_OK)
-  {
-      Error_Handler();
-  }
+//  /* start the conversion process */
+//  if (HAL_ADC_Start(&hadc1) != HAL_OK)
+//  {
+//      Error_Handler();
+//  }
 
 #else
    uint16_t value;
-   uint16_t vout;
+//   uint16_t vout;
    float temp;
+   float temp_1;
 #endif
    printf("STM on!! \r\n");
 
@@ -140,17 +165,23 @@ int main(void)
   /* USER CODE BEGIN WHILE */
   while (1)
   {
-#if 0
-    HAL_ADC_PollForConversion(&hadc1, 100);
-    adc1 = HAL_ADC_GetValue(&hadc1);
-    //printf("ADC1_Temperature : %d \n", adc1);
+#if 1
+    HAL_ADC_Start(&hadc1);
+    if(HAL_ADC_PollForConversion(&hadc1, 100) == HAL_OK)
+    {
+      sensorValue = (float)HAL_ADC_GetValue(&hadc1);
+      HAL_ADC_Stop(&hadc1);
+      temperature =  (((TEMP130 - TEMP30) / ((float)(*TEMP130_CAL_VALUE) - (float)(*TEMP30_CAL_VALUE)) * (sensorValue - (float)(*TEMP30_CAL_VALUE))) + 30);
+    }
+    printf("------------------- \r\n");
+    printf("130 : %f  30 : %f \r\n", (float)(*TEMP130_CAL_VALUE), (float)(*TEMP30_CAL_VALUE));
+    printf("slope : %f \r\n", (TEMP130 - TEMP30) / ((float)(*TEMP130_CAL_VALUE) - (float)(*TEMP30_CAL_VALUE)));
+//    printf(" real cal : %f \r\n", ((TEMP130 - TEMP30) / ((float)(*TEMP130_CAL_VALUE) - (float)(*TEMP30_CAL_VALUE)) * (sensorValue - (*TEMP30_CAL_VALUE))) + 30);
+    printf("ADC1 : %f   Temp : %d \r\n", sensorValue, temperature);
 
-//    vSense = adc1 * ADC_TO_VOLT;
-    printf("sense : %f \r\n", vSense);
-//    temp = (V30-vSense) / AVG_SLOPE + 25.0;
-    temp = (uint16_t)(((V30 * 1000.0 - (float)adc1 * 0.8) / AVG_SLOPE) + 25.0);
+    uint8_t a = (uint8_t)(float)(-1.1f);
+    printf("a : %d \r\n", a);
 
-    printf("ADC1, Temp : %d , %f \r\n", adc1, temp);
     HAL_Delay(1000);
 #else
 
@@ -162,10 +193,13 @@ int main(void)
 //    vout = 3000 * value / 4096;
 //    temp = (float)vout*0.8;
 //    temp = (uint16_t)(((V30 * 1000.0 - (float)value * 0.8) / AVG_SLOPE) + 25.0);
-    temp = (uint16_t)((V30-(float)(value * ADC_TO_VOLT)) / AVG_SLOPE + 25.0);
+    temp = (uint16_t)((V25-(float)(value * ADC_TO_VOLT)) / AVG_SLOPE  + 25.0);
+    temp_1 = (uint16_t)((V30-(float)(value * ADC_TO_VOLT)) / AVG_SLOPE_1  + 30.0);
 
-
-    printf("temp : %f \r\n", temp);
+    printf("adc: %d, toVolt : %f adc_volt : %f  slope : %f \r\n", value, ADC_TO_VOLT, (float)(value * ADC_TO_VOLT), AVG_SLOPE_1);
+    printf("cal : %f, cal_1 : %f \r\n",  (V25-(float)(value * ADC_TO_VOLT)), (V30-(float)(value * ADC_TO_VOLT)));
+    printf("div : %f, div_1 : %f uint : %d \r\n",  (V25-(float)(value * ADC_TO_VOLT))/ AVG_SLOPE , (V30-(float)(value * ADC_TO_VOLT)/ AVG_SLOPE_1), (uint16_t)(V30-(float)(value * ADC_TO_VOLT)/ AVG_SLOPE_1));
+    printf("temp : %f temp_1 : %f \r\n", temp, temp_1);
     HAL_Delay(1000);
 #endif
 
