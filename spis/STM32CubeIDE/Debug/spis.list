@@ -37,13 +37,13 @@ Idx Name          Size      VMA       LMA       File off  Algn
                   CONTENTS, READONLY, DEBUGGING
  16 .debug_macro  0001b643  00000000  00000000  000338e8  2**0
                   CONTENTS, READONLY, DEBUGGING
- 17 .debug_line   0000bc53  00000000  00000000  0004ef2b  2**0
+ 17 .debug_line   0000bc50  00000000  00000000  0004ef2b  2**0
                   CONTENTS, READONLY, DEBUGGING
- 18 .debug_str    000a3b29  00000000  00000000  0005ab7e  2**0
+ 18 .debug_str    000a3b29  00000000  00000000  0005ab7b  2**0
                   CONTENTS, READONLY, DEBUGGING
- 19 .comment      0000007b  00000000  00000000  000fe6a7  2**0
+ 19 .comment      0000007b  00000000  00000000  000fe6a4  2**0
                   CONTENTS, READONLY
- 20 .debug_frame  000039e0  00000000  00000000  000fe724  2**2
+ 20 .debug_frame  000039e0  00000000  00000000  000fe720  2**2
                   CONTENTS, READONLY, DEBUGGING
 
 Disassembly of section .text:
@@ -833,7 +833,7 @@ int main(void)
 		printf("exit \r\n");
  80007d6:	482b      	ldr	r0, [pc, #172]	; (8000884 <main+0x1c0>)
  80007d8:	f003 fe2e 	bl	8004438 <puts>
-//		}
+
 //		hspi2.State = HAL_SPI_STATE_READY;
 
 	}
