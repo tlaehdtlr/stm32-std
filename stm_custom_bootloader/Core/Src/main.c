@@ -20,11 +20,14 @@
 /* Includes ------------------------------------------------------------------*/
 #include "main.h"
 #include "usart.h"
+#include "usb_device.h"
 #include "gpio.h"
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
 #include <stdio.h>
+#include <string.h>
+#include "usbd_conf.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -34,17 +37,7 @@
 
 /* Private define ------------------------------------------------------------*/
 /* USER CODE BEGIN PD */
-#ifdef __GNUC__
-    #define PUTCHAR_PROTOTYPE int __io_putchar(int ch)
-#else
-    #define PUTCHAR_PROTOTYPE int fputc(int ch, FILE *f)
-#endif
 
-PUTCHAR_PROTOTYPE
-{
-  HAL_UART_Transmit(&huart2, (uint8_t *)&ch, 1, 0xFFFF);
-  return ch;
-}
 /* USER CODE END PD */
 
 /* Private macro -------------------------------------------------------------*/
@@ -53,6 +46,7 @@ PUTCHAR_PROTOTYPE
 /* USER CODE END PM */
 
 /* Private variables ---------------------------------------------------------*/
+
 
 /* USER CODE BEGIN PV */
 uint8_t uart2_rx[10] = {0,};
@@ -69,6 +63,70 @@ void SystemClock_Config(void);
 
 /* Private user code ---------------------------------------------------------*/
 /* USER CODE BEGIN 0 */
+#if 0
+int _read(int file, char* p, int len)
+{
+  HAL_UART_Receive(&huart2, (uint8_t*)&p, len, 10);
+  return len;
+}
+
+int _write(int file, char* p, int len)
+{
+HAL_UART_Transmit_IT(&huart2, (uint8_t*)&p, len);
+return len;
+}
+#else
+int __io_putchar(int ch)
+{
+	// if(HAL_UART_Transmit(&huart2, (uint8_t *)&ch, 1, 10) != HAL_OK)
+	// 	return -1;
+	HAL_UART_Transmit(&huart2, (uint8_t *)&ch, 1, 1);
+	return ch;
+}
+#if 0
+int __io_getchar(void)
+{
+	char data[4];
+	uint8_t ch, len = 1;
+
+	while(HAL_UART_Receive(&huart2, &ch, 1, 10) != HAL_OK)
+	{
+	}
+
+	memset(data, 0x00, 4);
+	switch(ch)
+	{
+		case '\r':
+		case '\n':
+			len = 2;
+			sprintf(data, "\r\n");
+			break;
+
+		case '\b':
+		case 0x7F:
+			len = 3;
+			sprintf(data, "\b \b");
+			break;
+
+		default:
+			data[0] = ch;
+			break;
+	}
+	HAL_UART_Transmit(&huart2, (uint8_t *)data, len, 10);
+	return ch;
+}
+#endif
+#endif
+
+
+/*
+    DFU mode
+*/
+typedef  void (*pFunction)(void);
+
+pFunction JumpToApplication;
+uint32_t JumpAddress;
+
 
 /* USER CODE END 0 */
 
@@ -89,6 +147,7 @@ int main(void)
 
   /* USER CODE BEGIN Init */
 
+
   /* USER CODE END Init */
 
   /* Configure the system clock */
@@ -99,26 +158,74 @@ int main(void)
   /* USER CODE END SysInit */
 
   /* Initialize all configured peripherals */
+  #if 1
   MX_GPIO_Init();
   MX_USART2_UART_Init();
+  // MX_USB_DEVICE_Init();
+  #endif
   /* USER CODE BEGIN 2 */
   printf("stm custom bootloader start \r\n");
-  HAL_UART_Receive_IT(&huart2, uart2_rx, 1);
+  HAL_Delay(1000);
+//  HAL_UART_Receive_IT(&huart2, uart2_rx, 1);
+#if 1
+  /* Test if user code is programmed starting from address 0x08008000 */
+  // if (((*(__IO uint32_t *) USBD_DFU_APP_DEFAULT_ADD) & 0x2FFC0000) == 0x20000000)
+  // printf("check : %08lx \r\n", ((*(__IO uint32_t *) USBD_DFU_APP_DEFAULT_ADD) & 0x2FFC0000));
+  if (1)
+  {
+
+
+    printf("valid app \r\n");
+    if(HAL_GPIO_ReadPin(GPIOC, GPIO_PIN_13) == GPIO_PIN_RESET)
+    {
+      printf("pin reset APP start \r\n");
+      HAL_GPIO_WritePin(GPIOB, GPIO_PIN_7, GPIO_PIN_RESET);
+      HAL_Delay(100);
+      /* Jump to user application */
+      JumpAddress = *(__IO uint32_t *) (USBD_DFU_APP_DEFAULT_ADD + 4);
+      // JumpAddress = *(__IO uint32_t *) (USBD_DFU_APP_DEFAULT_ADD);
+      JumpToApplication = (pFunction) JumpAddress;
+      
+      HAL_UART_MspDeInit(&huart2);
+      MX_GPIO_DeInit();
+      HAL_RCC_DeInit();
+      HAL_DeInit();
+
+	    SysTick->CTRL = 0;
+	    SysTick->LOAD = 0;
+	    SysTick->VAL  = 0;
+
+      SCB->VTOR = USBD_DFU_APP_DEFAULT_ADD;
+
+      /* Initialize user application's Stack Pointer */
+      __set_MSP(*(__IO uint32_t *) USBD_DFU_APP_DEFAULT_ADD);
+
+      JumpToApplication();
+    }
+    else
+    {
+      // printf("pin set \r\n");
+    }
+  }
+  else
+  {
+    // printf("invalid app \r\n");
+  }
+  // MX_USART2_UART_Init();
+  MX_USB_DEVICE_Init();
+  printf("DFU mode \r\n");
+
+#endif
   /* USER CODE END 2 */
 
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
   while (1)
   {
-    if (flag_rx && flag_tx)
-    {
-      flag_rx = 0;
-      HAL_UART_Transmit_IT(&huart2, uart2_tx, 1);
-      flag_tx = 0;
-    }
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
+
   }
   /* USER CODE END 3 */
 }
@@ -131,6 +238,7 @@ void SystemClock_Config(void)
 {
   RCC_OscInitTypeDef RCC_OscInitStruct = {0};
   RCC_ClkInitTypeDef RCC_ClkInitStruct = {0};
+  RCC_PeriphCLKInitTypeDef PeriphClkInitStruct = {0};
 
   /** Configure the main internal regulator output voltage
   */
@@ -139,15 +247,14 @@ void SystemClock_Config(void)
   /** Initializes the RCC Oscillators according to the specified parameters
   * in the RCC_OscInitTypeDef structure.
   */
-  RCC_OscInitStruct.OscillatorType = RCC_OSCILLATORTYPE_HSI;
-  RCC_OscInitStruct.HSIState = RCC_HSI_ON;
-  RCC_OscInitStruct.HSICalibrationValue = RCC_HSICALIBRATION_DEFAULT;
+  RCC_OscInitStruct.OscillatorType = RCC_OSCILLATORTYPE_HSE;
+  RCC_OscInitStruct.HSEState = RCC_HSE_ON;
   RCC_OscInitStruct.PLL.PLLState = RCC_PLL_ON;
-  RCC_OscInitStruct.PLL.PLLSource = RCC_PLLSOURCE_HSI;
-  RCC_OscInitStruct.PLL.PLLM = 8;
-  RCC_OscInitStruct.PLL.PLLN = 84;
-  RCC_OscInitStruct.PLL.PLLP = RCC_PLLP_DIV2;
-  RCC_OscInitStruct.PLL.PLLQ = 2;
+  RCC_OscInitStruct.PLL.PLLSource = RCC_PLLSOURCE_HSE;
+  RCC_OscInitStruct.PLL.PLLM = 4;
+  RCC_OscInitStruct.PLL.PLLN = 192;
+  RCC_OscInitStruct.PLL.PLLP = RCC_PLLP_DIV4;
+  RCC_OscInitStruct.PLL.PLLQ = 8;
   RCC_OscInitStruct.PLL.PLLR = 2;
   if (HAL_RCC_OscConfig(&RCC_OscInitStruct) != HAL_OK)
   {
@@ -162,24 +269,34 @@ void SystemClock_Config(void)
   RCC_ClkInitStruct.APB1CLKDivider = RCC_HCLK_DIV2;
   RCC_ClkInitStruct.APB2CLKDivider = RCC_HCLK_DIV1;
 
-  if (HAL_RCC_ClockConfig(&RCC_ClkInitStruct, FLASH_LATENCY_2) != HAL_OK)
+  if (HAL_RCC_ClockConfig(&RCC_ClkInitStruct, FLASH_LATENCY_3) != HAL_OK)
+  {
+    Error_Handler();
+  }
+  PeriphClkInitStruct.PeriphClockSelection = RCC_PERIPHCLK_CLK48;
+  PeriphClkInitStruct.Clk48ClockSelection = RCC_CLK48CLKSOURCE_PLLQ;
+  if (HAL_RCCEx_PeriphCLKConfig(&PeriphClkInitStruct) != HAL_OK)
   {
     Error_Handler();
   }
 }
 
 /* USER CODE BEGIN 4 */
-void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart)
-{
-  flag_rx = 1;
-  uart2_tx[0] = uart2_rx[0];
-  HAL_UART_Receive_IT(&huart2, uart2_rx, 1);
-}
 
-void HAL_UART_TxCpltCallback(UART_HandleTypeDef *huart)
-{
-  flag_tx = 1;
-}
+
+// void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin)
+// {
+//   if (GPIO_Pin == GPIO_PIN_9)
+//   {
+//     USB_HAL_GPIO_EXTI_Callback(GPIO_Pin);
+//   }
+//   else if (GPIO_Pin == GPIO_PIN_13)
+//   {
+//     HAL_GPIO_TogglePin(GPIOB, GPIO_PIN_7);
+//   }
+// }
+
+
 /* USER CODE END 4 */
 
 /**
