@@ -30,14 +30,15 @@ ENTRY(Reset_Handler)
 /* Highest address of the user mode stack */
 _estack = ORIGIN(RAM) + LENGTH(RAM);	/* end of "RAM" Ram type memory */
 
-_Min_Heap_Size = 0x10000 ;	/* required amount of heap  */
+_Min_Heap_Size = 0x1000 ;	/* required amount of heap  */
 _Min_Stack_Size = 0x400 ;	/* required amount of stack */
 
 /* Memories definition */
 MEMORY
 {
   RAM    (xrw)    : ORIGIN = 0x20000000,   LENGTH = 256K
-  FLASH    (rx)    : ORIGIN = 0x8000000,   LENGTH = 64K
+  FLASH    (rx)    : ORIGIN = 0x8000000,   LENGTH = 63K
+  DFU_STATE    (rxw)    : ORIGIN = 0x800FC00,   LENGTH = 1K
 }
 
 /* Sections */
@@ -119,6 +120,13 @@ SECTIONS
     PROVIDE_HIDDEN (__fini_array_end = .);
     . = ALIGN(4);
   } >FLASH
+
+  .dfu_state (NOLOAD):
+  {
+    . = ALIGN(1024);
+    KEEP(*(.dfu_state))
+    . = ALIGN(4);
+  } > DFU_STATE
 
   /* Used by the startup to initialize data */
   _sidata = LOADADDR(.data);

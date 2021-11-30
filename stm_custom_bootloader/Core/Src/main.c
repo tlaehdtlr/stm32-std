@@ -20,14 +20,15 @@
 /* Includes ------------------------------------------------------------------*/
 #include "main.h"
 #include "usart.h"
-#include "usb_device.h"
 #include "gpio.h"
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
 #include <stdio.h>
 #include <string.h>
-#include "usbd_conf.h"
+#include "usb_device.h"
+#include "bootloader.h"
+#include "flash.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -47,12 +48,8 @@
 
 /* Private variables ---------------------------------------------------------*/
 
-
 /* USER CODE BEGIN PV */
-uint8_t uart2_rx[10] = {0,};
-uint8_t uart2_tx[10] = {0,};
-uint8_t flag_rx = 0;
-uint8_t flag_tx = 1;
+
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -64,11 +61,11 @@ void SystemClock_Config(void);
 /* Private user code ---------------------------------------------------------*/
 /* USER CODE BEGIN 0 */
 #if 0
-int _read(int file, char* p, int len)
-{
-  HAL_UART_Receive(&huart2, (uint8_t*)&p, len, 10);
-  return len;
-}
+// int _read(int file, char* p, int len)
+// {
+//   HAL_UART_Receive(&huart2, (uint8_t*)&p, len, 10);
+//   return len;
+// }
 
 int _write(int file, char* p, int len)
 {
@@ -83,39 +80,6 @@ int __io_putchar(int ch)
 	HAL_UART_Transmit(&huart2, (uint8_t *)&ch, 1, 1);
 	return ch;
 }
-#if 0
-int __io_getchar(void)
-{
-	char data[4];
-	uint8_t ch, len = 1;
-
-	while(HAL_UART_Receive(&huart2, &ch, 1, 10) != HAL_OK)
-	{
-	}
-
-	memset(data, 0x00, 4);
-	switch(ch)
-	{
-		case '\r':
-		case '\n':
-			len = 2;
-			sprintf(data, "\r\n");
-			break;
-
-		case '\b':
-		case 0x7F:
-			len = 3;
-			sprintf(data, "\b \b");
-			break;
-
-		default:
-			data[0] = ch;
-			break;
-	}
-	HAL_UART_Transmit(&huart2, (uint8_t *)data, len, 10);
-	return ch;
-}
-#endif
 #endif
 
 
@@ -158,24 +122,25 @@ int main(void)
   /* USER CODE END SysInit */
 
   /* Initialize all configured peripherals */
-  #if 1
   MX_GPIO_Init();
   MX_USART2_UART_Init();
-  // MX_USB_DEVICE_Init();
-  #endif
   /* USER CODE BEGIN 2 */
-  printf("stm custom bootloader start \r\n");
+  printf("\r\n\r\n stm custom bootloader start \r\n");
   HAL_Delay(1000);
-//  HAL_UART_Receive_IT(&huart2, uart2_rx, 1);
-#if 1
-  /* Test if user code is programmed starting from address 0x08008000 */
-  // if (((*(__IO uint32_t *) USBD_DFU_APP_DEFAULT_ADD) & 0x2FFC0000) == 0x20000000)
-  // printf("check : %08lx \r\n", ((*(__IO uint32_t *) USBD_DFU_APP_DEFAULT_ADD) & 0x2FFC0000));
-  if (1)
+
+
+  /*
+    Test if user code is programmed starting from address USBD_DFU_APP_DEFAULT_ADD
+    https://www.os4all.com/69
+    stack pointer
+   */
+  if (((*(__IO uint32_t *) USBD_DFU_APP_DEFAULT_ADD - 1) & 0x2FFC0000) == 0x20000000)
   {
-
-
     printf("valid app \r\n");
+
+    /*  roll back when DFU fail caused by version, key etc.  */
+    bootloader_check_DFU();
+
     if(HAL_GPIO_ReadPin(GPIOC, GPIO_PIN_13) == GPIO_PIN_RESET)
     {
       printf("pin reset APP start \r\n");
@@ -185,7 +150,7 @@ int main(void)
       JumpAddress = *(__IO uint32_t *) (USBD_DFU_APP_DEFAULT_ADD + 4);
       // JumpAddress = *(__IO uint32_t *) (USBD_DFU_APP_DEFAULT_ADD);
       JumpToApplication = (pFunction) JumpAddress;
-      
+
       HAL_UART_MspDeInit(&huart2);
       MX_GPIO_DeInit();
       HAL_RCC_DeInit();
@@ -195,7 +160,7 @@ int main(void)
 	    SysTick->LOAD = 0;
 	    SysTick->VAL  = 0;
 
-      SCB->VTOR = USBD_DFU_APP_DEFAULT_ADD;
+      // SCB->VTOR = USBD_DFU_APP_DEFAULT_ADD;
 
       /* Initialize user application's Stack Pointer */
       __set_MSP(*(__IO uint32_t *) USBD_DFU_APP_DEFAULT_ADD);
@@ -204,24 +169,34 @@ int main(void)
     }
     else
     {
-      // printf("pin set \r\n");
+      /* back up code */
+
+      printf("ready to dfu \r\n");
+      bootloader_copy_image(USBD_DFU_APP_DEFAULT_ADD, ADDR_FLASH_COPY, APP_NUMS_SECTOR);
+      HAL_Delay(100);
     }
   }
   else
   {
-    // printf("invalid app \r\n");
+    /*  whether there is a code at back up region  */
+    if (((*(__IO uint32_t *) ADDR_FLASH_COPY - 1) & 0x2FFC0000) == 0x20000000)
+    {
+      printf("DFU fail during erase , roll back \r\n");
+      bootloader_rollback_version();
+    }
+    printf("invalid app \r\n");
   }
-  // MX_USART2_UART_Init();
+
   MX_USB_DEVICE_Init();
   printf("DFU mode \r\n");
-
-#endif
   /* USER CODE END 2 */
 
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
   while (1)
   {
+    HAL_GPIO_TogglePin(GPIOB, GPIO_PIN_0);
+    HAL_Delay(1000);
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */

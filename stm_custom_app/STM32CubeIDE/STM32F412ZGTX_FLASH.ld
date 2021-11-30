@@ -30,24 +30,43 @@ ENTRY(Reset_Handler)
 /* Highest address of the user mode stack */
 _estack = ORIGIN(RAM) + LENGTH(RAM);	/* end of "RAM" Ram type memory */
 
-_Min_Heap_Size = 0x10000 ;	/* required amount of heap  */
+_Min_Heap_Size = 0x1000 ;	/* required amount of heap  */
 _Min_Stack_Size = 0x400 ;	/* required amount of stack */
 
 /* Memories definition */
 MEMORY
 {
   RAM    (xrw)    : ORIGIN = 0x20000000,   LENGTH = 256K
-  FLASH    (rx)    : ORIGIN = 0x8010000,   LENGTH = 960K
+  FLASH    (rx)    : ORIGIN = 0x8020000,   LENGTH = 384K
+  /* if DFU status */
+  /* DFU_CUSTOM     (rx)    : ORIGIN = 0x807FC00,     LENGTH = 1K */
 }
 
 /* Sections */
 SECTIONS
 {
+  /* custom sim */
+  /* .dfu_section :
+  {
+    . = ALIGN(4);
+    __dfu_section_start__ = .;
+    KEEP(*(.dfu_section));
+    __dfu_section_end__ = .;
+  } > DFU_CUSTOM */
+
   /* The startup code into "FLASH" Rom type memory */
   .isr_vector :
   {
     . = ALIGN(4);
     KEEP(*(.isr_vector)) /* Startup code */
+    . = ALIGN(4);
+  } >FLASH
+
+  /* custom fw */
+  .fw_info :
+  {
+    . = ALIGN(1024);
+    KEEP(*(.fw_info))
     . = ALIGN(4);
   } >FLASH
 
@@ -120,6 +139,14 @@ SECTIONS
     . = ALIGN(4);
   } >FLASH
 
+  /* custom */
+  .dfu_section 0x807FC00:
+  {
+    . = ALIGN(4);
+    KEEP(*(.dfu_section));
+    . = ALIGN(4);
+  } > FLASH
+
   /* Used by the startup to initialize data */
   _sidata = LOADADDR(.data);
 
@@ -172,4 +199,11 @@ SECTIONS
   }
 
   .ARM.attributes 0 : { *(.ARM.attributes) }
+
+    /* .dfu_section 0x807FC00:
+  {
+    . = ALIGN(4);
+    KEEP(*(.dfu_section));
+    . = ALIGN(4);
+  } > FLASH */
 }

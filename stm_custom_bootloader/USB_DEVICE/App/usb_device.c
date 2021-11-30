@@ -55,7 +55,13 @@ USBD_HandleTypeDef hUsbDeviceFS;
  * -- Insert your external function declaration here --
  */
 /* USER CODE BEGIN 1 */
-
+void MX_USB_DEVICE_stop(void)
+{
+  if (USBD_Stop(&hUsbDeviceFS) != USBD_OK)
+  {
+    Error_Handler();
+  }
+}
 /* USER CODE END 1 */
 
 /**

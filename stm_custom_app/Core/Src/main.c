@@ -39,6 +39,21 @@
 
 /* Private macro -------------------------------------------------------------*/
 /* USER CODE BEGIN PM */
+#define ADDR_DFU_CUSTOM    ((uint32_t*)0x807FC00)
+
+// uint8_t dfu_done __attribute__((at(0x807FC00))) = 0x77;
+__attribute__((section(".dfu_section"))) uint32_t dfu_complete = 0x99;
+
+typedef struct {
+  uint8_t private_key[32];
+  uint16_t version;
+} fw_info_t;
+
+__attribute__((section(".fw_info"))) fw_info_t fw_info_sim =
+{
+  "1234567890abcdefghij1234567890q",
+  83
+};
 
 /* USER CODE END PM */
 
@@ -78,7 +93,7 @@ int __io_putchar(int ch)
 int main(void)
 {
   /* USER CODE BEGIN 1 */
-  SCB->VTOR = 0x8010000;
+  // SCB->VTOR = 0x8010000;
   /* USER CODE END 1 */
 
   /* MCU Configuration--------------------------------------------------------*/
@@ -101,12 +116,13 @@ int main(void)
   MX_GPIO_Init();
   MX_USART2_UART_Init();
   /* USER CODE BEGIN 2 */
-  printf("app main code start 2\r\n");
+  printf("app main code start version : %d \r\n", fw_info_sim.version);
   /* USER CODE END 2 */
 
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
   HAL_GPIO_WritePin(GPIOB, GPIO_PIN_7, GPIO_PIN_RESET);
+
   while (1)
   {
 	  HAL_GPIO_TogglePin(GPIOB, GPIO_PIN_14);

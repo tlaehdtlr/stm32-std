@@ -1,6 +1,10 @@
 {
     "files.associations": {
         "stdio.h": "c",
-        "gpio.h": "c"
+        "gpio.h": "c",
+        "usbd_conf.h": "c",
+        "usb_device.h": "c",
+        "usbd_dfu_if.h": "c",
+        "usbd_dfu.h": "c"
     }
 }
