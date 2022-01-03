@@ -3,51 +3,51 @@ stm_custom_app.elf:     file format elf32-littlearm
 
 Sections:
 Idx Name          Size      VMA       LMA       File off  Algn
-  0 .isr_vector   000001c4  08020000  08020000  00010000  2**0
-                  CONTENTS, ALLOC, LOAD, READONLY, DATA
-  1 .fw_info      00000260  080201c4  080201c4  000101c4  2**2
+  0 .dfu_section  00000004  0807fc00  0807fc00  0002fc00  2**2
                   CONTENTS, ALLOC, LOAD, DATA
-  2 .text         000034ec  08020430  08020430  00010430  2**4
+  1 .isr_vector   000001c4  08020000  08020000  00010000  2**0
+                  CONTENTS, ALLOC, LOAD, READONLY, DATA
+  2 .fw_info      00000260  080201c4  080201c4  000101c4  2**2
+                  CONTENTS, ALLOC, LOAD, DATA
+  3 .text         000034ec  08020430  08020430  00010430  2**4
                   CONTENTS, ALLOC, LOAD, READONLY, CODE
-  3 .rodata       000000d4  0802391c  0802391c  0001391c  2**2
+  4 .rodata       000000d4  0802391c  0802391c  0001391c  2**2
                   CONTENTS, ALLOC, LOAD, READONLY, DATA
-  4 .ARM.extab    00000000  080239f0  080239f0  00020070  2**0
+  5 .ARM.extab    00000000  080239f0  080239f0  0002fc04  2**0
                   CONTENTS
-  5 .ARM          00000008  080239f0  080239f0  000139f0  2**2
+  6 .ARM          00000008  080239f0  080239f0  000139f0  2**2
                   CONTENTS, ALLOC, LOAD, READONLY, DATA
-  6 .preinit_array 00000000  080239f8  080239f8  00020070  2**0
+  7 .preinit_array 00000000  080239f8  080239f8  0002fc04  2**0
                   CONTENTS, ALLOC, LOAD, DATA
-  7 .init_array   00000004  080239f8  080239f8  000139f8  2**2
+  8 .init_array   00000004  080239f8  080239f8  000139f8  2**2
                   CONTENTS, ALLOC, LOAD, DATA
-  8 .fini_array   00000004  080239fc  080239fc  000139fc  2**2
+  9 .fini_array   00000004  080239fc  080239fc  000139fc  2**2
                   CONTENTS, ALLOC, LOAD, DATA
-  9 .dfu_section  00000004  0807fc00  0807fc00  0001fc00  2**2
+ 10 .data         00000070  20000000  08023a00  00020000  2**2
                   CONTENTS, ALLOC, LOAD, DATA
- 10 .data         00000070  20000000  0807fc04  00020000  2**2
-                  CONTENTS, ALLOC, LOAD, DATA
- 11 .bss          00000070  20000070  0807fc74  00020070  2**2
+ 11 .bss          00000070  20000070  08023a70  00020070  2**2
                   ALLOC
- 12 ._user_heap_stack 00001400  200000e0  0807fc74  000200e0  2**0
+ 12 ._user_heap_stack 00001400  200000e0  08023a70  000200e0  2**0
                   ALLOC
- 13 .ARM.attributes 00000030  00000000  00000000  00020070  2**0
+ 13 .ARM.attributes 00000030  00000000  00000000  0002fc04  2**0
                   CONTENTS, READONLY
- 14 .debug_info   00009823  00000000  00000000  000200a0  2**0
+ 14 .debug_info   00009823  00000000  00000000  0002fc34  2**0
                   CONTENTS, READONLY, DEBUGGING
- 15 .debug_abbrev 00001b8e  00000000  00000000  000298c3  2**0
+ 15 .debug_abbrev 00001b8e  00000000  00000000  00039457  2**0
                   CONTENTS, READONLY, DEBUGGING
- 16 .debug_aranges 000007d0  00000000  00000000  0002b458  2**3
+ 16 .debug_aranges 000007d0  00000000  00000000  0003afe8  2**3
                   CONTENTS, READONLY, DEBUGGING
- 17 .debug_ranges 000006d8  00000000  00000000  0002bc28  2**3
+ 17 .debug_ranges 000006d8  00000000  00000000  0003b7b8  2**3
                   CONTENTS, READONLY, DEBUGGING
- 18 .debug_macro  0001fe5d  00000000  00000000  0002c300  2**0
+ 18 .debug_macro  0001fe69  00000000  00000000  0003be90  2**0
                   CONTENTS, READONLY, DEBUGGING
- 19 .debug_line   00007f8f  00000000  00000000  0004c15d  2**0
+ 19 .debug_line   00007f8f  00000000  00000000  0005bcf9  2**0
                   CONTENTS, READONLY, DEBUGGING
- 20 .debug_str    000bb215  00000000  00000000  000540ec  2**0
+ 20 .debug_str    000bb242  00000000  00000000  00063c88  2**0
                   CONTENTS, READONLY, DEBUGGING
- 21 .comment      0000007b  00000000  00000000  0010f301  2**0
+ 21 .comment      0000007b  00000000  00000000  0011eeca  2**0
                   CONTENTS, READONLY
- 22 .debug_frame  000024a0  00000000  00000000  0010f37c  2**2
+ 22 .debug_frame  000024a0  00000000  00000000  0011ef48  2**2
                   CONTENTS, READONLY, DEBUGGING
 
 Disassembly of section .text:
@@ -1485,7 +1485,7 @@ LoopFillZerobss:
   ldr   sp, =_estack       /* set stack pointer */
  8020d34:	20040000 	.word	0x20040000
   ldr  r3, =_sidata
- 8020d38:	0807fc04 	.word	0x0807fc04
+ 8020d38:	08023a00 	.word	0x08023a00
   ldr  r0, =_sdata
  8020d3c:	20000000 	.word	0x20000000
   ldr  r3, =_edata

@@ -14,7 +14,7 @@
 #include "flash.h"
 #include "usb_device.h"
 
-char g_private_key[32] = "1234567890abcdefghij1234567890q";
+uint8_t g_private_key[32] = "1234567890abcdefghij1234567890q";
 
 /* display something depending on error type, soft reset */
 void bootloader_error_handler(dfu_status_t dfu_status)

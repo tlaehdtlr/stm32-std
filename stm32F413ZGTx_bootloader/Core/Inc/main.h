@@ -75,6 +75,8 @@ void Error_Handler(void);
 #define MPU_UART4_TX_DEBUG_GPIO_Port GPIOD
 #define MPU_UART4_RX_DEBUG_Pin GPIO_PIN_0
 #define MPU_UART4_RX_DEBUG_GPIO_Port GPIOD
+#define BOOT1_Pin GPIO_PIN_12
+#define BOOT1_GPIO_Port GPIOG
 #define BLE_RF_RESET_Pin GPIO_PIN_14
 #define BLE_RF_RESET_GPIO_Port GPIOG
 /* USER CODE BEGIN Private defines */

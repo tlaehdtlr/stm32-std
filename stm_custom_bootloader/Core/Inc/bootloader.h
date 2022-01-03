@@ -24,7 +24,7 @@ typedef struct {
   uint8_t dfu_complete;
 } dfu_integity_t;
 
-typedef struct {
+typedef struct {  
   uint8_t private_key[32];
   uint16_t version;
 } fw_info_t;

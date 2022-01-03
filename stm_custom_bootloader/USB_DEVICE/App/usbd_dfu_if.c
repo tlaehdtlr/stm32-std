@@ -199,6 +199,7 @@ uint16_t MEM_If_Erase_FS(uint32_t Add)
   /* USER CODE BEGIN 2 */
   printf("usb dfu erase \r\n");
   uint32_t startsector = flash_get_sector(Add);
+  printf("Add : %08x \r\n", Add);
   if (startsector < FLASH_SECTOR_4)
   {
     printf("sector 0~3 are bootloader regions \r\n");

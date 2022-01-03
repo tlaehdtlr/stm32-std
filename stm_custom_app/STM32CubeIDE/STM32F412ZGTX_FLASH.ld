@@ -54,8 +54,16 @@ SECTIONS
     __dfu_section_end__ = .;
   } > DFU_CUSTOM */
 
+  /* custom integrity */
+  .dfu_section 0x807FC00:
+  {
+    . = ALIGN(4);
+    KEEP(*(.dfu_section));
+    . = ALIGN(4);
+  } > FLASH
+
   /* The startup code into "FLASH" Rom type memory */
-  .isr_vector :
+  .isr_vector 0x8020000:
   {
     . = ALIGN(4);
     KEEP(*(.isr_vector)) /* Startup code */
@@ -140,12 +148,12 @@ SECTIONS
   } >FLASH
 
   /* custom */
-  .dfu_section 0x807FC00:
+  /* .dfu_section 0x807FC00:
   {
     . = ALIGN(4);
     KEEP(*(.dfu_section));
     . = ALIGN(4);
-  } > FLASH
+  } > FLASH */
 
   /* Used by the startup to initialize data */
   _sidata = LOADADDR(.data);

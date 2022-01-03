@@ -44,16 +44,25 @@
 // uint8_t dfu_done __attribute__((at(0x807FC00))) = 0x77;
 __attribute__((section(".dfu_section"))) uint32_t dfu_complete = 0x99;
 
+#define KEY "1234567890abcdefghij1234567890q"
+#define VER 83
+
 typedef struct {
   uint8_t private_key[32];
   uint16_t version;
 } fw_info_t;
 
-__attribute__((section(".fw_info"))) fw_info_t fw_info_sim =
+fw_info_t fw_info_sim __attribute__((section(".fw_info"))) =
 {
-  "1234567890abcdefghij1234567890q",
-  83
+  .private_key = KEY,
+  .version = VER
 };
+
+// __attribute__((section(".fw_info"))) fw_info_t fw_info_sim =
+// {
+//   "1234567890abcdefghij1234567890q",
+//   83
+// };
 
 /* USER CODE END PM */
 

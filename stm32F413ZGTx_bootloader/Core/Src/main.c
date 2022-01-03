@@ -24,12 +24,19 @@
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
-
+#include <stdio.h>
+#include <string.h>
+#include "usb_device.h"
+#include "bootloader.h"
+#include "flash.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
 /* USER CODE BEGIN PTD */
+typedef  void (*pFunction)(void);
 
+pFunction JumpToApplication;
+uint32_t JumpAddress;
 /* USER CODE END PTD */
 
 /* Private define ------------------------------------------------------------*/
@@ -55,6 +62,11 @@ void SystemClock_Config(void);
 
 /* Private user code ---------------------------------------------------------*/
 /* USER CODE BEGIN 0 */
+int __io_putchar(int ch)
+{
+	HAL_UART_Transmit(&huart4, (uint8_t *)&ch, 1, 1);
+	return ch;
+}
 
 /* USER CODE END 0 */
 
@@ -89,13 +101,100 @@ int main(void)
   MX_UART4_Init();
   MX_UART7_Init();
   /* USER CODE BEGIN 2 */
-
+  printf("bootloader start... \r\n");
   /* USER CODE END 2 */
 
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
+/*
+    check valid application
+    if not, DFU mode
+  */
+  if (((*(__IO uint32_t *) USBD_DFU_APP_DEFAULT_ADD-1) & 0x2FFB0000) == 0x20000000)
+  {
+    printf("valid app \r\n");
+
+    /*  roll back when DFU fail caused by version, key etc.  */
+    bootloader_check_DFU();
+
+    /* check user flash. if disable, jump to application */
+    if (flash_read_int_value(FLASH_IDX_DFU_ENABLE) != FLASH_DFU_ENABLE)
+    {
+      printf("jump to application \r\n");
+      HAL_GPIO_WritePin(GPIOB, GPIO_PIN_7, GPIO_PIN_RESET);
+      HAL_Delay(100);
+
+      /* Jump to user application */
+      JumpAddress = *(__IO uint32_t *) (USBD_DFU_APP_DEFAULT_ADD + 4);
+      JumpToApplication = (pFunction) JumpAddress;
+
+      /* initialize peripheral, clock, hal etc. */
+      HAL_UART_MspDeInit(&huart4);
+      HAL_UART_MspDeInit(&huart7);
+      MX_GPIO_DeInit();
+      HAL_RCC_DeInit();
+      HAL_DeInit();
+
+	    SysTick->CTRL = 0;
+	    SysTick->LOAD = 0;
+	    SysTick->VAL  = 0;
+
+      /* Initialize user application's Stack Pointer */
+      __set_MSP(*(__IO uint32_t *) USBD_DFU_APP_DEFAULT_ADD);
+
+      JumpToApplication();
+    }
+    else if (flash_read_int_value(FLASH_IDX_DFU_ENABLE) == FLASH_DFU_ENABLE)
+    {
+      flash_write_int_value(FLASH_IDX_DFU_ENABLE, FLASH_DFU_DISABLE);
+      HAL_Delay(10);
+
+      /* back up code */
+      printf("ready to dfu \r\n");
+      bootloader_copy_image(USBD_DFU_APP_DEFAULT_ADD, ADDR_FLASH_COPY, APP_NUMS_SECTOR);
+      HAL_Delay(100);
+    }
+  }
+  else
+  {
+    /*  whether there is a code at back up region  */
+    if (((*(__IO uint32_t *) ADDR_FLASH_COPY - 1) & 0x2FFB0000) == 0x20000000)
+    {
+      printf("DFU fail during erase , roll back \r\n");
+      bootloader_rollback_version();
+    }
+    printf("invalid app \r\n");
+  }
+
+  MX_USB_DEVICE_Init();
+  printf("DFU mode \r\n");
+
+  uint8_t led = 0;
   while (1)
   {
+    switch(led++)
+    {
+      case 0:
+      {
+        HAL_GPIO_WritePin(GPIOB, LED_RED_Pin, GPIO_PIN_SET);
+        break;
+      }
+      case 1:
+      {
+        HAL_GPIO_WritePin(LED_GREEN_GPIO_Port, LED_GREEN_Pin, GPIO_PIN_SET);
+        break;
+      }
+      case 2:
+      {
+        HAL_GPIO_WritePin(GPIOB, LED_BLUE_Pin, GPIO_PIN_SET);
+        led = 0;
+        break;
+      }
+    }
+    HAL_Delay(1000);
+    HAL_GPIO_WritePin(LED_GREEN_GPIO_Port, LED_GREEN_Pin, GPIO_PIN_RESET);
+    HAL_GPIO_WritePin(GPIOB, LED_BLUE_Pin|LED_RED_Pin, GPIO_PIN_RESET);
+
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
