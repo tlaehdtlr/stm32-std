@@ -1,0 +1,297 @@
+make.exe all --print-data-base --no-builtin-variables --no-builtin-rules --question
+# GNU Make 3.81
+# Copyright (C) 2006  Free Software Foundation, Inc.
+# This is free software; see the source for copying conditions.
+# There is NO warranty; not even for MERCHANTABILITY or FITNESS FOR A
+# PARTICULAR PURPOSE.
+
+# This program built for i386-pc-mingw32
+ 
+
+# ����ũ ����Ÿ���̽�, Fri Aug 26 10:46:28 2022
+�� ǥ��
+# ����
+
+# �ڵ�
+<D = $(patsubst %/,%,$(dir $<))
+# �ڵ�
+?F = $(notdir $?)
+# ����ũ����
+MAKEFLAGS = Rrqp
+# �ڵ�
+?D = $(patsubst %/,%,$(dir $?))
+# �ڵ�
+@D = $(patsubst %/,%,$(dir $@))
+# ȯ��
+HOMEDRIVE = C:
+# �ڵ�
+@F = $(notdir $@)
+# �ڵ�
+^D = $(patsubst %/,%,$(dir $^))
+# ����ũ����
+CURDIR := d:/stmpjt/stm32f412zg_spi_slave
+# �⺻��
+SHELL := sh.exe
+# ȯ��
+WINDIR = C:\WINDOWS
+# ȯ��
+VSCODE_NLS_CONFIG = {"locale":"ko","availableLanguages":{},"_languagePackSupport":true}
+# ȯ��
+ONEDRIVE = C:\Users\JJW_N-771\OneDrive
+# ȯ��
+PATHEXT = .COM;.EXE;.BAT;.CMD;.VBS;.VBE;.JS;.JSE;.WSF;.WSH;.MSC
+# ����ũ����
+MAKEFILE_LIST := 
+# ȯ��
+TMP = C:\Users\JJW_N-~1\AppData\Local\Temp
+# ȯ��
+PROGRAMW6432 = C:\Program Files
+# ȯ��
+PROGRAMDATA = C:\ProgramData
+# ȯ��
+VSCODE_CWD = D:\stmpjt
+# ȯ��
+PATH = C:\Program Files (x86)\Common Files\Oracle\Java\javapath;C:\Program Files (x86)\Intel\Intel(R) Management Engine Components\iCLS\;C:\Program Files\Intel\Intel(R) Management Engine Components\iCLS\;C:\Windows\system32;C:\Windows;C:\Windows\System32\Wbem;C:\Windows\System32\WindowsPowerShell\v1.0\;C:\Windows\System32\OpenSSH\;C:\Program Files (x86)\NVIDIA Corporation\PhysX\Common;C:\Program Files (x86)\Intel\Intel(R) Management Engine Components\DAL;C:\Program Files\Intel\Intel(R) Management Engine Components\DAL;C:\Program Files\NVIDIA Corporation\NVIDIA NvDLISR;C:\Program Files (x86)\AOMEI Backupper;C:\WINDOWS\system32;C:\WINDOWS;C:\WINDOWS\System32\Wbem;C:\WINDOWS\System32\WindowsPowerShell\v1.0\;C:\WINDOWS\System32\OpenSSH\;C:\Program Files\Git\cmd;C:\Program Files\serialplot\bin;D:\dev\platform-tools\;C:\Program Files\Nordic Semiconductor\nrf-command-line-tools\bin\;C:\Program Files\WinMerge;C:\Users\JJW_N-771\Desktop\embedded_installation;C:\Program Files (x86)\GnuWin32\bin;C:\Program Files (x86)\GNU Tools Arm Embedded\9 2019-q4-major\bin;C:\Program Files (x86)\STMicroelectronics\STM32 ST-LINK Utility\ST-LINK Utility;C:\Program Files (x86)\IVI Foundation\VISA\WinNT\Bin;C:\mingw64\bin;C:\ProgramData\chocolatey\bin;C:\Program Files (x86)\GNU Tools Arm Embedded\9 2019-q4-major\bin;C:\Users\JJW_N-771\AppData\Local\Programs\Python\Python37\Scripts\;C:\Users\JJW_N-771\AppData\Local\Programs\Python\Python37\;C:\Users\JJW_N-771\AppData\Local\Microsoft\WindowsAppsC:\Program Files\Bandizip\;C:\Users\JJW_N-771\AppData\Local\atom\bin;C:\Users\JJW_N-771\AppData\Local\Programs\Microsoft VS Code\bin
+# ȯ��
+COMMONPROGRAMW6432 = C:\Program Files\Common Files
+# ȯ��
+CHOCOLATEYLASTPATHUPDATE = 133001665591824475
+# ȯ��
+PROCESSOR_ARCHITECTURE = x86
+# ȯ��
+USERPROFILE = C:\Users\JJW_N-771
+# ȯ��
+CHOCOLATEYINSTALL = C:\ProgramData\chocolatey
+# ȯ��
+ALLUSERSPROFILE = C:\ProgramData
+# ȯ��
+NUMBER_OF_PROCESSORS = 8
+# ȯ��
+ELECTRON_RUN_AS_NODE = 1
+# �⺻��
+.FEATURES := target-specific order-only second-expansion else-if archives
+# �ڵ�
+%F = $(notdir $%)
+# ȯ��
+CHROME_CRASHPAD_PIPE_NAME = \\.\pipe\crashpad_16008_VXERMUZAFOMMFJNT
+# ȯ��
+COMPUTERNAME = N-682-SDS
+# ȯ��
+PROGRAMFILES = C:\Program Files (x86)
+# ȯ��
+DR 
+IVERDATA = C:\Windows\System32\Drivers\DriverData
+# ȯ��
+ORIGINAL_XDG_CURRENT_DESKTOP = undefined
+# ȯ��
+USERNAME = JJW_N-771
+# ȯ��
+PUBLIC = C:\Users\Public
+# ȯ��
+VSCODE_AMD_ENTRYPOINT = vs/workbench/api/node/extensionHostProcess
+# ȯ��
+VSCODE_CODE_CACHE_PATH = C:\Users\JJW_N-771\AppData\Roaming\Code\CachedData\da76f93349a72022ca4670c1b84860304616aaa2
+# ȯ��
+APPLICATION_INSIGHTS_NO_DIAGNOSTIC_CHANNEL = true
+# ȯ��
+COMMONPROGRAMFILES = C:\Program Files (x86)\Common Files
+# ȯ��
+LOGONSERVER = \\N-682-SDS
+# ȯ��
+ONEDRIVECONSUMER = C:\Users\JJW_N-771\OneDrive
+# ȯ��
+VSCODE_HANDLES_UNCAUGHT_ERRORS = true
+# ȯ��
+NORDIC_SDK_PATH = D:\nRF5_SDK_17.0.0_9d13099
+# ȯ��
+USERDOMAIN = N-682-SDS
+# �⺻��
+MAKE = $(MAKE_COMMAND)
+# �⺻��
+MAKECMDGOALS := all
+# �⺻��
+MAKE_VERSION := 3.81
+# ����ũ����
+.DEFAULT_GOAL := 
+# ȯ��
+PROGRAMFILES(X86) = C:\Program Files (x86)
+# �ڵ�
+%D = $(patsubst %/,%,$(dir $%))
+# ȯ��
+LOCALAPPDATA = C:\Users\JJW_N-771\AppData\Local
+# ȯ��
+PSMODULEPATH = C:\Program Files\WindowsPowerShell\Modules;C:\WINDOWS\system32\WindowsPowerShell\v1.0\Modules
+# �⺻��
+MAKE_COMMAND := make.exe
+# ȯ��
+PROCESSOR_ARCHITEW6432 = AMD64
+# �⺻��
+.VARIABLES := 
+# �ڵ�
+*F = $(notdir $*)
+# ȯ��
+PROCESSOR_IDENTIFIER = Intel64 Family 6 Model 158 Stepping 9, GenuineIntel
+# ȯ��
+OS = Windows_NT
+# ȯ��
+VSCODE_IPC_HOOK = \\.\pipe\7513a8365cbc8966f7d050733005f702-1.70.0-main-sock
+# ȯ��
+HOMEPATH = \Users\JJW_N-771
+# ȯ��
+COMMONPROGRAMFILES(X86) = C:\Program Files (x86)\Common Files
+# ȯ��
+PROMPT = $P$G
+# ȯ��
+MFLAGS = -Rrqp
+# �ڵ�
+*D = $(patsubst %/,%,$(dir $*))
+# ȯ��
+SYSTEMROOT = C:\WINDOWS
+# �ڵ�
++D = $(patsubst %/,%,$(dir $+))
+# �ڵ�
++F = $(notdir $+)
+# ȯ��
+APPDATA = C:\Users\JJW_N-771\AppData\Roaming
+# ȯ��
+VXIPNPPATH = C:\Program Files (x86)\IVI Foundation\VISA\
+# ȯ��
+TEMP = C:\Users\JJW_N-~1\AppData\Local\Temp
+# ȯ��
+COMSPEC = C:\WINDOWS\system32\cmd.exe
+# �⺻��
+MAKEFILES := 
+# �ڵ�
+<F = $(notdir $<)
+# ȯ��
+LC_ALL = C
+# �ڵ�
+^F = $(notdir $^)
+# �⺻��
+SUFFIXES := 
+# ȯ��
+SYSTEMDRIVE = C:
+# ȯ��
+SESSIONNAME = Console
+# ȯ��
+PROCESSOR_REVISION = 9e09
+# ȯ��
+MAKELEVEL := 0
+# ȯ��
+LANG = C
+# ȯ��
+PROCESSOR_LEVEL = 6
+# ȯ��
+VSCODE_PID = 16008
+# ȯ��
+USERDOMAIN_ROAMINGPROFILE = N-682-SDS
+# variable set hash-table stats:
+# Load=86/1024=8%, Rehash=0, Collisions=10/103=10%
+
+# Pattern-specific Variable Values
+
+# ������ ���� ���� ������ �����ϴ�.
+
+# ���丮
+
+# D:\dev\platform-tools\ (Ű D:/dev/platform-tools/, ����ð� 1616469678): 19 ����, 0�� �Ұ���.
+# C:\Program Files (x86)\Intel\Intel(R) Management Engine Components\iCLS\ (Ű C:/Program Files (x86)/Intel/Intel(R) Management Engine Components/iCLS/, ����ð� 1584606622): 8 ����, 0�� �Ұ���.
+# C:\Program Files\serialplot\bin (Ű C:/Program Files/serialplot/bin, ����ð� 1615455334): 3 ����, 0�� �Ұ���.
+# C:\Windows\System32\WindowsPowerShell\v1.0\ (Ű C:/Windows/System32/WindowsPowerShell/v1.0/, ����ð� 1610677358): 31 ����, 0�� �Ұ���.
+# C:\Windows\System32\Wbem (Ű C:/Windows/System32/Wbem, ����ð� 1660292364): 170 ����, 0�� �Ұ���.
+# . (Ű d:/stmpjt/stm32f412zg_spi_slave, ����ð� 1661136409): 14 ����, 0�� �Ұ���.
+# C:\Program Files (x86)\STMicroelectronics\STM32 ST-LINK Utility\ST-LINK Utility (Ű C:/Program Files (x86)/STMicroelectronics/STM32 ST-LINK Utility/ST-LINK Utility, ����ð� 1636418944): 11 ����, 0�� �Ұ���.
+# C:\Program Files (x86)\NVIDIA Corporation\PhysX\Common (Ű C:/Program Files (x86)/NVIDIA Corporation/PhysX/Common, ����ð� 1584606025): 10 ����, 0�� �Ұ���.
+# C:\Users\JJW_N-771\AppData\Local\atom\bin (Ű C:/Users/JJW_N-771/AppData/Local/atom/bin, ����ð� 1612176143): 6 ����, 0�� �Ұ���.
+# C:\Users\JJW_N-771\AppData\Local\Programs\Python\Python37\ (Ű C:/Users/JJW_N-771/AppData/Local/Programs/Python/Python37/, ����ð� 1613458621): 17 ����, 0�� �Ұ���.
+# C:\ProgramData\chocolatey\bin (Ű C:/ProgramData/chocolatey/bin, ����ð� 1655692959): 11 ����, 0�� �Ұ���.
+# C:\Users\JJW_N-771\Desktop\embedded_installation (Ű C:/Users/JJW_N-771/Desktop/embedded_installation, ����ð� 1661128789): 32 ����, 0�� �Ұ���.
+# C:\Users\JJW_N-771\AppData\Local\Programs\Python\Python37\Scripts\ (Ű C:/Users/JJW_N-771/AppData/Local/Programs/Python/Python37/Scripts/, ����ð� 1643847575): 14 ����, 0�� �Ұ���.
+# C:\Program Files (x86)\GNU Tools Arm Embedded\9 2019-q4-major\bin (Ű C:/Program Files (x86)/GNU Tools Arm Embedded/9 2019-q4-major/bin, ����ð� 1624000671): 34 ����, 0�� �Ұ���.
+# C:\Program Files\Nordic Semiconductor\nrf-command-line-tools\bin\ (Ű C:/Program Files/Nordic Semiconductor/nrf-command-line-tools/bin/, ����ð� 1617773814): 17 ����, 0�� �Ұ���.
+# C:\Users\JJW_N-771\AppData\Local\Programs\Microsoft VS Code\bin (Ű C:/Users/JJW_N-771/AppData/Local/Programs/Microsoft VS Code/bin, ����ð� 1659660835): 4 ����, 0�� �Ұ���.
+# C:\Windows\System32\OpenSSH\: stat�� �� �� �������ϴ�.
+# C:\Program Files (x86)\Common Files\Oracle\Java\javapath (Ű C:/Program Files (x86)/Common Files/Oracle/Java/javapath, ����ð� 1650429658): 5 ����, 0�� �Ұ���.
+# C:\mingw64\bin (Ű C:/mingw64/bin, ����ð� 1526110174): 58 ����, 0�� �Ұ���.
+# C:\Program Files\Intel\Intel(R) Management Engine Components\DAL (Ű C:/Program Files/Intel/Intel(R) Management Engine Components/DAL, ����ð� 1584606613): 4 ����, 0�� �Ұ���.
+# C:\Windows (Ű C:/Windows, ����ð� 1660292362): 134 ����, 0�� �Ұ���.
+# C:\Program Files\Intel\Intel(R) Management Engine Components\iCLS\ (Ű C:/Program Files/Intel/Intel(R) Management Engine Components/iCLS/, ����ð� 1584606622): 11 ����, 0�� �Ұ���.
+# C:\Program Files\WinMerge (Ű C:/Program Files/WinMerge, ����ð� 1619681803): 22 ����, 0�� �Ұ���.
+# C:\Program Files (x86)\IVI Foundation\VISA\WinNT\Bin (Ű C:/Program Files (x86)/IVI Foundation/VISA/WinNT/Bin, ����ð� 1638839347): 10 ����, 0�� �Ұ���.
+# C:\Program Files\Git\cmd (Ű C:/Program Files/Git/cmd, ����ð� 1611553599): 8 ����, 0�� �Ұ���.
+# C:\Windows\system32 (Ű C:/Windows/system32, ����ð� 1661130479): 2990 ����, 0�� �Ұ���.
+# C:\Users\JJW_N-771\AppData\Local\Microsoft\WindowsAppsC:\Program Files\Bandizip\: stat�� �� �� �������ϴ�.
+# C:\Program Files\NVIDIA Corporation\NVIDIA NvDLISR (Ű C:/Program Files/NVIDIA Corporation/NVIDIA NvDLISR, ����ð� 1584606851): 5 ����, 0�� �Ұ���.
+# C:\Program Files (x86)\AOMEI Backupper: stat�� �� �� �������ϴ�.
+# C:\Program Files (x86)\Intel\Intel(R) Management Engine Components\DAL (Ű C:/Program Files (x86)/Intel/Intel(R) Management Engine Components/DAL, ����ð� 1584606613): 10 ����, 0�� �Ұ���.
+# C:\Program Files (x86)\GnuWin32\bin (Ű C:/Program Files (x86)/GnuWin32/bin, ����ð� 1624000482): 103 ����, 0�� �Ұ���.
+
+# 3761 ����, 0�� impossibilities in 31 directories.
+
+# Implicit Ru 
+les
+
+# ������ ��Ģ ����.
+
+# ����
+
+# Ÿ���� �ƴ�:
+all:
+#  ������ Ÿ��.
+#  ������ ��Ģ Ž���� �Ϸ�Ǿ����ϴ�.
+#  ������ �������� �ʽ��ϴ�.
+#  ������ ���ŵ��� �ʾҽ��ϴ�.
+# variable set hash-table stats:
+# Load=0/32=0%, Rehash=0, Collisions=0/0=0%
+
+# Ÿ���� �ƴ�:
+.DEFAULT:
+#  ������ ��Ģ Ž���� �Ϸ���� �ʾҽ��ϴ�.
+#  ���� �ð��� ���� �˻���� �ʾ���.
+#  ������ ���ŵ��� �ʾҽ��ϴ�.
+
+# Ÿ���� �ƴ�:
+makefile:
+#  A default, MAKEFILES, or -include/sinclude makefile.
+#  ������ ��Ģ Ž���� �Ϸ�Ǿ����ϴ�.
+#  ������ �������� �ʽ��ϴ�.
+#  ������ ���ŵǾ����ϴ�.
+#  ���ſ� ������.
+# variable set hash-table stats:
+# Load=0/32=0%, Rehash=0, Collisions=0/0=0%
+
+# Ÿ���� �ƴ�:
+.SUFFIXES:
+#  ������ ��Ģ Ž���� �Ϸ���� �ʾҽ��ϴ�.
+#  ���� �ð��� ���� �˻���� �ʾ���.
+#  ������ ���ŵ��� �ʾҽ��ϴ�.
+
+# Ÿ���� �ƴ�:
+GNUmakefile:
+#  A default, MAKEFILES, or -include/sinclude makefile.
+#  ������ ��Ģ Ž���� �Ϸ�Ǿ����ϴ�.
+#  ������ �������� �ʽ��ϴ�.
+#  ������ ���ŵǾ����ϴ�.
+#  ���ſ� ������.
+# variable set hash-table stats:
+# Loa 
+d=0/32=0%, Rehash=0, Collisions=0/0=0%
+
+# files hash-table stats:
+# Load=5/1024=0%, Rehash=0, Collisions=0/16=0%
+# VPATH Ž�� ���
+
+# `vpath' Ž�� ��ΰ� ����.
+
+# �Ϲ����� (`VPATH' ����) Ž�� ��ΰ� ����.
+
+# # of strings in strcache: 0
+# # of strcache buffers: 0
+# strcache size: total = 0 / max = 0 / min = 4096 / avg = 0
+# strcache free: total = 0 / max = 0 / min = 4096 / avg = 0
+
+# ����ũ ����Ÿ ���̽� ��ħ, Fri Aug 26 10:46:28 2022
+����
+ 
+make.exe: *** Ÿ�� `all'�� ���� ��Ģ�� ����.  ����.
+

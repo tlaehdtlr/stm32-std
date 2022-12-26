@@ -1,0 +1,6 @@
+make.exe --dry-run --always-make --keep-going --print-directory
+make.exe: Entering directory `d:/stmpjt/stm32f412zg_spi_slave'
+make.exe: Leaving directory `d:/stmpjt/stm32f412zg_spi_slave'
+ 
+make.exe: *** Ÿ���� �������� �ʾҰ� ����ũ������ �����ϴ�.  ����.
+
